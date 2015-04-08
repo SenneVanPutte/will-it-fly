@@ -30,6 +30,7 @@ Vanaf nu altijd mijn naam vervangen door uw eigen a.u.b! Nu gaan we de repositor
 mkdir eindwerk-programmeren
 cd eindwerk-programmeren
 git clone git@github.com:IvoWingelaar/will-it-fly.git
+git remote add upstream https://github.com/3BaFys-2014-2015/will-it-fly.git
 
 Nu is de volledige repository beschikbaar in "eindwerk-programmeren/will-it-fly", kijk maar eens! Alle git commando's worden best vanuit deze directory uitgevoerd.
 
@@ -47,11 +48,12 @@ Stap 4:
 De volgende workflow zal gehanteerd worden:
 
 Na ontvangst van een opdracht, zal de persoon een nieuwe branch maken vanuit de master branch:
-
+```
 git checkout master
-git pull
+git pull upstream master
 git checkout -b development-ivo-opdracht-1
-
+git push --set-upstream origin development-ivo-opdracht-1
+```
 Nadat de branch is aangemaakt, verwacht ik dat ik de naam hiervan krijg, zodat ik ontwikkelingen kan volgen.
 
 Als er bestanden worden aangemaakt, verwijderd of aangepast, moet git op de hoogte gebracht worden dat deze gevolgd moeten worden door het programma:
