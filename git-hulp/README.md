@@ -38,17 +38,23 @@ Nu gaan we de repository "clone"en naar een directory op uw harde schijf (opnieu
 ```
 mkdir eindwerk-programmeren
 cd eindwerk-programmeren
-git clone git@github.com:IvoWingelaar/will-it-fly.git
+git clone https://github.com/IvoWingelaar/will-it-fly.git
+```
+
+Er is nu een extra directory aangemaakt: de root-directory van uw repository.
+
+```
 cd will-it-fly
 ```
 
-Om updates van het hoofdproject te ontvangen, moet er ook een remote naar de originele repository gemaakt worden:
+Alle commando's van Git moeten uitgevoerd worden in deze directory. Om updates van het hoofdproject te ontvangen, moet er ook een remote naar de originele repository gemaakt worden:
 
 ```
 git remote add upstream https://github.com/3BaFys-2014-2015/will-it-fly.git
+git fetch upstream
 ```
 
-Nu is de volledige repository beschikbaar in "eindwerk-programmeren/will-it-fly", kijk maar eens! Alle git commando's worden best vanuit deze directory uitgevoerd.
+Nu is de volledige repository beschikbaar in "eindwerk-programmeren/will-it-fly", kijk maar eens!
 
 ## Stap 3:
 
