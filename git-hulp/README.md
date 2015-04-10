@@ -11,6 +11,7 @@ Zorg dat de configuratie van Git in orde is (gebruik uw eigen naam, in plaats va
 ```
 git config --global user.name "Ivo Wingelaar"
 git config --global user.mail "ivo.wingelaar@student.uantwerpen.be"
+git config --global push.default simple
 ```
 
 Anders klaagt git.
@@ -51,10 +52,13 @@ Alle commando's van Git moeten uitgevoerd worden in deze directory. Om updates v
 
 ```
 git remote add upstream https://github.com/3BaFys-2014-2015/will-it-fly.git
-git fetch upstream
 ```
 
-Nu is de volledige repository beschikbaar in "eindwerk-programmeren/will-it-fly", kijk maar eens!
+Nu is de volledige repository beschikbaar in "eindwerk-programmeren/will-it-fly", kijk maar eens! Om updates te ontvangen van de centrale repo, gebruikt:
+
+```
+git fetch upstream
+```
 
 ## Stap 3:
 
