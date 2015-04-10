@@ -10,7 +10,7 @@ Zorg dat de configuratie van Git in orde is (gebruik uw eigen naam, in plaats va
 
 ```
 git config --global user.name "Ivo Wingelaar"
-git config --global user.mail "ivo.wingelaar@student.uantwerpen.be"
+git config --global user.email "ivo.wingelaar@student.uantwerpen.be"
 git config --global push.default simple
 ```
 
