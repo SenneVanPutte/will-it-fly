@@ -1,0 +1,7 @@
+*.o
+*.so
+*.layout
+obj/**
+bin/**
+lib/**
+include/**
