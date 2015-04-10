@@ -5,7 +5,7 @@ OBJ_ALGO=$(SRC_ALGO:.cpp=.o)
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
-INCLUDE=-I./will-it-fly/build/include/wif-core
+INCLUDE=-I./will-it-fly/build/include
 
 wif_algo : $(OBJ_ALGO)
 	echo "Building wif-algo"

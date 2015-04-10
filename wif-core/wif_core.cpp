@@ -1,8 +1,13 @@
 #include "wif_core.hpp"
 
-uint32_t wif_core::get_version()
+namespace wif_core
 {
 
 
+uint32_t get_version()
+{
     return 1;
 }
+
+
+} //namespace wif_core

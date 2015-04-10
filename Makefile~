@@ -16,7 +16,8 @@ demos :
 	echo "Building demos"
 
 wif : wif_core wif_algo wif_viz
-	cd ./will-it-fly; make wif
+	echo "Building will-it-fly"
+	$(CC) $(CC_FLAGS) $(INCLUDE) $(LIBDIR) $(LIBS) -o $(EXECUTABLE)  ./will-it-fly/main.cpp
 
 wif_core : 
 	cd ./wif-core; make wif_core
