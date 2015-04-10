@@ -53,6 +53,33 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="wif-algo/wif_algo.cpp">
+			<Option target="wif" />
+			<Option target="wif_algo" />
+		</Unit>
+		<Unit filename="wif-algo/wif_algo.hpp">
+			<Option target="wif" />
+			<Option target="wif_algo" />
+		</Unit>
+		<Unit filename="wif-core/wif_core.cpp">
+			<Option target="wif" />
+			<Option target="wif_core" />
+		</Unit>
+		<Unit filename="wif-core/wif_core.hpp">
+			<Option target="wif" />
+			<Option target="wif_core" />
+		</Unit>
+		<Unit filename="wif-viz/wif_viz.cpp">
+			<Option target="wif" />
+			<Option target="wif_viz" />
+		</Unit>
+		<Unit filename="wif-viz/wif_viz.hpp">
+			<Option target="wif" />
+			<Option target="wif_viz" />
+		</Unit>
+		<Unit filename="will-it-fly/main.cpp">
+			<Option target="wif" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
