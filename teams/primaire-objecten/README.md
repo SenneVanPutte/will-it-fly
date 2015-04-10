@@ -6,6 +6,8 @@ Jullie zijn verantwoordelijk voor het onderhoud en de ontwikkeling van de shared
 
 ## Opdracht 1
 
+Gegeven aan: Jeroen.
+
 Eerste opdracht voor jullie: het op orde stellen van het compilatiesysteem dat gebruikt zal worden. Dit moet direct gebeuren in de top level van deze repository, en dus niet in deze directory. Een skeletstructuur van de Makefile is al beschikbaar, evenals een CodeBlocks project die hiermee kan werken.
 
 Voor alle libraries verwacht ik een source en header file waarin enkel de namespace staat, met natuurlijk de include guards in de header files. Voor wif-core verwacht ik dus een wif-core.cpp, wif-core.hpp met namespace wif_core. Natuurlijk moet de header file geinclude worden door de source file. Implementeer eenvoudige functies in de libraries, zoals uint32_t get_version() die altijd 1 returnen. Deze moeten compileren naar shared libraries (dus bijvoorbeeld wif-core.so).
@@ -22,7 +24,18 @@ Zorg ook dat wif-algo en wif-viz beiden afhankelijk zijn van wif-core, en daarme
 
 Voor wif verwacht ik een main.cpp file die alle get_versions oproept van de shared libraries. Deze moet gelinkt worden met de bovenstaande drie libraries, en moet ook de respectievelijke header files includen. Compilatie moet lukken, en ik verwacht de outputs van de drie get_versions naar std::cout.
 
-Respecteer de conventies in style/ en zorg dat alle output van de makefiles op de juiste plaats komt (dus header files van de libraries in include/, libraries zelf in lib/ en de binary van wif in bin/). Schrijf ook een clean target in de makefile die de outputs van de makefile opruimt.
+Respecteer de conventies in style/ en zorg dat alle output van de makefiles op de juiste plaats komt (dus header files van de libraries in include/, libraries zelf in lib/ en de binary van wif in bin/, allemaal in een build directory). Schrijf ook een clean target in de makefile die de outputs van de makefile opruimt.
+
+Dus de volgende directory structuur wordt verwacht na het runnen van de makefile:
+
+```
+will-it-fly/build/bin
+will-it-fly/build/lib
+will-it-fly/build/obj
+will-it-fly/build/include
+```
+
+De build directory wordt automatisch genegeerd door Git, dus niet eens proberen de bestanden erin te stagen!
 
 ## Opdracht 2
 
