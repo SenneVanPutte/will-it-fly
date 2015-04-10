@@ -1,0 +1,23 @@
+# Makefile wif_core
+
+SRC_CORE=wif_core.cpp
+OBJ_CORE=$(SRC_CORE:.cpp=.o)
+
+CC=g++ -std=c++11
+CC_FLAGS=-Wall
+
+all : wif_core
+
+
+wif_core : $(OBJ_CORE)
+	echo "Building wif-core"
+
+%.o : %.cpp
+	mkdir -p ../will-it-fly/build/obj
+	mkdir -p ../will-it-fly/build/bin
+	mkdir -p ../will-it-fly/build/include
+	mkdir -p ../will-it-fly/build/lib
+	rsync -az --include '*.hpp' --exclude '*' ./ ../will-it-fly/build/include/wif-core
+	$(CC) -c -fpic $(CC_FLAGS) -o ../will-it-fly/build/obj/$@  $<
+	$(CC) -shared -o ../will-it-fly/build/lib/lib$(@:.o=.so) ../will-it-fly/build/obj/$@
+	
