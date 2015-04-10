@@ -6,18 +6,18 @@ Maak een GitHub account aan, liefst met een duidelijke naam (bijvoorbeeld: Ivo W
 
 ## Stap 1:
 
-Zorg dat de configuratie van git in orde is:
+Zorg dat de configuratie van Git in orde is (gebruik uw eigen naam, in plaats van de mijne):
 
 ```
-git config --global user.name Ivo Wingelaar
-git config --global user.mail ivo.wingelaar@student.uantwerpen.be
+git config --global user.name "Ivo Wingelaar"
+git config --global user.mail "ivo.wingelaar@student.uantwerpen.be"
 ```
 
 Anders klaagt git.
 
 ## Stap 2:
 
-Een goede workflow met git, en onder andere GitHub, werkt met zogenaamde "forks". Een fork is een lokale kopie van de volledige repository waarin je write-permissions hebt. Write-permissions van de "hoofd" repository, ook wel "upstream" genoemd, blijven gereserveerd voor de administrators van het project (mijzelf, en misschien Andy, als ik hem vertrouw...).
+Een goede workflow met Git, en onder andere GitHub, werkt met zogenaamde "forks". Een fork is een lokale kopie van de volledige repository waarin je write-permissions hebt. Write-permissions van de "hoofd" repository, ook wel "upstream" genoemd, blijven gereserveerd voor de administrators van het project (mijzelf, en misschien Andy, als ik hem vertrouw...).
 
 Iedereen kan werken in zijn eigen fork. Ik zal de ontwikkeling van het project kunnen volgen, en iedereen zijn bijdrage kunnen "mergen" in de geschiedenis van upstream.
 
@@ -33,12 +33,18 @@ Ik vraag aan iedereen om deze repository te forken naar zijn eigen account (dit 
 https://github.com/IvoWingelaar/will-it-fly.git
 ```
 
-Vanaf nu altijd mijn naam vervangen door uw eigen a.u.b! Nu gaan we de repository "clone"en naar een directory op uw harde schijf:
+Nu gaan we de repository "clone"en naar een directory op uw harde schijf (opnieuw uw eigen naam gebruiken, in plaats van de mijne):
 
 ```
 mkdir eindwerk-programmeren
 cd eindwerk-programmeren
 git clone git@github.com:IvoWingelaar/will-it-fly.git
+cd will-it-fly
+```
+
+Om updates van het hoofdproject te ontvangen, moet er ook een remote naar de originele repository gemaakt worden:
+
+```
 git remote add upstream https://github.com/3BaFys-2014-2015/will-it-fly.git
 ```
 
