@@ -1,5 +1,6 @@
 #include "wif_algo.hpp"
-#include "wif_core.hpp"
+
+#include <wif_core.hpp>
 
 namespace wif_algo
 {

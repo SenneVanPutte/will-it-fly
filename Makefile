@@ -1,13 +1,15 @@
 # Makefile
 # Compilatie objecten (*.o) gaan naar ./obj/, binaries gaan naar ./bin/, library headers (*.hpp) gaan naar ./include/ en libraries (*.so) gaan naar ./lib/
 
+SRC_WIF=main.cpp
+OBJ_WIF=$(SRC_WIF:.cpp=.o)
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
-INCLUDE=-I./will-it-fly/build/include
-LIBDIR=-L./will-it-fly/build/lib
+INCLUDE=-I./build/include
+LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
-EXECUTABLE=not-yet
+EXECUTABLE=./build/bin/wif
 
 all : wif demos
 	echo "Building all"
@@ -15,18 +17,31 @@ all : wif demos
 demos :
 	echo "Building demos"
 
-wif : wif_core wif_algo wif_viz
-	cd ./will-it-fly; make wif
+wif : wifcore wifalgo wifviz
+	cd ./will_it_fly; make willitfly
+	$(CC) $(CC_FLAGS) $(INCLUDE) $(LIBDIR) -o $(EXECUTABLE) ./build/obj/wif/$(OBJ_WIF) $(LIBS)
 
-wif_core : 
-	cd ./wif-core; make wif_core
+wifcore : 
+	mkdir -p ./build/obj/wif_core
+	mkdir -p ./build/obj/wif_algo
+	mkdir -p ./build/obj/wif_viz
+	mkdir -p ./build/obj/wif
+	mkdir -p ./build/include/wif_core
+	mkdir -p ./build/include/wif_algo
+	mkdir -p ./build/include/wif_viz
+	mkdir -p ./build/bin
+	mkdir -p ./build/lib
+	rsync -az --include '*.hpp' --exclude '*' ./wif_core/ ./build/include/wif_core
+	rsync -az --include '*.hpp' --exclude '*' ./wif_algo/ ./build/include/wif_algo
+	rsync -az --include '*.hpp' --exclude '*' ./wif_viz/ ./build/include/wif_viz
+	cd ./wif_core; make core
 
-wif_algo : wif_core 
-	cd ./wif-algo; make wif_algo
+wifalgo : wif_core 
+	cd ./wif_algo; make algo
 
-wif_viz : wif_core 
-	cd ./wif-viz; make wif_viz
+wifviz : wif_core 
+	cd ./wif_viz; make viz
 
 clean :
 	echo "Cleaning build directory"
-	rm -rf ./will-it-fly/build
+	rm -rf ./build

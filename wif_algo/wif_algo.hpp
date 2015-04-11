@@ -3,7 +3,6 @@
 
 #include <cstdint>
 
-
 namespace wif_algo
 {
 
