@@ -3,6 +3,7 @@
 
 SRC_WIF=main.cpp
 OBJ_WIF=$(SRC_WIF:.cpp=.o)
+OBJ_PATH=$(addprefix ./build/obj/wif/, $(OBJ_WIF))
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
@@ -19,7 +20,7 @@ demos :
 
 wif : wifcore wifalgo wifviz
 	cd ./will_it_fly; make willitfly
-	$(CC) $(CC_FLAGS) $(INCLUDE) $(LIBDIR) -o $(EXECUTABLE) ./build/obj/wif/$(OBJ_WIF) $(LIBS)
+	$(CC) $(CC_FLAGS) $(INCLUDE) $(LIBDIR) -o $(EXECUTABLE) $(OBJ_PATH) $(LIBS)
 
 wifcore : 
 	mkdir -p ./build/obj/wif_core
