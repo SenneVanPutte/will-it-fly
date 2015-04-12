@@ -12,15 +12,18 @@ LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 EXECUTABLE=./build/bin/wif
 
-all : wif demos
+all : exec demos
 	echo "Building all"
 
 demos :
 	echo "Building demos"
 
+exec: wif
+	echo "Building binary"
+	$(CC) $(CC_FLAGS) $(LIBDIR) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
+
 wif : wifcore wifalgo wifviz
 	cd ./will_it_fly; make willitfly
-	$(CC) $(CC_FLAGS) $(INCLUDE) $(LIBDIR) -o $(EXECUTABLE) $(OBJ_PATH) $(LIBS)
 
 wifcore : 
 	mkdir -p ./build/obj/wif_core

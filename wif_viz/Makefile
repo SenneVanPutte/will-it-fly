@@ -13,5 +13,5 @@ viz : $(OBJ_VIZ)
 	$(CC) -shared -o ../build/lib/libwif_viz.so $(OBJ_PATH)
 
 %.o : %.cpp
-	$(CC) -c -fpic $(CC_FLAGS) $(INCLUDE) -o ../build/obj/wif_viz/$@ $<
+	$(CC) -c -fPIC $(CC_FLAGS) $(INCLUDE) -o ../build/obj/wif_viz/$@ $<
 

@@ -12,7 +12,7 @@ core : $(OBJ_CORE)
 	$(CC) -shared -o ../build/lib/libwif_core.so $(OBJ_PATH)
 
 %.o : %.cpp
-	$(CC) -c -fpic $(CC_FLAGS) -o ../build/obj/wif_core/$@  $<
+	$(CC) -c -fPIC $(CC_FLAGS) -o ../build/obj/wif_core/$@  $<
 
 
 	

@@ -53,33 +53,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../will_it_fly/wif_algo/wif_algo.cpp">
+		<Unit filename="wif_algo/wif_algo.cpp">
 			<Option target="all" />
-			<Option target="wif_algo" />
 		</Unit>
-		<Unit filename="../will_it_fly/wif_algo/wif_algo.hpp">
+		<Unit filename="wif_algo/wif_algo.hpp">
 			<Option target="all" />
-			<Option target="wif_algo" />
 		</Unit>
-		<Unit filename="../will_it_fly/wif_core/wif_core.cpp">
+		<Unit filename="wif_core/wif_core.cpp">
 			<Option target="all" />
-			<Option target="wif_core" />
 		</Unit>
-		<Unit filename="../will_it_fly/wif_core/wif_core.hpp">
+		<Unit filename="wif_core/wif_core.hpp">
 			<Option target="all" />
-			<Option target="wif_core" />
 		</Unit>
-		<Unit filename="../will_it_fly/wif_viz/wif_viz.cpp">
+		<Unit filename="wif_viz/wif_viz.cpp">
 			<Option target="all" />
-			<Option target="wif_viz" />
 		</Unit>
-		<Unit filename="../will_it_fly/wif_viz/wif_viz.hpp">
+		<Unit filename="wif_viz/wif_viz.hpp">
 			<Option target="all" />
-			<Option target="wif_viz" />
 		</Unit>
-		<Unit filename="../will_it_fly/will_it_fly/main.cpp">
+		<Unit filename="will_it_fly/main.cpp">
 			<Option target="all" />
-			<Option target="wif" />
 		</Unit>
 		<Extensions>
 			<code_completion />
