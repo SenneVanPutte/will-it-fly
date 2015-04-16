@@ -1,6 +1,6 @@
 # Makefile wif_algo
 
-SRC_ALGO=wif_algo.cpp
+SRC_ALGO=$(wildcard *.cpp)
 OBJ_ALGO=$(SRC_ALGO:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_algo/,  $(OBJ_ALGO))
 

@@ -1,6 +1,6 @@
 # Makefile will-it-fly
 
-SRC_WIF=main.cpp
+SRC_WIF=$(wildcard *.cpp)
 OBJ_WIF=$(SRC_WIF:.cpp=.o)
 
 CC=g++ -std=c++11
