@@ -13,20 +13,20 @@ LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 EXECUTABLE=./build/bin/wif
 
-all : exec demos
+all : demos exec
 	echo "Building all"
 
-demos :
-	echo "Building demos"
+demos : wifcore wifalgo wifviz
+	cd ./demos; $(MAKE) demo
 
 exec: wif
 	echo "Building binary"
 	echo $(SRC_PATH)
-	$(CC) $(CC_FLAGS) $(LIBDIR) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
+	$(CC) $(CC_FLAGS) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 
 wif : wifcore wifalgo wifviz
 	mkdir -p ./build/obj/wif
-	cd ./will_it_fly; make willitfly
+	$(MAKE) -C ./will_it_fly willitfly
 
 wifcore : 
 	mkdir -p ./build/obj/wif_core
@@ -34,19 +34,19 @@ wifcore :
 	mkdir -p ./build/bin
 	mkdir -p ./build/lib
 	rsync -az --include '*.hpp' --exclude '*' ./wif_core/ ./build/include/wif_core
-	cd ./wif_core; make core
+	$(MAKE) -C ./wif_core core
 
 wifalgo : wif_core
 	mkdir -p ./build/obj/wif_algo
 	mkdir -p ./build/include/wif_algo
 	rsync -az --include '*.hpp' --exclude '*' ./wif_algo/ ./build/include/wif_algo
-	cd ./wif_algo; make algo
+	$(MAKE) -C ./wif_algo algo
 
 wifviz : wif_core
 	mkdir -p ./build/obj/wif_viz
 	mkdir -p ./build/include/wif_viz
 	rsync -az --include '*.hpp' --exclude '*' ./wif_viz/ ./build/include/wif_viz
-	cd ./wif_viz; make viz
+	$(MAKE) -C ./wif_viz viz
 
 clean :
 	echo "Cleaning build directory"
