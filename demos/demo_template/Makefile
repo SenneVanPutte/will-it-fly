@@ -13,7 +13,7 @@ LIBDIR=-L../../build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 
 demo : $(OBJ_DEMO)
-	echo "Building demo_template"
+	echo "Building ${DEMO_NAME}"
 	$(CC) $(CC_FLAGS) -o ../../build/bin/wif_$(DEMO_NAME) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 
 %.o : %.cpp

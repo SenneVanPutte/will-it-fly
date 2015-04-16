@@ -1,6 +1,8 @@
 # Makefile demos
 
 demo : 
-	#$(MAKE) -C ./demo_template demo;
+	mkdir ../build/obj/demos
+	mkdir ../build/obj/demos/demo_template
+	$(MAKE) -C ./demo_template demo
 
 
