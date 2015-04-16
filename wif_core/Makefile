@@ -1,6 +1,6 @@
 # Makefile wif_core
 
-SRC_CORE=wif_core.cpp
+SRC_CORE=$(wildcard *.cpp)
 OBJ_CORE=$(SRC_CORE:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_core/,  $(OBJ_CORE))
 

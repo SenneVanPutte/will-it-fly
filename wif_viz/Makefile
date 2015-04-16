@@ -1,6 +1,6 @@
 # Makefile wif_viz
 
-SRC_VIZ=wif_viz.cpp
+SRC_VIZ=$(wildcard *.cpp)
 OBJ_VIZ=$(SRC_VIZ:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_viz/, $(OBJ_VIZ))
 
