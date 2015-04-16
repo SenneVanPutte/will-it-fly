@@ -29,6 +29,7 @@ public:
     double cross(vector_2d_c const) const; ///magnetude of 3d cross product. Used in intersection math.
 }; // class
 
+
 vector_2d_c operator * (double, vector_2d_c);
 std::ostream & operator << (std::ostream & , const vector_2d_c & );
 

@@ -7,12 +7,13 @@ namespace wif_core
 {
 enum E_INTERSECTION
 {
-   EI_PARALLEL,
-   EI_OUTSIDE,
-   EI_SEGMENT,
-   EI_COINCIDENT,
-   EI_COINCIDENT_OUTSIDE
+    EI_PARALLEL,
+    EI_OUTSIDE,
+    EI_SEGMENT,
+    EI_COINCIDENT,
+    EI_COINCIDENT_OUTSIDE
 };
+
 
 class line_2d_c
 {
@@ -26,6 +27,7 @@ public:
     vector_2d_c get_center_point() const;
     double get_angle() const; // Hoek met de x-as
     E_INTERSECTION get_intersection (const line_2d_c & other, vector_2d_c & intersection) const; // Returnt true als er een intersectie is, en zal deze opslaan in intersection.
+
 private:
     vector_2d_c get_difference() const;
 

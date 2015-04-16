@@ -2,6 +2,7 @@
 #define __WIF_CORE_HPP_INCLUDED__
 
 #include <cstdint>
+#include "line_2d_c.hpp"
 
 namespace wif_core
 {
