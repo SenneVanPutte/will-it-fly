@@ -1,12 +1,10 @@
 #ifndef __VECTOR_2D_C_INCLUDED__
 #define __VECTOR_2D_C_INCLUDED__
-
+#include <cmath>
+#include <ostream>
 
 namespace wif_core
 {
-
-#include <math.h>
-class vector_2d_c;
 
 class vector_2d_c
 {
@@ -15,7 +13,7 @@ public:
     double y;
     vector_2d_c(double const, double const); /// constuctior with x,y
     vector_2d_c();
-    vector_2d_c(vector_2d_c &); /// copy contuctor
+    //vector_2d_c(vector_2d_c &); /// copy contuctor
     vector_2d_c operator + (vector_2d_c const) const; /// normal addition
     vector_2d_c operator -() const; /// returns negative vector
     vector_2d_c operator - (vector_2d_c const) const; /// normal substaction
@@ -31,6 +29,7 @@ public:
 }; // class
 
 vector_2d_c operator * (double, vector_2d_c);
+std::ostream & operator << (std::ostream & , const vector_2d_c & );
 
 
 } // namespace wif_core

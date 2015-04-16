@@ -7,9 +7,9 @@ vector_2d_c::vector_2d_c(double const x , double const y) : x (x), y (y)
 {
 }
 
-vector_2d_c::vector_2d_c(vector_2d_c & other) : x (other.x), y (other.y)
+/*vector_2d_c::vector_2d_c(vector_2d_c & other) : x (other.x), y (other.y)
 {
-}
+}*/
 
 vector_2d_c::vector_2d_c() : x (0), y (0)
 {
@@ -86,6 +86,19 @@ double vector_2d_c::get_angle() const
     return(atan2(y,x));
 }
 
+vector_2d_c operator * (double n, vector_2d_c vec)
+{
+    vector_2d_c r(n*vec.x,n*vec.y);
+    return(r);
+};
+
+
+
+std::ostream & operator << (std::ostream& output,const vector_2d_c & vec)
+{
+    output << "(" << vec.x << ", " << vec.y << ")";
+    return(output);
+};
 
 
 
