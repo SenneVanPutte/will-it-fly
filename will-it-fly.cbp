@@ -59,6 +59,8 @@
 		<Unit filename="wif_algo/wif_algo.hpp">
 			<Option target="all" />
 		</Unit>
+		<Unit filename="wif_core/vector_2d_c.cpp" />
+		<Unit filename="wif_core/vector_2d_c.hpp" />
 		<Unit filename="wif_core/wif_core.cpp">
 			<Option target="all" />
 		</Unit>
