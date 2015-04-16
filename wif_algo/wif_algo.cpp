@@ -13,4 +13,4 @@ uint32_t get_version()
 }
 
 
-} //namespace wif_algo
+} // namespace wif_algo

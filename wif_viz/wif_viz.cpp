@@ -13,5 +13,5 @@ uint32_t get_version()
 }
 
 
-} //namespace wif_viz
+} // namespace wif_viz
 

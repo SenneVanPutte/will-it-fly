@@ -10,4 +10,4 @@ uint32_t get_version()
 }
 
 
-} //namespace wif_core
+} // namespace wif_core
