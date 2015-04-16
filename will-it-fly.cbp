@@ -53,12 +53,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="demos/demo_vector_line/main.cpp" />
 		<Unit filename="wif_algo/wif_algo.cpp">
 			<Option target="all" />
 		</Unit>
 		<Unit filename="wif_algo/wif_algo.hpp">
 			<Option target="all" />
 		</Unit>
+		<Unit filename="wif_core/line_2d_c.cpp" />
+		<Unit filename="wif_core/line_2d_c.hpp" />
 		<Unit filename="wif_core/vector_2d_c.cpp" />
 		<Unit filename="wif_core/vector_2d_c.hpp" />
 		<Unit filename="wif_core/wif_core.cpp">

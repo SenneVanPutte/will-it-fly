@@ -71,12 +71,12 @@ void vector_2d_c::operator/= (double const n)
     y /= n;
 }
 
-double vector_2d_c::get_lenght() const
+double vector_2d_c::get_length() const
 {
-    return(sqrt(get_lenght_sq()));
+    return(sqrt(get_length_sq()));
 }
 
-double vector_2d_c::get_lenght_sq() const
+double vector_2d_c::get_length_sq() const
 {
     return(x*x+y*y);
 }
@@ -91,6 +91,11 @@ vector_2d_c operator * (double n, vector_2d_c vec)
     vector_2d_c r(n*vec.x,n*vec.y);
     return(r);
 };
+
+double vector_2d_c::cross (vector_2d_c const other) const
+{
+    return (x*other.y-y*other.x);
+}
 
 
 

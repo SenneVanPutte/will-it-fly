@@ -23,9 +23,10 @@ public:
     void operator -= (vector_2d_c const); /// modifies vector, substacts seconds vector
     void operator *= (double const); /// modifies vector , multiplices
     void operator /= (double const); /// modifies vector , multiplices
-    double get_lenght() const;/// lenght of vector
-    double get_lenght_sq() const;/// same as pow(get_lenght(),2) but faster
+    double get_length() const;/// lenght of vector
+    double get_length_sq() const;/// same as pow(get_length(),2) but faster
     double get_angle() const; ///angle with x-axis
+    double cross(vector_2d_c const) const; ///magnetude of 3d cross product. Used in intersection math.
 }; // class
 
 vector_2d_c operator * (double, vector_2d_c);
