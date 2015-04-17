@@ -25,3 +25,12 @@ Praktisch gezien komt dit neer op bijvoorbeeld:
 	source unset_env.sh
 
 vergeet vooral het source commando niet, anders werkt het nog steeds niet.
+
+
+Kijk altijd na of jouw CodeBlocks tabs goed gebruikt. Typ een tab en kijk of hij opgesplitst is in meerdere spaties. Als dit het geval is, is er iets mis.
+
+Ga in CodeBlocks naar Settings->Editor...->General Settings->Editor Settings. Zorg ervoor dat "Use TAB character" en "TAB indents" allebei aangevinkt zijn. 
+
+De TAB size maakt niet uit, standaard is deze 4.
+
+Hierdoor zal in plaats van een vast aantal spaties een TAB character gebruikt worden. Dit werkt flexibeler en zorgt ervoor dat jouw code overzichtelijk blijft als iemand anders het opent.
