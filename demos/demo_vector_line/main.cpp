@@ -5,12 +5,50 @@
 #include <wif_viz/wif_viz.hpp>
 
 
-void demo_intersection(wif_core::line_2d_c const line1,
-               wif_core::line_2d_c const line2)
+std::string get_intersection_str(wif_core::E_INTERSECTION ei)
+{
+	switch(ei)
+	{
+	case wif_core::EI_PARALLEL:
+		return "PARALLEL";
+	case wif_core::EI_OUTSIDE:
+		return "OUTSIDE";
+	case wif_core::EI_SEGMENT:
+		return "SEGMENT";
+	case wif_core::EI_COINCIDENT:
+		return "COINCIDENT";
+	case wif_core::EI_COINCIDENT_OUTSIDE:
+		return "COINCIDENT_OUTSIDE";
+	default:
+		return "ERROR";
+	}
+}
+
+
+void demo_print_vector(const wif_core::vector_2d_c & v1, const wif_core::vector_2d_c & v2, const std::string & v3_name, const wif_core::vector_2d_c & v3)
+{
+	std::cout << "v1: " << v1 << ", v2: " << v2 << ", " << v3_name.c_str() << ": " << v3 << std::endl;
+}
+
+
+void demo_vectors()
+{
+	std::cout << "Demo vectors:" << std::endl;
+
+    wif_core::vector_2d_c v1(1,0);
+    wif_core::vector_2d_c v2(0,1);
+
+    demo_print_vector(v1, v2, "v1 + v2", v1 + v2);
+    demo_print_vector(v1, v2, "v1 - v2", v1 - v2);
+}
+
+
+void demo_intersection(const wif_core::line_2d_c & line1, const wif_core::line_2d_c & line2)
 {
     wif_core::vector_2d_c intersect(0, 0);
-    wif_core::E_INTERSECTION Eint = line1.get_intersection(line2, intersect);
-    std::cout << line1 <<  " and " << line2 <<  "-> " << Eint << " in " << intersect << std::endl;
+    wif_core::E_INTERSECTION ei = line1.get_intersection(line2, intersect);
+
+    std::cout << line1 <<  " and " << line2 <<  "-> " << get_intersection_str(ei).c_str() << " in " << intersect << std::endl;
 }
 
 
@@ -19,6 +57,9 @@ int main()
     std::cout << wif_core::get_version() << std::endl;
     std::cout << wif_algo::get_version() << std::endl;
     std::cout << wif_viz::get_version()  << std::endl;
+
+    demo_vectors();
+
     wif_core::vector_2d_c vec1(1,0);
     wif_core::vector_2d_c vec2(0,1);
     std::cout << vec1 << ";" << vec2 << ";"   << vec1+vec2 << ";" << vec1-vec2 << ";"
@@ -27,7 +68,6 @@ int main()
     std::cout << (vec2-=vec1) << ";" ;
     std::cout << (vec1*=2) << ";" ;
     std::cout << (vec1/=2);
-    std::cout << "\n0:EI_PARALLEL\n1:EI_OUTSIDE\n2:EI_SEGMENT\n3:EI_COINCIDENT\n4:EI_COINCIDENT_OUTSIDE\n";
     demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(0,1,1,0));
     demo_intersection(wif_core::line_2d_c(0,0,-1,-1),wif_core::line_2d_c(0,1,1,0));
     demo_intersection(wif_core::line_2d_c(0,0,-1,1),wif_core::line_2d_c(0,1,1,0));
