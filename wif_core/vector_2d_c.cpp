@@ -3,10 +3,15 @@
 namespace wif_core
 {
 
-vector_2d_c::vector_2d_c(double const x , double const y) : x (x), y (y)
+vector_2d_c::vector_2d_c(double x , double y) : x (x), y (y)
 {
     //
-}
+};
+
+vector_2d_c::vector_2d_c(const vector_2d_c & other) : x (other.x), y (other.y)
+{
+    //
+};
 
 
 vector_2d_c::vector_2d_c() : x (0), y (0)
@@ -14,8 +19,15 @@ vector_2d_c::vector_2d_c() : x (0), y (0)
     //
 }
 
+vector_2d_c & vector_2d_c::operator =(const vector_2d_c & other)
+{
+    x = other.x;
+    y = other.y;
+    return(*this);
+}
 
-vector_2d_c vector_2d_c::operator+ (vector_2d_c const other) const
+
+vector_2d_c vector_2d_c::operator+ (const vector_2d_c & other) const
 {
     vector_2d_c r(x + other.x, y + other.y);
     return (r);
@@ -29,28 +41,28 @@ vector_2d_c vector_2d_c::operator-() const
 }
 
 
-vector_2d_c vector_2d_c::operator- (vector_2d_c const other) const
+vector_2d_c vector_2d_c::operator- (const vector_2d_c & other) const
 {
     vector_2d_c r(x - other.x, y - other.y);
     return (r);
 }
 
 
-vector_2d_c vector_2d_c::operator* (double const n) const
+vector_2d_c vector_2d_c::operator* (double n) const
 {
     vector_2d_c r(n * x, n * y);
     return (r);
 }
 
 
-vector_2d_c vector_2d_c::operator/ (double const n) const
+vector_2d_c vector_2d_c::operator/ (double n) const
 {
     vector_2d_c r(x / n, y / n);
     return (r);
 }
 
 
-vector_2d_c & vector_2d_c::operator+= (vector_2d_c const other)
+vector_2d_c & vector_2d_c::operator+= (const vector_2d_c & other)
 {
     x += other.x;
     y += other.y;
@@ -58,7 +70,7 @@ vector_2d_c & vector_2d_c::operator+= (vector_2d_c const other)
 }
 
 
-vector_2d_c & vector_2d_c::operator-= (vector_2d_c const other)
+vector_2d_c & vector_2d_c::operator-= (const vector_2d_c & other)
 {
     x -= other.x;
     y -= other.y;
@@ -66,7 +78,7 @@ vector_2d_c & vector_2d_c::operator-= (vector_2d_c const other)
 }
 
 
-vector_2d_c & vector_2d_c::operator*= (double const n)
+vector_2d_c & vector_2d_c::operator*= (double n)
 {
     x *= n;
     y *= n;
@@ -74,7 +86,7 @@ vector_2d_c & vector_2d_c::operator*= (double const n)
 }
 
 
-vector_2d_c & vector_2d_c::operator/= (double const n)
+vector_2d_c & vector_2d_c::operator/= (double n)
 {
     x /= n;
     y /= n;
@@ -104,12 +116,12 @@ vector_2d_c operator * (double n, vector_2d_c vec)
 {
     vector_2d_c r(n * vec.x, n * vec.y);
     return(r);
-};
+}
 
 
-double vector_2d_c::cross (vector_2d_c const other) const
+double vector_2d_c::cross (const vector_2d_c & other) const
 {
-    return (x * other.y - y * other.x);
+    return(x * other.y - y * other.x);
 }
 
 
@@ -118,7 +130,7 @@ std::ostream & operator << (std::ostream& output, const vector_2d_c & vec)
 {
     output << "(" << vec.x << ", " << vec.y << ")";
     return(output);
-};
+}
 
 
 
