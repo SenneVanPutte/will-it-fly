@@ -68,7 +68,6 @@ public:
 public:
 	double x;
 	double y;
-
 };
 
 
