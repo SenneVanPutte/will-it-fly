@@ -1,9 +1,11 @@
-#ifndef __LINE_2D_C_INCLUDED__
-#define __LINE_2D_C_INCLUDED__
+#ifndef __LINE_2D_C_HPP_INCLUDED__
+#define __LINE_2D_C_HPP_INCLUDED__
+
 #include "vector_2d_c.hpp"
 
 namespace wif_core
 {
+
 
 enum E_INTERSECTION
 {
@@ -18,10 +20,6 @@ enum E_INTERSECTION
 class line_2d_c
 {
 public:
-    vector_2d_c begin;
-
-    vector_2d_c end;
-
     line_2d_c(const vector_2d_c &, const vector_2d_c &);
 
     line_2d_c(double x1, double y1, double x2, double y2);
@@ -39,13 +37,17 @@ public:
 private:
     vector_2d_c get_difference() const;
 
-
-}; // class
+public:
+	vector_2d_c begin;
+    vector_2d_c end;
+};
 
 
 std::ostream & operator << (std::ostream & , const line_2d_c &);
 
+
 } // namespace wif_core
 
-#endif // __LINE_2D_C_INCLUDED__
+
+#endif // __LINE_2D_C_HPP_INCLUDED__
 

@@ -3,13 +3,18 @@
 namespace wif_core
 {
 
-line_2d_c::line_2d_c(const vector_2d_c & begin, const vector_2d_c & end) : begin(begin), end(end)
+
+line_2d_c::line_2d_c(const vector_2d_c & begin, const vector_2d_c & end) :
+	begin(begin),
+	end(end)
 {
     //
 }
 
 
-line_2d_c::line_2d_c(double x1, double y1, double x2, double y2) : begin(vector_2d_c(x1, y1)), end(vector_2d_c(x2, y2))
+line_2d_c::line_2d_c(double x1, double y1, double x2, double y2) :
+	begin(vector_2d_c(x1, y1)),
+	end(vector_2d_c(x2, y2))
 {
     //
 }
@@ -41,25 +46,25 @@ double line_2d_c::get_angle() const
 
 vector_2d_c line_2d_c::get_center_point() const
 {
-    return ((this->begin + this->end) *0.5);
+    return (this->begin + this->end) * 0.5;
 }
 
 
 E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon) const
 {
     //check eindpunten
-    vector_2d_c dif1 = this->get_difference();
-    vector_2d_c dif2 = other.get_difference();
-    vector_2d_c bdif = other.begin - this->begin;
+    const vector_2d_c dif1 = this->get_difference();
+    const vector_2d_c dif2 = other.get_difference();
+    const vector_2d_c bdif = other.begin - this->begin;
 
-    if(abs(dif1.cross(dif2)) < epsilon) //evenwijdig of samenvallend
+    if(std::abs(dif1.cross(dif2)) < epsilon) //evenwijdig of samenvallend
     {
-        if(abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunte ook evenwijdig is, vallen ze samen
+        if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunte ook evenwijdig is, vallen ze samen
         {
-            double begin_second = bdif.get_length() / dif1.get_length(); ///0 is begin_first, 1= end_first
-            double end_second = (bdif + dif2).get_length() / dif1.get_length();
-            double min_second = begin_second > end_second ? end_second : begin_second;
-            double max_second = begin_second < end_second ? end_second : begin_second;
+            const double begin_second = bdif.get_length() / dif1.get_length(); ///0 is begin_first, 1= end_first
+            const double end_second = (bdif + dif2).get_length() / dif1.get_length();
+            const double min_second = begin_second > end_second ? end_second : begin_second;
+            const double max_second = begin_second < end_second ? end_second : begin_second;
 
             if(max_second < 0)
             {
@@ -85,14 +90,15 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
         }
     }
 
-    double rel_dist1 = bdif.cross( dif2 ) / dif1.cross( dif2 ); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
-    double rel_dist2 = bdif.cross( dif1 ) / dif1.cross( dif2 ); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
-    intersection = rel_dist1 * dif1 + this->begin;//positie van de intersectie
-    return(((rel_dist1 >= 0) & (rel_dist1 <= 1) & (rel_dist2 >= 0) & (rel_dist2 <= 1)) ? EI_SEGMENT : EI_OUTSIDE);
+    const double rel_dist1 = bdif.cross(dif2) / dif1.cross(dif2); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
+    const double rel_dist2 = bdif.cross(dif1) / dif1.cross(dif2); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
+	intersection = rel_dist1 * dif1 + this->begin;//positie van de intersectie
+
+	return(((rel_dist1 >= 0) & (rel_dist1 <= 1) & (rel_dist2 >= 0) & (rel_dist2 <= 1)) ? EI_SEGMENT : EI_OUTSIDE);
 }
 
 
-std::ostream & operator << (std::ostream& output, const line_2d_c & line)
+std::ostream & operator << (std::ostream & output, const line_2d_c & line)
 {
     output << "[" << line.begin << ", " << line.end << "]";
     return output;
