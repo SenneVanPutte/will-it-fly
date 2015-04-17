@@ -114,6 +114,12 @@ double vector_2d_c::get_angle() const
 	return std::atan2(this->y, this->x);
 }
 
+double vector_2d_c::dot(const vector_2d_c & other) const
+{
+	return (this->x * other.x + this->y * other.y);
+}
+
+
 double vector_2d_c::cross(const vector_2d_c & other) const
 {
 	return (this->x * other.y - this->y * other.x);
