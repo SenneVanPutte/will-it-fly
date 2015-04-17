@@ -64,7 +64,7 @@ public:
 	 * cross product in 2 dimentions
 	 * same as norm of cross prodict in 3 dimenties
 	*/
-	double cross(const vector_2d_c & other) const; //!<magnetude of 3d cross product. Used in intersection math.
+	double cross(const vector_2d_c & other) const;
 
 public:
 	double x;
