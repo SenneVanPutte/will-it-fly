@@ -16,6 +16,12 @@ EXECUTABLE=./build/bin/wif
 all : demos exec
 	echo "Building all"
 
+doxygen :
+	mkdir -p ./build	
+	mkdir -p ./build/doc
+	doxygen
+	ln -sL ./html/index.html ./build/doc/index.html
+
 demos : wifcore wifalgo wifviz
 	cd ./demos; $(MAKE) demo
 
