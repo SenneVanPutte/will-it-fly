@@ -61,7 +61,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
 	{
 		if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunte ook evenwijdig is, vallen ze samen
 		{
-			const double begin_second = bdif.get_length() / dif1.get_length(); ///0 is begin_first, 1= end_first
+			const double begin_second = bdif.get_length() / dif1.get_length();
 			const double end_second = (bdif + dif2).get_length() / dif1.get_length();
 			const double min_second = begin_second > end_second ? end_second : begin_second;
 			const double max_second = begin_second < end_second ? end_second : begin_second;
