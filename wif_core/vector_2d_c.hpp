@@ -11,6 +11,7 @@ namespace wif_core
 class vector_2d_c
 {
 public:
+
 	vector_2d_c(double x, double y); /// constuctior with x,y
 
 	vector_2d_c();
