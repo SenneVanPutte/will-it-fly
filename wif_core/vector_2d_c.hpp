@@ -73,7 +73,9 @@ public:
 
 vector_2d_c operator *(double, const vector_2d_c &);
 
-
+/**
+ * send vector to ostream
+ */
 std::ostream & operator << (std::ostream &, const vector_2d_c &);
 
 
