@@ -72,7 +72,7 @@ public:
 	 * EI_COINCIDENT:  intersection is set to middle of overlapping section
 	 * EI_COINCIDENT_OUTSIDE: intersection is set to middel of overlapping section
 	 */
-	E_INTERSECTION get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon=0.001) const;
+	E_INTERSECTION get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon = 0.001) const;
 
 private:
 	vector_2d_c get_difference() const;
@@ -83,7 +83,7 @@ public:
 };
 
 
-std::ostream & operator << (std::ostream & , const line_2d_c &);
+std::ostream & operator << (std::ostream &, const line_2d_c &);
 
 
 } // namespace wif_core

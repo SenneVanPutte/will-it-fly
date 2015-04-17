@@ -6,7 +6,7 @@ namespace wif_core
 
 uint32_t get_version()
 {
-    return 1;
+	return 1;
 }
 
 

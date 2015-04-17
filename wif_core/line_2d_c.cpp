@@ -8,7 +8,7 @@ line_2d_c::line_2d_c(const vector_2d_c & begin, const vector_2d_c & end) :
 	begin(begin),
 	end(end)
 {
-    //
+	//
 }
 
 
@@ -16,7 +16,7 @@ line_2d_c::line_2d_c(double x1, double y1, double x2, double y2) :
 	begin(vector_2d_c(x1, y1)),
 	end(vector_2d_c(x2, y2))
 {
-    //
+	//
 }
 
 
@@ -52,7 +52,7 @@ vector_2d_c line_2d_c::get_center_point() const
 
 E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon) const
 {
-    //check eindpunten
+	//check eindpunten
 	const vector_2d_c dif1 = this->get_difference();
 	const vector_2d_c dif2 = other.get_difference();
 	const vector_2d_c bdif = other.begin - this->begin;
