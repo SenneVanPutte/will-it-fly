@@ -19,10 +19,10 @@ public:
     vector_2d_c operator - (vector_2d_c const) const; /// normal substaction
     vector_2d_c operator * (double const) const;
     vector_2d_c operator / (double const) const;
-    void operator += (vector_2d_c const); /// modifies vector, adds seconds vector
-    void operator -= (vector_2d_c const); /// modifies vector, substacts seconds vector
-    void operator *= (double const); /// modifies vector , multiplices
-    void operator /= (double const); /// modifies vector , multiplices
+    vector_2d_c & operator += (vector_2d_c const); /// modifies vector, adds seconds vector
+    vector_2d_c & operator -= (vector_2d_c const); /// modifies vector, substacts seconds vector
+    vector_2d_c & operator *= (double const); /// modifies vector , multiplices
+    vector_2d_c & operator /= (double const); /// modifies vector , multiplices
     double get_length() const;/// lenght of vector
     double get_length_sq() const;/// same as pow(get_length(),2) but faster
     double get_angle() const; ///angle with x-axis

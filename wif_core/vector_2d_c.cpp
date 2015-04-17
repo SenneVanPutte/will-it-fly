@@ -50,31 +50,35 @@ vector_2d_c vector_2d_c::operator/ (double const n) const
 }
 
 
-void vector_2d_c::operator+= (vector_2d_c const other)
+vector_2d_c & vector_2d_c::operator+= (vector_2d_c const other)
 {
     x += other.x;
     y += other.y;
+    return(*this);
 }
 
 
-void vector_2d_c::operator-= (vector_2d_c const other)
+vector_2d_c & vector_2d_c::operator-= (vector_2d_c const other)
 {
     x -= other.x;
     y -= other.y;
+    return(*this);
 }
 
 
-void vector_2d_c::operator*= (double const n)
+vector_2d_c & vector_2d_c::operator*= (double const n)
 {
     x *= n;
     y *= n;
+    return(*this);
 }
 
 
-void vector_2d_c::operator/= (double const n)
+vector_2d_c & vector_2d_c::operator/= (double const n)
 {
     x /= n;
     y /= n;
+    return(*this);
 }
 
 
