@@ -1,0 +1,10 @@
+style=allman
+indent=tab
+indent-switches
+indent-preproc-block
+max-instatement-indent=40
+break-blocks
+pad-oper
+unpad-paren
+align-pointer=middle
+add-brackets
