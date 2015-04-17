@@ -28,8 +28,10 @@ wif : wifcore wifalgo wifviz
 	mkdir -p ./build/obj/wif
 	$(MAKE) -C ./will_it_fly willitfly
 
-wifcore : 
+wifcore :
+	mkdir -p ./build/obj
 	mkdir -p ./build/obj/wif_core
+	mkdir -p ./build/include
 	mkdir -p ./build/include/wif_core
 	mkdir -p ./build/bin
 	mkdir -p ./build/lib
