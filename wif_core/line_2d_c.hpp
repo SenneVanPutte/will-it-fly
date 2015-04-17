@@ -17,9 +17,7 @@ enum E_INTERSECTION
 
 class line_2d_c
 {
-
 public:
-
     vector_2d_c begin;
 
     vector_2d_c end;
@@ -36,10 +34,9 @@ public:
 
     double get_angle() const; // Hoek met de x-as
 
-    E_INTERSECTION get_intersection(const line_2d_c & other, const vector_2d_c & intersection, double epsilon=0.001) const; // Returnt true als er een intersectie is, en zal deze opslaan in intersection.
+    E_INTERSECTION get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon=0.001) const; // Returnt true als er een intersectie is, en zal deze opslaan in intersection.
 
 private:
-
     vector_2d_c get_difference() const;
 
 

@@ -9,9 +9,6 @@ namespace wif_core
 class vector_2d_c
 {
 public:
-    double x;
-    double y;
-
     vector_2d_c(double, double); /// constuctior with x,y
 
     vector_2d_c();
@@ -44,7 +41,12 @@ public:
 
     double get_angle() const; ///angle with x-axis
 
-    double cross(vector_2d_c const) const; ///magnetude of 3d cross product. Used in intersection math.
+    double cross(const vector_2d_c &) const; ///magnetude of 3d cross product. Used in intersection math.
+
+public:
+    double x;
+    double y;
+
 }; // class
 
 

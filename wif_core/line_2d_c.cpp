@@ -45,7 +45,7 @@ vector_2d_c line_2d_c::get_center_point() const
 }
 
 
-E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, const vector_2d_c & intersection,double epsilon) const
+E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon) const
 {
     //check eindpunten
     vector_2d_c dif1 = this->get_difference();
@@ -64,24 +64,24 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, const vector
             if(max_second < 0)
             {
                 intersection = this->begin + max_second * 0.5 * dif1;
-                return(EI_COINCIDENT_OUTSIDE);
+                return EI_COINCIDENT_OUTSIDE;
             }
             else if(min_second > 1)
             {
                 intersection = this->begin + (min_second * 0.5 + 0.5) * dif1;
-                return(EI_COINCIDENT_OUTSIDE);
+                return EI_COINCIDENT_OUTSIDE;
             }
             else
             {
                 double inter_dist = ((min_second > 0 ? min_second : 0) + (max_second < 1 ? max_second : 1)) * 0.5;
                 intersection = this->begin + inter_dist * dif1;
-                return(EI_COINCIDENT);
+                return EI_COINCIDENT;
             }
         }
         else
         {
             intersection = (this->begin + this->end + other.begin + other.end) / 4;
-            return(EI_PARALLEL);
+            return EI_PARALLEL;
         }
     }
 
@@ -95,7 +95,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, const vector
 std::ostream & operator << (std::ostream& output, const line_2d_c & line)
 {
     output << "[" << line.begin << ", " << line.end << "]";
-    return(output);
+    return output;
 };
 
 

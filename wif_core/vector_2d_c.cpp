@@ -112,7 +112,7 @@ double vector_2d_c::get_angle() const
 }
 
 
-vector_2d_c operator * (double n, vector_2d_c vec)
+vector_2d_c operator * (double n, const vector_2d_c & vec)
 {
     vector_2d_c r(n * vec.x, n * vec.y);
     return(r);
@@ -123,7 +123,6 @@ double vector_2d_c::cross (const vector_2d_c & other) const
 {
     return(x * other.y - y * other.x);
 }
-
 
 
 std::ostream & operator << (std::ostream& output, const vector_2d_c & vec)
