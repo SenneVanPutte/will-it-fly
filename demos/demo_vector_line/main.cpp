@@ -35,11 +35,11 @@ void demo_vectors()
 {
 	std::cout << "Demo vectors:" << std::endl;
 
-    wif_core::vector_2d_c v1(1,0);
-    wif_core::vector_2d_c v2(0,1);
+	wif_core::vector_2d_c v1(1,0);
+	wif_core::vector_2d_c v2(0,1);
 
-    demo_print_vector(v1, v2, "v1 + v2", v1 + v2);
-    demo_print_vector(v1, v2, "v1 - v2", v1 - v2);
+	demo_print_vector(v1, v2, "v1 + v2", v1 + v2);
+	demo_print_vector(v1, v2, "v1 - v2", v1 - v2);
 }
 
 
@@ -54,26 +54,26 @@ void demo_intersection(const wif_core::line_2d_c & line1, const wif_core::line_2
 
 int main()
 {
-    std::cout << wif_core::get_version() << std::endl;
-    std::cout << wif_algo::get_version() << std::endl;
-    std::cout << wif_viz::get_version()  << std::endl;
+	std::cout << wif_core::get_version() << std::endl;
+	std::cout << wif_algo::get_version() << std::endl;
+	std::cout << wif_viz::get_version()  << std::endl;
 
-    demo_vectors();
+	demo_vectors();
 
-    wif_core::vector_2d_c vec1(1,0);
-    wif_core::vector_2d_c vec2(0,1);
-    std::cout << vec1 << ";" << vec2 << ";"   << vec1+vec2 << ";" << vec1-vec2 << ";"
-              << vec1*2<< ";" <<vec1/2<< ";" ;
-    std::cout << (vec1+=vec2) << ";" ;
-    std::cout << (vec2-=vec1) << ";" ;
-    std::cout << (vec1*=2) << ";" ;
-    std::cout << (vec1/=2);
-    demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(0,1,1,0));
-    demo_intersection(wif_core::line_2d_c(0,0,-1,-1),wif_core::line_2d_c(0,1,1,0));
-    demo_intersection(wif_core::line_2d_c(0,0,-1,1),wif_core::line_2d_c(0,1,1,0));
-    demo_intersection(wif_core::line_2d_c(0,0,2,1),wif_core::line_2d_c(0,1,1,0));
-    demo_intersection(wif_core::line_2d_c(0,0,2,2),wif_core::line_2d_c(1,1,3,3));
-    demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(2,2,3,3));
-    demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(1,1,2,2));
+	wif_core::vector_2d_c vec1(1,0);
+	wif_core::vector_2d_c vec2(0,1);
+	std::cout << vec1 << ";" << vec2 << ";"   << vec1+vec2 << ";" << vec1-vec2 << ";"
+			  << vec1*2<< ";" <<vec1/2<< ";" ;
+	std::cout << (vec1+=vec2) << ";" ;
+	std::cout << (vec2-=vec1) << ";" ;
+	std::cout << (vec1*=2) << ";" ;
+	std::cout << (vec1/=2);
+	demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(0,1,1,0));
+	demo_intersection(wif_core::line_2d_c(0,0,-1,-1),wif_core::line_2d_c(0,1,1,0));
+	demo_intersection(wif_core::line_2d_c(0,0,-1,1),wif_core::line_2d_c(0,1,1,0));
+	demo_intersection(wif_core::line_2d_c(0,0,2,1),wif_core::line_2d_c(0,1,1,0));
+	demo_intersection(wif_core::line_2d_c(0,0,2,2),wif_core::line_2d_c(1,1,3,3));
+	demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(2,2,3,3));
+	demo_intersection(wif_core::line_2d_c(0,0,1,1),wif_core::line_2d_c(1,1,2,2));
 
 }
