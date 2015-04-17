@@ -9,10 +9,25 @@ namespace wif_core
 
 enum E_INTERSECTION
 {
+	/**
+	 * line segments are parallel.
+	*/
 	EI_PARALLEL,
+	/**
+	 * line segments do not intersect, but lines do.
+	*/
 	EI_OUTSIDE,
+	/**
+	 * line segments intersect.
+	*/
 	EI_SEGMENT,
+	/**
+	 * line segments overlap,
+	*/
 	EI_COINCIDENT,
+	/**
+	 * line segments do not overlap, but lines do.
+	*/
 	EI_COINCIDENT_OUTSIDE
 };
 
@@ -30,17 +45,18 @@ public:
 
 	vector_2d_c get_center_point() const;
 
-	double get_angle() const; // Hoek met de x-as
-    /**
+	double get_angle() const;
+
+	/**
      * Calculates whether 2 line segments intersect or not, and sets the vector intersect on the intersection.
      * different results are:
-	 * EI_PARALLEL: line segments are parallel. Intersection is set to bodycenter of end points.
-	 * EI_OUTSIDE: line segments do not intersect, but lines do. Intersection is set at line intersection.
+	 * EI_PARALLEL:  Intersection is set to bodycenter of end points.
+	 * EI_OUTSIDE:   Intersection is set at line intersection.
 	 * EI_SEGMENT: line segments do intersect. Intersection is set at line intersection.
-	 * EI_COINCIDENT: line segments overlap, intersection is set to middel of overlapping section.
-	 * EI_COINCIDENT_OUTSIDE: line segments do not overlap, but lines do. intersection is set to middel of overlapping section.
-    */
-	E_INTERSECTION get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon=0.001) const; // Returnt true als er een intersectie is, en zal deze opslaan in intersection.
+	 * EI_COINCIDENT:  intersection is set to middel of overlapping section.
+	 * EI_COINCIDENT_OUTSIDE: intersection is set to middel of overlapping section.
+	*/
+	E_INTERSECTION get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon=0.001) const; //!< Returnt true als er een intersectie is, en zal deze opslaan in intersection.
 
 private:
 	vector_2d_c get_difference() const;

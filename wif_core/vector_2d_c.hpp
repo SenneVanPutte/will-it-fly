@@ -12,43 +12,64 @@ class vector_2d_c
 {
 public:
 
-	vector_2d_c(double x, double y); /// constuctior with x,y
+	vector_2d_c(double x, double y);
 
 	vector_2d_c();
 
-	vector_2d_c(const vector_2d_c & other); /// copy contuctor
+	vector_2d_c(const vector_2d_c & other);
 
 	vector_2d_c & operator=(const vector_2d_c & other);
 
-	vector_2d_c operator+(const vector_2d_c & other) const; /// normal addition
+	vector_2d_c operator+(const vector_2d_c & other) const;
 
-	vector_2d_c operator-() const; /// returns negative vector
+	vector_2d_c operator-() const;
 
-	vector_2d_c operator-(const vector_2d_c & other) const; /// normal substaction
+	vector_2d_c operator-(const vector_2d_c & other) const;
 
 	vector_2d_c operator*(double r) const;
 
 	vector_2d_c operator/(double r) const;
 
-	vector_2d_c & operator+=(const vector_2d_c & other); /// modifies vector, adds seconds vector
+	vector_2d_c & operator+=(const vector_2d_c & other);
 
-	vector_2d_c & operator-=(const vector_2d_c & other); /// modifies vector, substacts seconds vector
+	vector_2d_c & operator-=(const vector_2d_c & other);
 
-	vector_2d_c & operator*=(double r); /// modifies vector , multiplices
+	vector_2d_c & operator*=(double r);
 
-	vector_2d_c & operator/=(double r); /// modifies vector , multiplices
+	vector_2d_c & operator/=(double r);
 
-	double get_length() const;/// lenght of vector
+	/**
+	 * gives the norm of the vector
+	*/
+	double get_length() const;
 
-	double get_length_sq() const;/// same as pow(get_length(),2) but faster
+	/**
+	 * same as pow(get_length(),2)
+	*/
+	double get_length_sq() const;
 
-	double get_angle() const; ///angle with x-axis
+	/**
+	 * get angle with x-as
+	*/
+	double get_angle() const;
 
-	double cross(const vector_2d_c & other) const; ///magnetude of 3d cross product. Used in intersection math.
+	/**
+	 * x1y1+x2y2
+	 * get dot product
+	*/
+	double dot(const vector_2d_c & other) const;
+
+	/**
+	 * get x1y2-x2y1
+	 * cross product in 2 dimentions
+	 * same as norm of cross prodict in 3 dimenties
+	*/
+	double cross(const vector_2d_c & other) const; //!<magnetude of 3d cross product. Used in intersection math.
 
 public:
 	double x;
 	double y;
+
 };
 
 
