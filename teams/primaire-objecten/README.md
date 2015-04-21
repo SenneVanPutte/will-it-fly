@@ -75,16 +75,150 @@ Een airfoil_c klasse moet geimplementeerd worden, welke een vector van vector_2d
 
 Er moet zowel gelezen kunnen worden van een .dat bestand, als kopie gemaakt worden van een vector van vector_2d_c's.
 
-De volgende projectiefunctie moet aanwezig zijn:
-
-airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center) const
-
 Verdere info volgt.
 
 De punten zijn in wijzerzin gedefinieerd, zodat de normalen naar buiten wijzen.
+
+```
+class airfoil_c
+{
+public:
+	/**
+	 * Lege constructor: zonder points
+	 */
+	airfoil_c();
+
+	/**
+	 * Leest de file in filename, laat points leeg als er iets misloopt. Moet beiden .dat formaten kunnen lezen.
+	 */
+	airfoil_c(const std::string & filename);
+
+	airfoil_c(std::vector<vector_2d_c> & points);
+
+	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center) const;
+
+	/**
+	 * Is het laatste punt hetzelfde als de eerste, dan is de curve gesloten. De epsilon dient voor
+	 * floating point weirdness met afrondingen tegen te gaan.
+	 */
+	bool is_closed(double epsilon = 0.0001) const;
+
+	/**
+	 * Zit er ten minste 1 punt in de vector (handig als tijdens het lezen iets misloopt).
+	 */
+	bool is_valid() const;
+
+	/**
+	 * Maakt van alle koppels ([i], [i+1]) lijnstukken, met i = 0 tot i < (points.size() + 1).
+	 */
+	std::vector<line_2d_c> get_lines() const;
+
+private:
+	std::vector<vector_2d_c> points;
+};
+```
 
 ## Opdracht 4
 
 Source sheets, vortex sheets en uniforme flows moeten geimplementeerd worden, plus er moet een manier gevonden worden om ze samen te stellen.
 
-Verdere info volgt.
+De volgende klassen moeten geimplementeerd worden:
+
+```
+// Alle afgeleide klassen moeten de virtuele methods implementeren.
+class flow_c
+{
+public:
+	virtual double get_phi(const vector_2d_c & position) const = 0;
+
+	virtual double get_psi(const vector_2d_c & position) const = 0;
+
+	virtual vector_2d_c get_velocity(const vector_2d_c & position) const = 0;
+};
+
+// Maakt een lineare combinatie van alle elementaire flow objecten.
+class flow_accumulate_c : public flow_c
+{
+public:
+	/**
+	 * Lege constructor, een "lege flow", dus zonder elementen.
+	 */
+	flow_accumulate_c();
+
+	/**
+	 * Kopieert de flow pointers.
+	 */
+	flow_accumulate_c(const std::vector<std::shared_ptr<flow_c>> & flows);
+
+	/**
+	 * Constructor met slechts 1 flow.
+	 */
+	flow_accumulate_c(std::shared_ptr<flow_c> flow);
+
+private:
+	std::vector<std::shared_ptr<flow_c>> flows;
+};
+
+class source_sheet_c : public flow_c
+{
+public:
+	/**
+	 * Lege constructor: maakt een source sheet aan van (-1, 0) tot (1, 0) met sigma = 1.0
+	 */
+	source_sheet_c();
+
+	source_sheet_c(const line_2d_t & line, double sigma);
+
+private:
+	line_2d_c line;
+	double sigma;
+};
+
+class vortex_sheet_c : public flow_c
+{
+public:
+	/**
+	 * Lege constructor: maakt een vortex sheet aan van (-1, 0) tot (1, 0) met lambda = 1.0
+	 */
+	vortex_sheet_c();
+
+	vortex_sheet_c(const line_2d_t & line, double lambda);
+
+private:
+	line_2d_c line;
+	double lambda;
+};
+
+class uniform_flow_c : public flow_c
+{
+public:
+	/**
+	 * Lege constructor: uniform flow met angle = 0, en u_infinity = 1
+	 */
+	uniform_flow_c();
+
+	uniform_flow_c(double angle, double u_infinity);
+
+private:
+	double angle;
+	double u_infinity;
+};
+
+// Sinks zijn sources met een negatieve sterkte.
+class source_sink_c : public flow_c
+{
+public:
+	/**
+	 * Lege constructor: source sink op (0, 0) met sterkte q = 1
+	 */
+	source_sink_c();
+
+	source_sink_c(const vector_2d_c & location, double q);
+
+private:
+	vector_2d_c location;
+	double q;
+};
+```
+
+

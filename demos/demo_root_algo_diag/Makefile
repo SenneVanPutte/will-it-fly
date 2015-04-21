@@ -1,6 +1,4 @@
-# Makefile demo_template
-
-DEMO_NAME=demo_integral_gsl
+# Makefile
 
 SRC_DEMO=$(wildcard *.cpp)
 OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
@@ -10,7 +8,7 @@ CC=g++ -std=c++11
 CC_FLAGS=-Wall
 INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
-LIBS= -lgsl -lgslcblas -lm
+LIBS=-lwif_core -lwif_algo -lwif_viz
 
 demo : $(OBJ_DEMO)
 	echo "Building ${DEMO_NAME}"

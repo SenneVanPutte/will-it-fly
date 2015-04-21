@@ -1,6 +1,4 @@
-# Makefile demo_template
-
-DEMO_NAME=demo_source_sheet
+# Makefile
 
 SRC_DEMO=$(wildcard *.cpp)
 OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
@@ -13,7 +11,7 @@ LIBDIR=-L../../build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 
 demo : $(OBJ_DEMO)
-	echo "Building $(DEMO_NAME)"
+	echo "Building ${DEMO_NAME}"
 	$(CC) $(CC_FLAGS) -o ../../build/bin/wif_$(DEMO_NAME) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 
 %.o : %.cpp
