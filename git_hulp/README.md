@@ -87,6 +87,7 @@ Nadat de branch is aangemaakt, verwacht ik dat ik de naam hiervan krijg, zodat i
 Als er bestanden worden aangemaakt, verwijderd of aangepast, moet git op de hoogte gebracht worden dat deze gevolgd moeten worden door het programma:
 
 ```
+# Dit is om te demonstreren, touch niet gebruiken met code.
 touch test.txt
 git add test.txt
 ```
@@ -119,3 +120,16 @@ git push
 ```
 
 Op dit moment zitten de veranderingen enkel in eigen fork! Ik moet zelf de veranderingen mergen in de hoofdrepository nadat ze zijn goedgekeurd. Hiervoor moet ik de branch naam weten.
+
+Dus kort samengevat, het ritueel is:
+
+```
+git status
+# Kijk wat er allemaal meegenomen moet worden in de repository.
+# Als alles erin moet:
+git add .
+git commit -m "Een zinnige beschrijving van de veranderingen in deze commit"
+git pull upstream master
+git push
+# Als ge wilt dat dit in de upstream master wordt opgenomen, mij op de hoogte brengen.
+```
