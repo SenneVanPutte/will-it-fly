@@ -81,6 +81,8 @@ airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_cente
 
 Verdere info volgt.
 
+De punten zijn in wijzerzin gedefinieerd, zodat de normalen naar buiten wijzen.
+
 ## Opdracht 4
 
 Source sheets, vortex sheets en uniforme flows moeten geimplementeerd worden, plus er moet een manier gevonden worden om ze samen te stellen.

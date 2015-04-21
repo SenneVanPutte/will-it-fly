@@ -8,7 +8,7 @@ vector_2d_c::vector_2d_c(double x, double y) :
 	x(x),
 	y(y)
 {
-    //
+	//
 }
 
 
@@ -16,7 +16,7 @@ vector_2d_c::vector_2d_c(const vector_2d_c & other) :
 	x(other.x),
 	y(other.y)
 {
-    //
+	//
 }
 
 
@@ -24,7 +24,7 @@ vector_2d_c::vector_2d_c() :
 	x(0.0),
 	y(0.0)
 {
-    //
+	//
 }
 
 
