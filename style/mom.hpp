@@ -45,7 +45,8 @@ namespace mom
  *
  * Classes are written like_this_c!
  */
-class your_mom_c {
+class your_mom_c
+{
 public:
 	/**
 	 * Creates your mom.
@@ -92,7 +93,8 @@ protected:
 };
 
 
-}} // namespace elts::mom
+} // namespace elts
+} // namespace mom
 
 
 #endif // __STYLE_MOM_HPP_INCLUDED__
