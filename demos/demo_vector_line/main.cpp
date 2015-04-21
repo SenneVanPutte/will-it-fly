@@ -9,23 +9,23 @@ std::string get_intersection_str(wif_core::E_INTERSECTION ei)
 {
 	switch(ei)
 	{
-		case wif_core::EI_PARALLEL:
-			return "PARALLEL";
+	case wif_core::EI_PARALLEL:
+		return "PARALLEL";
 
-		case wif_core::EI_OUTSIDE:
-			return "OUTSIDE";
+	case wif_core::EI_OUTSIDE:
+		return "OUTSIDE";
 
-		case wif_core::EI_SEGMENT:
-			return "SEGMENT";
+	case wif_core::EI_SEGMENT:
+		return "SEGMENT";
 
-		case wif_core::EI_COINCIDENT:
-			return "COINCIDENT";
+	case wif_core::EI_COINCIDENT:
+		return "COINCIDENT";
 
-		case wif_core::EI_COINCIDENT_OUTSIDE:
-			return "COINCIDENT_OUTSIDE";
+	case wif_core::EI_COINCIDENT_OUTSIDE:
+		return "COINCIDENT_OUTSIDE";
 
-		default:
-			return "ERROR";
+	default:
+		return "ERROR";
 	}
 }
 

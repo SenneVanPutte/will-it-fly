@@ -31,8 +31,7 @@
  */
 struct another_stupid_type_s
 {
-	rofl_t blergh;         //!< variables and functions in lowercase
-	                       //   with _ as word separator.
+	rofl_t blergh;         //!< variables and functions in lowercase with _ as word separator.
 	epictype42_t løl;      //!< no question, we use UTF-8 encoding.
 	ub0rtype røfëlkøptør;  //!< proper documentation is Doxygen parsable.
 };
@@ -60,11 +59,11 @@ public:
 	//    spaces indent the alignment of each argument!
 	//
 	// Variable name alignment is optional.
-	void release_game(const valve_team_c &team,
-	                  uint128_t        passed_time,
-	                  engine_c          *game_engine,
-	                  internet_c        *community,
-	                  bool             keep_secret=true)
+	void release_game(const valve_team_c & team,
+	                  uint128_t            passed_time,
+	                  engine_c      *      game_engine,
+	                  internet_c     *     community,
+	                  bool                 keep_secret = true)
 	{
 
 		// ^ this empty line is mandatory due to the broken line and
@@ -76,9 +75,9 @@ public:
 		auto gaben = team.get_human("gaben");
 		auto min_quality = gaben.get_quality_requirement(Engine::type);
 
-		if (not keep_secret
-		    and (this->story->awesomeness > 9000)
-		    and (game_engine->quality_points > min_quality))
+		if(not keep_secret
+		        and (this->story->awesomeness > 9000)
+		        and (game_engine->quality_points > min_quality))
 		{
 
 			// ^ This empty line is mandatory, too.
@@ -100,11 +99,8 @@ public:
 			               "we think you're kind of wasting your time, "
 			               "but it's your time to waste.");
 
-			// You may also start one line later and then indent with tabs.
-			team.relocate(
-				game_engine->get_team()->get_current_hq_location(),
-				gaben.get_table_location()
-			);
+			team.relocate(game_engine->get_team()->get_current_hq_location(),
+			              gaben.get_table_location());
 
 			community->criticize(passed_time);
 			team.continue_selling_hats();
@@ -154,14 +150,16 @@ your_mom_c::~your_mom_c()
 }
 
 
-void your_mom_c::print_mass() {
+void your_mom_c::print_mass()
+{
 	// write todos like this:
 	// TODO: mass could require uint128_t soon, adapt format string!
 	printf("current mass of your mom: %d\n", this->mass);
 }
 
 
-bool your_mom_c::tick() {
+bool your_mom_c::tick()
+{
 	// Note the spaces!
 	//                | |
 	//                v v
@@ -222,8 +220,6 @@ bool your_mom_c::tick() {
 
 	case 42:
 		ContentMafia::try_recruit_lobbyist(this);
-		// If you don't want to break, write a comment like this:
-		// Fall through
 
 	default:
 		this->stupidity += 1;
@@ -233,11 +229,13 @@ bool your_mom_c::tick() {
 	return true;
 }
 
-}} // namespace elts::mom
-// ^ When closing namespaces, close all in the same line and write a comment like this.
+} // namespace elts
+} // namespace mom
+// ^ When closing namespaces, close them, and write a comment like this.
 
 
-int main(int argc, char **argv) {
+int main(int argc, char ** argv)
+{
 	// Use {}-style constructors!
 	elts::your_mom_c my_special_mom{1337};
 
