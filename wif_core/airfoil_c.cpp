@@ -10,12 +10,13 @@ airfoil_c::airfoil_c(const std::string filename)
 	std::ifstream data(filename);
 	std::string name;
 	data >> name;
-	while (!data.eof())
+
+	while(!data.eof())
 	{
 		double x;
 		double y;
 		data >> x >> y;
-		points.push_back(vector_2d_c(x,y));
+		points.push_back(vector_2d_c(x, y));
 	}
 }
 
@@ -103,7 +104,8 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -circle_point.y);
 		newpoints.push_back(this->get_intersection_first(line_2d_c(circle_point, inverse_point)));
 	}
-	for(unsigned int i = n; i < 2*n; i++)
+
+	for(unsigned int i = n; i < 2 * n; i++)
 	{
 		vector_2d_c circle_point = vector_2d_radian(0.5, (M_PI * i) / n) + vector_2d_c(0.5, 0);
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -circle_point.y);

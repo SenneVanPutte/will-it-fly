@@ -15,8 +15,15 @@ namespace wif_core
 class airfoil_c
 {
 public:
+	/**
+	 * makes a airfoil based on a .dat file in selig format.
+	 * support for lednicer is upcoming
+	 */
 	airfoil_c(const std::string filename);
 
+	/**
+	 * makes an airfoil based on a std::vector of vector_2d_c.
+	 */
 	airfoil_c(const std::vector<vector_2d_c> iter);
 
 	/**
@@ -60,8 +67,14 @@ public:
 	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center) const;
 
 private:
+
+public:
+	/**
+	 * vector conatining all points of the airfoils, going in clockwize direction.
+	 */
 	std::vector<vector_2d_c> points;
 
+private:
 
 
 

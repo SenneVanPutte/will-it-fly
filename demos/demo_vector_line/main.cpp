@@ -87,4 +87,5 @@ int main()
 	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(2, 2, 3, 3));
 	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(1, 1, 2, 2));
 
+	return(0);
 }
