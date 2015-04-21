@@ -50,6 +50,12 @@ vector_2d_c line_2d_c::get_center_point() const
 }
 
 
+vector_2d_c line_2d_c::get_point_on_line(double place) const
+{
+	return this->begin + this->get_difference() * place;
+}
+
+
 E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon) const
 {
 	//check eindpunten
