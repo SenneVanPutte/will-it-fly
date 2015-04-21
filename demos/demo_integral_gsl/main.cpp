@@ -68,7 +68,7 @@ int main()
 	printf("result          = % .10f\n", result);
 	printf("estimated error = % .10f\n", error);
 	printf("intervals =  %d\n", w->size);
-	printf("duration = %d\n", duration);
+	printf("duration = %.18f\n", duration);
 
 	gsl_integration_workspace_free(w);
 
@@ -86,7 +86,7 @@ int main()
 	printf("result          = % .10f\n", result);
 	printf("estimated error = % .10f\n", error);
 	printf("intervals =  %d\n", ww->size);
-	printf("duration = %d\n", duration);
+	printf("duration = %.18f\n", duration);
 
 	gsl_integration_workspace_free(ww);
 
