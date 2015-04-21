@@ -51,9 +51,9 @@ void demo_vectors(double x1, double y1, double x2, double y2, double n)
 	wif_core::vector_2d_c v2(x2, y2);
 	demo_print_vector(v1, v2, n, "v1 - v2", v1 - v2);
 	demo_print_vector(v1, v2, n, "v1 + v2", v1 + v2);
-	demo_print_vector(v1, v2, n, "n*v1", n*v1);
-	demo_print_vector(v1, v2, n, "v1*n", v1*n);
-	demo_print_vector(v1, v2, n, "v1/n", v1/n);
+	demo_print_vector(v1, v2, n, "n*v1", n * v1);
+	demo_print_vector(v1, v2, n, "v1*n", v1 * n);
+	demo_print_vector(v1, v2, n, "v1/n", v1 / n);
 	demo_print_vector(v1, v2, n, "dot", v1.dot(v2));
 	demo_print_vector(v1, v2, n, "cross", v1.cross(v2));
 }
@@ -74,9 +74,9 @@ int main()
 	std::cout << wif_algo::get_version() << std::endl;
 	std::cout << wif_viz::get_version()  << std::endl;
 
-	demo_vectors(1,1,1,-1,2);
-	demo_vectors(1,0,1,0,0.5);
-	demo_vectors(1,1,1,1,0);
+	demo_vectors(1, 1, 1, -1, 2);
+	demo_vectors(1, 0, 1, 0, 0.5);
+	demo_vectors(1, 1, 1, 1, 0);
 
 
 	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(0, 1, 1, 0));
