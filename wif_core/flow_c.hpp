@@ -10,73 +10,73 @@ namespace wif_core
 
 class flow_c
 {
-	public:
-		flow_c();
+public:
+	flow_c();
 
-		/**
-		 * constructor for only a uniform flow
-		 */
-		flow_c(const vector_2d_c&);
+	/**
+	 * constructor for only a uniform flow
+	 */
+	flow_c(const vector_2d_c &);
 
-		/**
-		 * constructor with uniform flow and vector of pointers to flow_sheets
-		 */
-		//flow_c(const vector_2d_c&, const std::vector<flow_sheet_c*>&);
+	/**
+	 * constructor with uniform flow and vector of pointers to flow_sheets
+	 */
+	//flow_c(const vector_2d_c&, const std::vector<flow_sheet_c*>&);
 
-		virtual ~flow_c();
+	virtual ~flow_c();
 
-		flow_c(const flow_c& other);
+	flow_c(const flow_c & other);
 
-		flow_c& operator=(const flow_c& other);
+	flow_c & operator=(const flow_c & other);
 
-		/**
-		 * gives the streamfunction at a given point
-		 */
-        //double psi(double, double) const;
+	/**
+	 * gives the streamfunction at a given point
+	 */
+	//double psi(double, double) const;
 
-        /**
-		 * gives the streamfunction at a given point
-		 */
-        double psi(vector_2d_c) const;
+	/**
+	 * gives the streamfunction at a given point
+	 */
+	double psi(vector_2d_c) const;
 
-        /**
-		 * gives the streampotential at a given point
-		 */
-        //double phi(double, double) const;
+	/**
+	 * gives the streampotential at a given point
+	 */
+	//double phi(double, double) const;
 
-        /**
-		 * gives the streampotential at a given point
-		 */
-        double phi(vector_2d_c) const;
+	/**
+	 * gives the streampotential at a given point
+	 */
+	double phi(vector_2d_c) const;
 
-        /**
-		 * gives the velocity
-		 */
-        //vector_2d_c v(double,double) const;
+	/**
+	 * gives the velocity
+	 */
+	//vector_2d_c v(double,double) const;
 
-        /**
-		 * gives the velocity
-		 */
-        vector_2d_c v(vector_2d_c) const;
+	/**
+	 * gives the velocity
+	 */
+	vector_2d_c v(vector_2d_c) const;
 
-        bool empty_sheets();
+	bool empty_sheets();
 
-        /**
-         * temporary function for testing
-         */
-         void add_source_sheet(line_2d_c,double);
+	/**
+	 * temporary function for testing
+	 */
+	void add_source_sheet(line_2d_c, double);
 
-    protected:
+protected:
 
-    private:
+private:
 
-    public:
-        std::vector<flow_sheet_c*> sheets;
+public:
+	std::vector<flow_sheet_c *> sheets;
 
-        /**
-         * the velocity at infinity/ uniform flow
-         */
-        vector_2d_c U;
+	/**
+	 * the velocity at infinity/ uniform flow
+	 */
+	vector_2d_c U;
 };
 
 

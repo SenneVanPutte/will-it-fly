@@ -9,30 +9,30 @@ namespace wif_core
 
 enum E_INTERSECTION
 {
-	/**
-	 * line segments are parallel.
-	 */
-	EI_PARALLEL,
+    /**
+     * line segments are parallel.
+     */
+    EI_PARALLEL,
 
-	/**
-	 * line segments do not intersect, but lines do.
-	 */
-	EI_OUTSIDE,
+    /**
+     * line segments do not intersect, but lines do.
+     */
+    EI_OUTSIDE,
 
-	/**
-	 * line segments intersect.
-	 */
-	EI_SEGMENT,
+    /**
+     * line segments intersect.
+     */
+    EI_SEGMENT,
 
-	/**
-	 * line segments overlap,
-	 */
-	EI_COINCIDENT,
+    /**
+     * line segments overlap,
+     */
+    EI_COINCIDENT,
 
-	/**
-	 * line segments do not overlap, but lines do.
-	 */
-	EI_COINCIDENT_OUTSIDE
+    /**
+     * line segments do not overlap, but lines do.
+     */
+    EI_COINCIDENT_OUTSIDE
 };
 
 

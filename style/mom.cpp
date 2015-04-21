@@ -129,9 +129,9 @@ namespace mom
 
 // ^ At the top level, use two newlines between statements.
 your_mom_c::your_mom_c(int her_mass) :
-	mass{her_mass},
-	number_of_moons{0},
-	stupidity{1}
+	mass {her_mass},
+     number_of_moons {0},
+stupidity {1}
 {
 	// ^ use {}-style initializers wherever possible
 	// < one tab indentation for the initializer list.
@@ -200,11 +200,11 @@ bool your_mom_c::tick()
 
 	switch(this->stupidity)
 	{
-	// The case label is at the same indentation level
-	// as its switch statement:
-	// vvv
+		// The case label is at the same indentation level
+		// as its switch statement:
+		// vvv
 	case 0:
-		throw ContentMafia::Error{"Your mom opposes DRM, investigation required."};
+		throw ContentMafia::Error {"Your mom opposes DRM, investigation required."};
 		break;
 
 	case 8:
@@ -237,7 +237,7 @@ bool your_mom_c::tick()
 int main(int argc, char ** argv)
 {
 	// Use {}-style constructors!
-	elts::your_mom_c my_special_mom{1337};
+	elts::your_mom_c my_special_mom {1337};
 
 	// No space after function name calling!
 	//                       |
