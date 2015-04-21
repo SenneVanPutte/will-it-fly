@@ -8,6 +8,7 @@ OBJ_PATH=$(addprefix ./build/obj/wif/, $(OBJ_WIF))
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
+
 INCLUDE=-I./build/include
 LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
@@ -20,7 +21,7 @@ doxygen :
 	mkdir -p ./build	
 	mkdir -p ./build/doc
 	doxygen
-	ln -sL ./html/index.html ./build/doc/index.html
+	ln -sLf ./html/index.html ./build/doc/index.html
 
 demos : wifcore wifalgo wifviz
 	cd ./demos; $(MAKE) demo
