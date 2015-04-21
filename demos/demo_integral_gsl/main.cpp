@@ -62,11 +62,14 @@ int main()
 	F.params = &alpha;
 
 	start = clock();
-	gsl_integration_qags(&F, 0, 1, 0, 1e-7, 1000, w, &result, &error);
+	for(int i=0;i<1000;i++)
+	{
+		gsl_integration_qags(&F, 0, 1, 0, 1e-7, 1000, w, &result, &error);
+	}
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
-	printf("result          = % .10f\n", result);
-	printf("estimated error = % .10f\n", error);
+	printf("result          = % .18f\n", result);
+	printf("estimated error = % .18f\n", error);
 	printf("intervals =  %d\n", w->size);
 	printf("duration = %.18f\n", duration);
 
@@ -80,11 +83,14 @@ int main()
 	FF.params = &alpha2;
 
 	start = clock();
-	gsl_integration_qags(&FF, 0, 1, 0, 1e-7, 1000, w, &result, &error);
+	for(int i=0;i<1000;i++)
+	{
+		gsl_integration_qags(&FF, 0, 1, 0, 1e-7, 1000, w, &result, &error);
+	}
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
-	printf("result          = % .10f\n", result);
-	printf("estimated error = % .10f\n", error);
+	printf("result          = % .18f\n", result);
+	printf("estimated error = % .18f\n", error);
 	printf("intervals =  %d\n", ww->size);
 	printf("duration = %.18f\n", duration);
 
@@ -104,8 +110,8 @@ int main()
 	}
 	duration = (clock()-start) / (double) CLOCKS_PER_SEC;
 
-	printf ("result          = % .10f\n", result);
-	printf ("estimated error = % .10f\n", error);
+	printf ("result          = % .18f\n", result);
+	printf ("estimated error = % .18f\n", error);
 	printf ("intervals =  %d\n", w3->size);
 	printf ("duration = %.18f\n", duration);
 
