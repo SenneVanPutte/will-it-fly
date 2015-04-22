@@ -53,7 +53,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="demos/demo_core_flow_elements/main.cpp" />
+		<Unit filename="demos/demo_core_vector_line/main.cpp" />
+		<Unit filename="demos/demo_gsl_diag/main.cpp" />
+		<Unit filename="demos/demo_gsl_integral/main.cpp" />
+		<Unit filename="demos/demo_integral_gsl/main.cpp" />
+		<Unit filename="demos/demo_root_algo_diag/main.cpp" />
+		<Unit filename="demos/demo_root_algo_integral/main.cpp" />
 		<Unit filename="demos/demo_vector_line/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_dolf/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_kristof/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_merel/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_senne/main.cpp" />
 		<Unit filename="wif_algo/wif_algo.cpp">
 			<Option target="all" />
 		</Unit>
