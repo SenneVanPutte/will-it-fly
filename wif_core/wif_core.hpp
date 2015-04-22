@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include "line_2d_c.hpp"
+#include "source_sheet_c.hpp"
+#include "flow_c.hpp"
 
 namespace wif_core
 {

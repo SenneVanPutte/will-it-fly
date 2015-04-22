@@ -1,6 +1,4 @@
-# Makefile demo_template
-
-DEMO_NAME=demo_template
+# Makefile
 
 SRC_DEMO=$(wildcard *.cpp)
 OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
