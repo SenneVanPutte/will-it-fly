@@ -4,8 +4,15 @@
 namespace wif_core
 {
 
+source_sheet_c::source_sheet_c() :
+	line(line_2d_c(-1, 0, 1, 0)),
+	sigma(1)
+{
+
+}
+
 source_sheet_c::source_sheet_c(const line_2d_c & line, double sigma):
-	flow_sheet_c(line),
+	line(line),
 	sigma(sigma)
 {
 	//ctor
@@ -16,24 +23,20 @@ source_sheet_c::~source_sheet_c()
 	//dtor
 }
 
-double source_sheet_c::psi_one_point(const vector_2d_c & pos1, const vector_2d_c & pos2) const
+double source_sheet_c::get_psi(const vector_2d_c & pos) const
 {
-	vector_2d_c dif = pos1 - pos2;
-	double theta = dif.get_angle();
-	return sigma * theta / (2 * M_PI);
+	return line.begin.x - pos.x;
 }
-double source_sheet_c::phi_one_point(const vector_2d_c & pos1, const vector_2d_c & pos2) const
-{
-	vector_2d_c dif = pos1 - pos2;
-	return sigma / (2 * M_PI) * log(dif.get_length());
-}
-vector_2d_c source_sheet_c::v_one_point(const vector_2d_c & pos1, const vector_2d_c & pos2) const
-{
-	vector_2d_c dif = pos1 - pos2;
-	double vx = sigma / (2 * M_PI * dif.get_length_sq()) * dif.x;
-	double vy = sigma / (2 * M_PI * dif.get_length_sq()) * dif.y;
 
-	return vector_2d_c(vx, vy);
+double source_sheet_c::get_phi(const vector_2d_c & pos) const
+{
+	return line.end.y - pos.y;
 }
+
+vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
+{
+	return vector_2d_c(line.end.x, line.begin.y) - pos;
+}
+
 
 }

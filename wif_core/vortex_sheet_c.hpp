@@ -1,5 +1,5 @@
-#ifndef __SOURCE_SHEET_C_HPP_INCLUDED__
-#define __SOURCE_SHEET_C_HPP_INCLUDED__
+#ifndef __VORTEX_SHEET_C_HPP_INCLUDED__
+#define __VORTEX_SHEET_C_HPP_INCLUDED__
 
 #include "flow_c.hpp"
 #include "line_2d_c.hpp"
@@ -7,20 +7,20 @@
 namespace wif_core
 {
 
-class source_sheet_c : public flow_c
+class vortex_sheet_c : public flow_c
 {
 public:
 	/**
-	 * default: line from (-1,0) to (1,0) and sigma = 1.0
+	 * default: line from (-1,0) to (1,0) and lambda = 1.0
 	 */
-	source_sheet_c();
+	vortex_sheet_c();
 
 	/**
-	 * creates a source sheet on a given line with a given strength
+	 * creates a vortex sheet on a given line with a given strength
 	 */
-	source_sheet_c(const line_2d_c &, double);
+	vortex_sheet_c(const line_2d_c &, double);
 
-	virtual ~source_sheet_c();
+	virtual ~vortex_sheet_c();
 
 	/**
 	 * gives the streamfunction at a given point
@@ -40,9 +40,9 @@ public:
 protected:
 private:
 	line_2d_c line;
-	double sigma;
+	double lambda;
 };
 
 }
 
-#endif // __SOURCE_SHEET_HPP_INCLUDED__
+#endif
