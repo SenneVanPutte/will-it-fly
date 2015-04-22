@@ -155,6 +155,11 @@ public:
 	 */
 	flow_accumulate_c(std::shared_ptr<flow_c> flow);
 
+	/**
+	 * Adds a new flow to the internal array.
+	 */
+	void add_flow(std::shared_ptr<flow_c> flow);
+
 private:
 	std::vector<std::shared_ptr<flow_c>> flows;
 };
@@ -200,8 +205,7 @@ public:
 	uniform_flow_c(double angle, double u_infinity);
 
 private:
-	double angle;
-	double u_infinity;
+	vector_2d_c flow_vec;
 };
 
 // Sinks zijn sources met een negatieve sterkte.
