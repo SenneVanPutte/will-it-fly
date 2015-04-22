@@ -90,11 +90,18 @@ public:
 
 	/**
 	 * Leest de file in filename, laat points leeg als er iets misloopt. Moet beiden .dat formaten kunnen lezen.
+	 * name wordt gelijk gesteld aan de naam die binnen de file staat.
 	 */
 	airfoil_c(const std::string & filename);
 
-	airfoil_c(std::vector<vector_2d_c> & points);
+	/**
+	 * Naam is name
+	 */
+	airfoil_c(std::vector<vector_2d_c> & points, const std::string & name);
 
+	/**
+	 * Naam nieuwe airfoil is oude naam + " circle projected with $n subdivisions centered on $projection_center".
+	 */
 	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center) const;
 
 	/**
@@ -113,8 +120,16 @@ public:
 	 */
 	std::vector<line_2d_c> get_lines() const;
 
+	/**
+	 * Geeft de naam.
+	 */
+	std::string get_name() const;
+
+	void set_name(const std::string & new_name);
+
 private:
 	std::vector<vector_2d_c> points;
+	std::string name;
 };
 ```
 
