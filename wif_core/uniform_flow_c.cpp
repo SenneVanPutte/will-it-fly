@@ -12,7 +12,7 @@ uniform_flow_c::uniform_flow_c() :
 }
 
 uniform_flow_c::uniform_flow_c(double angle, double u) :
-	U(vector_2d_c(cos(angle)*u, sin(angle)*u))
+	U(vector_2d_c(cos(angle) * u, sin(angle) * u))
 {
 	//ctor
 }
