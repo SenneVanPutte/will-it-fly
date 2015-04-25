@@ -11,15 +11,15 @@ namespace wif_core
 
 enum E_CHOOSEFUNC
 {
-	/**
-	 * want to calculate phi
-	 */
-	EC_PHI,
+    /**
+     * want to calculate phi
+     */
+    EC_PHI,
 
-	/**
-	 * want to calculate psi
-	 */
-	EC_PSI
+    /**
+     * want to calculate psi
+     */
+    EC_PSI
 };
 /**
  * helper class for flow_accumulate_c

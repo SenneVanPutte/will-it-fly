@@ -4,81 +4,85 @@
 #include <string>
 #include <vector>
 #include "line_2d_c.hpp"
-#include <iterator>
-#include <fstream>
+
 
 
 namespace wif_core
 {
 
 
+
 class airfoil_c
 {
 public:
 	/**
-	 * makes a airfoil based on a .dat file in selig format.
-	 * support for lednicer is upcoming
+	 * Lege constructor: zonder points
 	 */
-	airfoil_c(const std::string filename);
+	airfoil_c();
 
 	/**
-	 * makes an airfoil based on a std::vector of vector_2d_c.
+	 * Leest de file in filename, laat points leeg als er iets misloopt. Moet beiden .dat formaten kunnen lezen.
+	 * name wordt gelijk gesteld aan de naam die binnen de file staat.
 	 */
-	airfoil_c(const std::vector<vector_2d_c> iter);
+	airfoil_c(const std::string & filename);
 
 	/**
-	 * amount of points the airfoil_c contains
+	 * Naam is name
 	 */
-	unsigned int size() const;
+	airfoil_c(std::vector<vector_2d_c> & points, const std::string & name);
 
 	/**
-	 * return the positions of the given point in the airfoil.
-	 * Index can go from 0 to size()-1
+	 * Naam nieuwe airfoil is oude naam + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
 	 */
-	vector_2d_c & point(unsigned int index); //geen const, get poiunt geeft een reference terug dus kan dingen wijzigen.
+	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius) const;
 
 	/**
-	 * same as point(), but works with const airfoils, and gives a copy of the point ipv a reference
+	 * Is het laatste punt hetzelfde als de eerste, dan is de curve gesloten. De epsilon dient voor
+	 * floating point weirdness met afrondingen tegen te gaan.
 	 */
-	vector_2d_c get_point(unsigned int index) const;
-	//vector_2d_c get_point_after_dist(double distance) const;
+	bool is_closed(double epsilon = 0.0001) const;
 
 	/**
-	 * returns the given line. This will give the line that
-	 * connects get_point(index) en get_point(index+1)
-	 * Index can go from 0 to size()-2
-	 * this does not give a reference, adapting this line will not change the airfoil.
+	 * Zit er ten minste 1 punt in de vector (handig als tijdens het lezen iets misloopt).
 	 */
-	line_2d_c get_line(unsigned int index) const;
+	bool is_valid() const;
 
 	/**
-	 * calculates first intersection with a line
+	 * Maakt van alle koppels ([i], [i+1]) lijnstukken, met i = 0 tot i < points.size()-1.
 	 */
-	vector_2d_c get_intersection_first(const line_2d_c) const;
+	std::vector<line_2d_c> get_lines() const;
 
 	/**
-	 * calculates last intersection with a line
+	 * Hetzelfde als get_lines, maar de lijnstukken worden in omgekeerde volgorde weergegeven,
+	 * (merk op dat begin en end nog wel dezelfde waarden hebben)
 	 */
-	vector_2d_c get_intersection_last(const line_2d_c) const;
+	std::vector<line_2d_c> get_lines_reversed() const;
+
 
 	/**
-	 * makes new airfoil based on old airfoil using circle projection.
+	 * Geeft de naam.
 	 */
-	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center) const;
+	std::string get_name() const;
+
+	void set_name(const std::string & new_name);
 
 private:
-
-public:
 	/**
-	 * vector conatining all points of the airfoils, going in clockwize direction.
+	 * returns first intersection with line
 	 */
+	vector_2d_c get_intersection_last(const line_2d_c line) const;
+
+	/**
+	 * returns last intersection with line
+	 */
+	vector_2d_c get_intersection_first(const line_2d_c line) const;
+
+
+
+
+private:
 	std::vector<vector_2d_c> points;
-
-private:
-
-
-
-
+	std::string name;
 
 };
 
