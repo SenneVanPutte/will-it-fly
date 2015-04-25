@@ -100,7 +100,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
 	const double rel_dist2 = bdif.cross(dif1) / dif1.cross(dif2); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
 	intersection = rel_dist1 * dif1 + this->begin;//positie van de intersectie
 
-	return(((rel_dist1 >= 0) & (rel_dist1 <= 1) & (rel_dist2 >= 0) & (rel_dist2 <= 1)) ? EI_SEGMENT : EI_OUTSIDE);
+	return(((rel_dist1 >= -epsilon) & (rel_dist1 <= 1+epsilon) & (rel_dist2 >= -epsilon) & (rel_dist2 <= 1+epsilon)) ? EI_SEGMENT : EI_OUTSIDE);
 }
 
 

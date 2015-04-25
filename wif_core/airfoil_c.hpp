@@ -34,7 +34,7 @@ public:
 	/**
 	 * Naam nieuwe airfoil is oude naam + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
 	 */
-	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius) const;
+	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius, double epsilon=0.0001) const;
 
 	/**
 	 * Is het laatste punt hetzelfde als de eerste, dan is de curve gesloten. De epsilon dient voor
@@ -77,19 +77,15 @@ private:
 	 */
 	vector_2d_c get_intersection_first(const line_2d_c line) const;
 
-
-
-
 private:
 	std::vector<vector_2d_c> points;
 	std::string name;
 
+	friend std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil);
+
 };
 
-
-
-
-
+std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil);
 
 } // namespace wif_core
 

@@ -53,6 +53,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="demos/demo_core_airfoil/main.cpp" />
 		<Unit filename="demos/demo_core_flow_elements/main.cpp" />
 		<Unit filename="demos/demo_core_vector_line/main.cpp" />
 		<Unit filename="demos/demo_gsl_diag/main.cpp" />
