@@ -18,6 +18,71 @@ Dit mogen zeer eenvoudige programma's zijn zonder al-te-veel functionaliteit, he
 
 PS: Jullie mogen perfect samenwerken en elkaar helpen, het wiel moet niet 4 keer heruitgevonden worden. Ik wil gewoon dat iedereen al eens een VTK programma vanaf nul heeft gecompileerd.
 
+## Opdracht 1.5
+
+Nu dat jullie werkende vtk demo's hebben, moeten jullie ervoor zorgen dat het werkt met de rest van het compilatiesysteem dat we hebben.
+
+Iedereen mag zijn eigen vtk demo in een beschrijvende directory steken in de demos/ directory:
+
+```
+demos/demo_vtk_comp_merel
+demos/demo_vtk_comp_senne
+demos/demo_vtk_comp_kristof
+demos/demo_vtk_comp_dolf
+```
+
+Denk eraan om te kopieren vanuit
+
 ## Opdracht 2
 
-Verdere info volgt.
+Nog niet kijken hieronder. Deze schematische voorstelling is nog niet volledig.
+
+```
+
+class visualization_element_c
+{
+public:
+	visualization_element_c();
+
+	visualization_element_c(const std::string & name, bool add_to_legend);
+
+	virtual void draw(void * misc) = 0;
+
+private:
+	std::string name;
+	bool add_to_legend;
+};
+
+class visualization_points_c : public visualization_element_c
+{
+public:
+	//
+};
+
+class visualization_curve_c : public visualization_element_c
+{
+public:
+	//
+};
+
+class visualization_c
+{
+public:
+	visualization_c();
+
+	void set_flow(std::shared_ptr<flow_c> flow);
+
+	/**
+	 * Zet de naam van de output van de draw_* methods, als 
+	void set_output(const std::string & filename);
+
+	virtual void draw_psi() = 0;
+
+	virtual void draw_phi() = 0;
+
+	virtual void draw_velocity() = 0;
+
+private:
+	std::shared_ptr<flow_c> flow;
+};
+```

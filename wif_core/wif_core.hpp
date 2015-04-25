@@ -3,6 +3,11 @@
 
 #include <cstdint>
 #include "line_2d_c.hpp"
+#include "source_sheet_c.hpp"
+#include "flow_accumulate_c.hpp"
+#include "source_sink_c.hpp"
+#include "uniform_flow_c.hpp"
+#include "vortex_sheet_c.hpp"
 
 namespace wif_core
 {
