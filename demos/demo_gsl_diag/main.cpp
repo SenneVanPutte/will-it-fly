@@ -29,26 +29,26 @@ int main()
 	double b_data[] = { 0, 6};
 
 	gsl_matrix_view m
-	= gsl_matrix_view_array (a_data, 2, 2);
+	    = gsl_matrix_view_array(a_data, 2, 2);
 
 	gsl_vector_view b
-	= gsl_vector_view_array (b_data, 2);
+	    = gsl_vector_view_array(b_data, 2);
 
-	gsl_vector *x = gsl_vector_alloc (2);
+	gsl_vector * x = gsl_vector_alloc(2);
 
 	int s;
 
-	gsl_permutation * p = gsl_permutation_alloc (2);
+	gsl_permutation * p = gsl_permutation_alloc(2);
 
-	gsl_linalg_LU_decomp (&m.matrix, p, &s);
+	gsl_linalg_LU_decomp(&m.matrix, p, &s);
 
-	gsl_linalg_LU_solve (&m.matrix, p, &b.vector, x);
+	gsl_linalg_LU_solve(&m.matrix, p, &b.vector, x);
 
-	printf ("x = \n");
-	gsl_vector_fprintf (stdout, x, "%g");
+	printf("x = \n");
+	gsl_vector_fprintf(stdout, x, "%g");
 
-	gsl_permutation_free (p);
-	gsl_vector_free (x);
+	gsl_permutation_free(p);
+	gsl_vector_free(x);
 
 	/*double n=8;
 	double m=8;
