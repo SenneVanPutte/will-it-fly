@@ -38,7 +38,7 @@ void test_flow_acc()
 {
 	flow_accumulate_c flow = flow_accumulate_c();
 	flow.add_source_sheet(line_2d_c(1, 1, 3, 5), 3);
-	flow.add_source_sheet(line_2d_c(3,5,6,1),2);
+	flow.add_source_sheet(line_2d_c(3, 5, 6, 1), 2);
 
 	vector_2d_c pos = vector_2d_c(3, 9);
 
