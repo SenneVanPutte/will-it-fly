@@ -40,13 +40,13 @@ void flow_accumulate_c::add_flow(shared_ptr<flow_c> flow)
 double flow_accumulate_c::get_psi(const vector_2d_c & pos) const
 {
 	add_sheet_psi_c add = add_sheet_psi_c(pos);
-	return std::accumulate(flows.begin(), flows.end(), 0, add);
+	return std::accumulate(flows.begin(), flows.end(), 0.0, add);
 }
 
 double flow_accumulate_c::get_phi(const vector_2d_c & pos) const
 {
 	add_sheet_phi_c add = add_sheet_phi_c(pos);
-	return std::accumulate(flows.begin(), flows.end(), 0, add);
+	return std::accumulate(flows.begin(), flows.end(), 0.0, add);
 }
 
 vector_2d_c flow_accumulate_c::get_velocity(const vector_2d_c & pos) const
