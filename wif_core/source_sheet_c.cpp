@@ -38,7 +38,8 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 
 double source_sheet_c::get_phi(const vector_2d_c & pos) const
 {
-	return line.end.y - pos.y;
+	//return line.end.y - pos.y;
+	return 1;
 }
 
 vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const

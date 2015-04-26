@@ -5,15 +5,15 @@ namespace wif_core
 
 
 source_sink_c::source_sink_c() :
-	sigma(1),
-	location(vector_2d_c(0, 0))
+    location(vector_2d_c(0, 0)),
+	sigma(1)
 {
 	//ctor
 }
 
 source_sink_c::source_sink_c(const vector_2d_c & location, double sigma) :
-	sigma(sigma),
-	location(location)
+	location(location),
+	sigma(sigma)
 {
 	//ctor
 }
