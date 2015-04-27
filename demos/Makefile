@@ -35,4 +35,5 @@ vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_me
 
 gsl_demos : demo_gsl_integral demo_gsl_diag demo_gsl_andy
 
-root_algo_demos : demo_root_algo_integral demo_root_algo_diag
+root_algo_demos : demo_root_algo_diag
+

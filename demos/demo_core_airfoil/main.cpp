@@ -11,10 +11,10 @@ int main()
 	std::cout << airfoil;
 	std::cout << airfoil.get_circle_projection(9,wif_core::vector_2d_c(0.5,0),0.5);*/
 	std::vector<wif_core::vector_2d_c> test;
-	test.push_back(wif_core::vector_2d_c(1,0.02));
-	test.push_back(wif_core::vector_2d_c(0,0.02));
-	wif_core::airfoil_c airfoil(test,"flat");
+	test.push_back(wif_core::vector_2d_c(1, 0.02));
+	test.push_back(wif_core::vector_2d_c(0, 0.02));
+	wif_core::airfoil_c airfoil(test, "flat");
 	std::cout << airfoil;
-	std::cout << airfoil.get_circle_projection(10,wif_core::vector_2d_c(0.5,0),0.5);
+	std::cout << airfoil.get_circle_projection(10, wif_core::vector_2d_c(0.5, 0), 0.5);
 
 }

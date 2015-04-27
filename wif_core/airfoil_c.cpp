@@ -10,9 +10,10 @@ namespace wif_core
 {
 
 
-airfoil_c::airfoil_c()
+airfoil_c::airfoil_c() :
+	name("")
 {
-	this->name = "";
+	//
 }
 
 
@@ -23,24 +24,25 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::string line1;
 	std::string line2;
 	std::string line3;
-	std::getline(detect,line1);
-	std::getline(detect,line2);
-	std::getline(detect,line3);
+	std::getline(detect, line1);
+	std::getline(detect, line2);
+	std::getline(detect, line3);
 	std::cout << line1 << std::endl;
 	std::cout << line2 << std::endl;
 	std::cout << line3 << std::endl;
 	detect.close();
 	std::ifstream data(filename);
 
-	if (line3.empty())
+	if(line3.empty())
 	{
 		//
 
 		double len1;
 		double len2;
 		std::string data_pit;
-		std::getline(data,this->name);
-		std::getline(data,data_pit);
+		std::getline(data, this->name);
+		std::getline(data, data_pit);
+
 		while(!data.eof())
 		{
 			double x;
@@ -48,14 +50,15 @@ airfoil_c::airfoil_c(const std::string & filename)
 			data >> x >> y;
 			this->points.push_back(vector_2d_c(x, y));
 		}
-		unsigned int half_size = this->points.size()/2;
-		std::reverse(this->points.begin()+half_size,this->points.end());
+
+		unsigned int half_size = this->points.size() / 2;
+		std::reverse(this->points.begin() + half_size, this->points.end());
 	}
 	else
 	{
 		//selig format
 
-		std::getline(data,this->name);
+		std::getline(data, this->name);
 
 		while(!data.eof())
 		{
@@ -68,9 +71,9 @@ airfoil_c::airfoil_c(const std::string & filename)
 }
 
 
-airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name)
+airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name) :
+	name(name)
 {
-	this->name = name;
 	this->points.resize(points.size());
 	copy(points.begin(), points.end(), this->points.begin());
 }
@@ -106,7 +109,7 @@ std::vector<line_2d_c> airfoil_c::get_lines_reversed() const
 }
 
 
-vector_2d_c airfoil_c::get_intersection_first(const line_2d_c line) const
+vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 {
 	for(line_2d_c l : this->get_lines())
 	{
@@ -123,7 +126,7 @@ vector_2d_c airfoil_c::get_intersection_first(const line_2d_c line) const
 }
 
 
-vector_2d_c airfoil_c::get_intersection_last(const line_2d_c line) const
+vector_2d_c airfoil_c::get_intersection_last(const line_2d_c & line) const
 {
 	for(line_2d_c l : this->get_lines_reversed())
 	{
@@ -181,24 +184,27 @@ bool airfoil_c::is_closed(double epsilon) const
 
 bool airfoil_c::is_valid() const
 {
-	return(not this->points.empty());
+	return not this->points.empty();
 }
 
 
 std::string airfoil_c::get_name() const
 {
-	return(this->name);
+	return this->name;
 }
+
 
 void airfoil_c::set_name(const std::string & new_name)
 {
 	this->name = new_name;
 }
 
+
 std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil)
 {
 	output << airfoil.name << std::endl;
-	for (vector_2d_c v:airfoil.points)
+
+	for(vector_2d_c v : airfoil.points)
 	{
 		output << v.x << "\t" << v.y << std::endl;
 	}
