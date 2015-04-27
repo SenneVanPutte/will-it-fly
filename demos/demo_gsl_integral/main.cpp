@@ -36,23 +36,23 @@ struct my_velocity_params
 	double f;
 };
 
-double velocityx (double XI,void * p)
+double velocityx(double XI, void * p)
 {
 	struct my_velocity_params * params = (struct my_velocity_params *)p;
 	double sigma = (params->d);
 	double x = (params->e);
 	double y = (params->f);
-	double velocityx = sigma/2/3.14*x/(pow(x,2)+pow(y-XI,2));
+	double velocityx = sigma / 2 / 3.14 * x / (pow(x, 2) + pow(y - XI, 2));
 	return velocityx;
 }
 
-double velocityy (double XI,void * p)
+double velocityy(double XI, void * p)
 {
 	struct my_velocity_params * params = (struct my_velocity_params *)p;
 	double sigma = (params->d);
 	double x = (params->e);
 	double y = (params->f);
-	double velocityy = sigma/2/3.14*(y-XI)/(pow(x,2)+pow(y-XI,2));
+	double velocityy = sigma / 2 / 3.14 * (y - XI) / (pow(x, 2) + pow(y - XI, 2));
 	return velocityy;
 }
 
@@ -74,10 +74,12 @@ int main()
 	F.params = &alpha;
 
 	start = clock();
-	for(int i=0;i<1000;i++)
+
+	for(int i = 0; i < 1000; i++)
 	{
 		gsl_integration_qags(&F, int_bound_min, int_bound_max, 0, 1e-7, 1000, w, &result, &error);
 	}
+
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
 	printf("result          = % .18f\n", result);
@@ -95,10 +97,12 @@ int main()
 	FF.params = &alpha2;
 
 	start = clock();
-	for(int i=0;i<1000;i++)
+
+	for(int i = 0; i < 1000; i++)
 	{
 		gsl_integration_qags(&FF, int_bound_min, int_bound_max, 0, 1e-7, 1000, w, &result, &error);
 	}
+
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
 	printf("result          = % .18f\n", result);
@@ -108,52 +112,56 @@ int main()
 
 	gsl_integration_workspace_free(ww);
 
-	gsl_integration_workspace * w3 = gsl_integration_workspace_alloc (1000);
+	gsl_integration_workspace * w3 = gsl_integration_workspace_alloc(1000);
+	double sigma = 1.;
+	double x = 1.;
+	double y = 1.;
 
-	struct my_velocity_params alpha3 = {1.,1.,1.};
+	struct my_velocity_params alpha3 = {sigma, x, y};
 	gsl_function VELOCITYX;
 	VELOCITYX.function = &velocityx;
 	VELOCITYX.params = &alpha3;
 
-	start=clock();
-	for(int i=0;i<1000;i++)
+	start = clock();
+
+	for(int i = 0; i < 1000; i++)
 	{
-		gsl_integration_qags (&VELOCITYX, int_bound_min, int_bound_max, 0, 1e-7, 1000,w3, &result, &error);
+		gsl_integration_qags(&VELOCITYX, int_bound_min, int_bound_max, 0, 1e-7, 1000, w3, &result, &error);
 	}
-	duration = (clock()-start) / (double) CLOCKS_PER_SEC;
 
-	double sigma = (params->d);
-	double x = (params->e);
-	double y = (params->f);
-	double Act_X = sigma*x/2/3.14*log(((pow(x,2)+(y-int_bound_min))/((pow(x,2)+(y-int_bound_max))));
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
-	printf ("result velocity x = % .18f\n", result);
-	printf ("estimated error = % .18f\n", error);
-	printf ("actual error =%.18f\n", result-Act_X);
-	printf ("intervals =  %d\n", w3->size);
-	printf ("duration = %.18f\n", duration);
+	double Act_X = sigma * x / 2 / 3.14 * log(((pow(x, 2) + (y - int_bound_min)) / ((pow(x, 2) + (y - int_bound_max)))));
+
+	printf("result velocity x = % .18f\n", result);
+	printf("estimated error = % .18f\n", error);
+	printf("actual error =%.18f\n", result - Act_X);
+	printf("intervals =  %d\n", w3->size);
+	printf("duration = %.18f\n", duration);
 
 
 	gsl_function VELOCITYY;
 	VELOCITYY.function = &velocityy;
 	VELOCITYY.params = &alpha3;
 
-	start=clock();
-	for(int i=0;i<1000;i++)
+	start = clock();
+
+	for(int i = 0; i < 1000; i++)
 	{
-		gsl_integration_qags (&VELOCITYY, int_bound_min, int_bound_max, 0, 1e-7, 1000,w3, &result, &error);
+		gsl_integration_qags(&VELOCITYY, int_bound_min, int_bound_max, 0, 1e-7, 1000, w3, &result, &error);
 	}
-	duration = (clock()-start) / (double) CLOCKS_PER_SEC;
 
-	double Act_Y = sigma/3.14*log((pow(x,2)+pow(x-int_bound_min,2))/((pow(x,2)+pow(y-int_bound_max,2)));
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
-	printf ("result velocity y = % .18f\n", result);
-	printf ("estimated error = % .18f\n", error);
-	printf ("actual error =%.18f\n", result-Act_Y);
-	printf ("intervals =  %d\n", w3->size);
-	printf ("duration = %.18f\n", duration);
+	double Act_Y = sigma / 3.14 * log((pow(x, 2) + pow(x - int_bound_min, 2)) / ((pow(x, 2) + pow(y - int_bound_max, 2))));
 
-	gsl_integration_workspace_free (w3);
+	printf("result velocity y = % .18f\n", result);
+	printf("estimated error = % .18f\n", error);
+	printf("actual error =%.18f\n", result - Act_Y);
+	printf("intervals =  %d\n", w3->size);
+	printf("duration = %.18f\n", duration);
+
+	gsl_integration_workspace_free(w3);
 
 
 	return 0;
