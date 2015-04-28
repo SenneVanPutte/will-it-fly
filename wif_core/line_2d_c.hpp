@@ -54,7 +54,8 @@ public:
 	double get_length_sq() const;
 
 	/**
-	 * returns vector point
+	 * returns vector in the center of line
+	 * analog
 	 */
 	vector_2d_c get_center_point() const;
 
@@ -63,6 +64,12 @@ public:
 	 * geonometric angle, upward from the x-axis
 	 */
 	double get_angle() const;
+
+	/**
+	 * gives relative position on line. 0 is begin point, 1 is end point
+	 * use values smaller then 0 or larger then 1 for points on the line, but not on the segment.
+	 */
+	vector_2d_c get_point_on_line(double place) const;
 
 	/**
 	 * Calculates whether 2 line segments intersect or not, and sets the vector intersect on the intersection.
