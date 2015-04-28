@@ -26,9 +26,9 @@ double func(double s, void * p)
 	double yc = (params->yc);
 	double xa = (params->xa);
 	double ya = (params->ya);
-	double teller = (xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta);
-	double noemer = pow((xc - (xa - s * sin(betaj))), 2) + pow(yc - (ya + s * cos(betaj)), 2);
-	double func = teller / noemer;
+	double func = ((xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta))/(pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
+	/*double noemer = (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
+	double func = teller / noemer;*/
 	return func;
 }
 
@@ -70,22 +70,23 @@ int main()
 	int n = 8;
 	int m = 8;
 
-	double U_inf = 1;
+	double U_inf = 1.;
 
 	double a_data [n * m];
 	double b_data [n];
-	double beta_data [] = {0, pi / 4, pi / 2, 3 * pi / 4, pi, 5 * pi / 4, 3 * pi / 2, 7 * pi / 4};
-	double xa_data [] = {4, 4, 2, -2, -4, -4, -2, 2};
-	double ya_data [] = { -2, 2, 4, 4, 2, -2, -4, -4};
-	double xc_data [] = {4, 3, 0, -3, -4, -3, 0, 3};
-	double yc_data [] = {0, 3, 4, 3, 0, -3, -4, -3};
-	double s_0 = 0;
-	double s_1 [] = {4, 2 * pow(2, 0.5), 4, 2 * pow(2, 0.5), 4, 2 * pow(2, 0.5), 4, 2 * pow(2, 0.5)};
+	double beta_data [] = {0., pi / 4., pi / 2., 3. * pi / 4., pi, 5. * pi / 4., 3. * pi / 2., 7. * pi / 4.};
+	double xa_data [] = {4., 4., 2., -2., -4., -4., -2., 2.};
+	double ya_data [] = { -2., 2., 4., 4., 2., -2., -4., -4.};
+	double xc_data [] = {4., 3., 0., -3., -4., -3., 0., 3.};
+	double yc_data [] = {0., 3., 4., 3., 0., -3., -4., -3.};
+	double s_0 = 0.;
+	double s_1 [] = {4., 2. * pow(2., 0.5), 4., 2. * pow(2., 0.5), 4., 2. * pow(2., 0.5), 4., 2. * pow(2., 0.5)};
 
 	gsl_matrix_view a
 	    = gsl_matrix_view_array(a_data, n, m);
 
 	gsl_function FUNC;
+	FUNC.function = &func;
 
 	double result, error;
 
@@ -98,8 +99,6 @@ int main()
 			if(i == j)
 			{
 				gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j, 0.5);
-				double element = gsl_matrix_get(&a.matrix, i, j);
-				std::cout << element << std::endl;
 
 			}
 			else
@@ -117,20 +116,20 @@ int main()
 
 				gsl_matrix_set (&a.matrix,i,j,0.5/(2*pi)*result);*/
 
-				gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
+
 
 				struct my_func_params parameters = {beta_data[i], beta_data[j], xc_data[i], yc_data[i], xa_data[j], ya_data[j]};
 
-				FUNC.function = &func;
 				FUNC.params = &parameters;
 
 				size_t nevals;
-
-				gsl_integration_cquad(&FUNC, s_0, s_1[i], 0, 1e-7, w1, &result, &error, &nevals);
-
+				gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
+				gsl_integration_cquad(&FUNC, s_0, s_1[j], 0., 1e-7, w1, &result, &error, &nevals);
 				gsl_integration_cquad_workspace_free(w1);
 
-				gsl_matrix_set(&a.matrix, i, j, result / (2 * pi));
+				gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j,result/(2.*pi));
+
+
 
 
 
@@ -139,11 +138,11 @@ int main()
 		}
 	}
 
-	printf("a = \n");
-	gsl_matrix_fprintf(stdout, &a.matrix, "%g");
-
 	gsl_vector_view b
-	    = gsl_vector_view_array(b_data, n);
+	   = gsl_vector_view_array(b_data, n);
+
+	//printf("a = \n");
+	//gsl_matrix_fprintf(stdout, &a.matrix, "%g");
 
 	gsl_vector * x = gsl_vector_alloc(n);
 
