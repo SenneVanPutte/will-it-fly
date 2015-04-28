@@ -1,6 +1,8 @@
 #include "source_sheet_c.hpp"
 #include <cmath>
-#include <math.h>
+
+using std::log;
+using std::atan2;
 
 namespace wif_core
 {
@@ -31,10 +33,13 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 	double c = line.begin.x - pos.x;
 	double d = line.end.x - line.begin.x;
 
-	return ((a * b - b * c) * (log(a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d) - log(a * a + c * c))
-	        + 2 * (b * b + d * d) * (atan2(b * c - a * d, a * b + c * d)
-	                                 - atan2(b * c - a * d, a * b + b * b + d * d + c * d)))
-	       * sigma / (4 * M_PI * (b * b + d * d));
+	double temp1=a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d;
+	double temp2=atan2(b * c - a * d, a * b + c * d)
+                - atan2(b * c - a * d, a * b + b * b + d * d + c * d);
+    double temp3=4 * M_PI * (b * b + d * d);
+
+	return ((a * b - b * c) * (log(temp1) - log(a * a + c * c))
+	        + 2 * (b * b + d * d) * (temp2))* sigma / (temp3);
 }
 
 double source_sheet_c::get_phi(const vector_2d_c & pos) const
@@ -43,11 +48,20 @@ double source_sheet_c::get_phi(const vector_2d_c & pos) const
 	double b = line.end.y - line.begin.y;
 	double c = line.begin.x - pos.x;
 	double d = line.end.x - line.begin.x;
-	//return line.end.y - pos.y;
-	return ((a * b + b * b + d * d + c * d) * log(a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d)
-	        + (2 * a * d - 2 * c * b) * atan2(b * c - a * d, a * b + b * b + d * d + c * d) - 2 * b * b - 2 * d * d
-	        - (a * b + c * d) * log(a * a + c * c) - (2 * a * d - 2 * b * c) * atan2(b * c - a * d, a * b + c * d))
-	       * sigma / (4 * M_PI * (b * b + d * d));
+
+	double temp1=a * b + b * b + d * d + c * d;
+	double temp2=log(a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d);
+	double temp3=sigma / (4 * M_PI * (b * b + d * d));
+
+	double at1=atan2(b * c - a * d, temp1) ;
+	double at2=atan2(b * c - a * d, a * b + c * d);
+
+
+
+	return ((temp1) * temp2
+	        + (2 * a * d - 2 * c * b) * at1- 2 * b * b - 2 * d * d
+	        - (a * b + c * d) * log(a * a + c * c) - (2 * a * d - 2 * b * c) * at2)
+	       * temp3;
 }
 
 vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
