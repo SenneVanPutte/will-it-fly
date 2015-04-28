@@ -18,17 +18,17 @@ public:
 	/**
 	 * gives the streamfunction at a given point
 	 */
-	virtual double get_psi(const vector_2d_c &) const = 0;
+	virtual double get_psi(const vector_2d_c & position) const = 0;
 
 	/**
 	 * gives the streampotential at a given point
 	 */
-	virtual double get_phi(const vector_2d_c &) const = 0;
+	virtual double get_phi(const vector_2d_c & position) const = 0;
 
 	/**
 	 * gives the velocity at a given point
 	 */
-	virtual vector_2d_c get_velocity(const vector_2d_c &) const = 0;
+	virtual vector_2d_c get_velocity(const vector_2d_c & position) const = 0;
 
 protected:
 

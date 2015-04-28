@@ -19,7 +19,7 @@ viz_demos :
 algo_demos :
 
 # De demos van de core library
-core_demos : demo_core_vector_line demo_core_flow_elements
+core_demos : demo_core_vector_line demo_core_flow_elements demo_core_airfoil
 
 # De demos van de teams, die eigenlijk niks met onze libraries te maken hebben.
 # Hieronder demo's toevoegen als dependancies van de respectievelijke targets!
@@ -35,4 +35,9 @@ vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_me
 
 gsl_demos : demo_gsl_integral demo_gsl_diag demo_gsl_andy
 
+<<<<<<< HEAD
 root_algo_demos : demo_root_algo_diag demo_root_algo_integral
+=======
+root_algo_demos : demo_root_algo_diag
+
+>>>>>>> 57fbea4fd563ab33eb85c002add73f1c7fb4f7db
