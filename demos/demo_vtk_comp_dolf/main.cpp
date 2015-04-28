@@ -10,7 +10,6 @@
 #include <vtkPolyData.h>
 #include <vtkPoints.h>
 #include <vtkGlyph3D.h>
-#include <vtkCellArray.h>
 #include "vtkSmartPointer.h"
 #include "vtkFloatArray.h"
 #include "vtkPointData.h"
