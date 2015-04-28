@@ -131,7 +131,13 @@ vector_2d_c operator * (double n, const vector_2d_c & vec)
 {
 	return vector_2d_c(n * vec.x, n * vec.y);
 }
-
+/**
+ * creates a new vector_2d_c object, but with the length and the angle with the x-axis as parameters
+ */
+vector_2d_c vector_2d_radian(double radian, double angle)
+{
+	return vector_2d_c(radian * std::cos(angle), radian * std::sin(angle));
+}
 
 std::ostream & operator <<(std::ostream & output, const vector_2d_c & vec)
 {

@@ -74,6 +74,11 @@ public:
 vector_2d_c operator *(double, const vector_2d_c &);
 
 /**
+ * creates a new vector_2d_c object, but with the length and the angle with the x-axis as parameters
+ */
+vector_2d_c vector_2d_radian(double radius, double angle);
+
+/**
  * send vector to ostream
  */
 std::ostream & operator << (std::ostream &, const vector_2d_c &);
