@@ -39,50 +39,48 @@ Nog niet kijken hieronder. Deze schematische voorstelling is nog niet volledig.
 
 ```
 
-class visualization_element_c
-{
-public:
-	visualization_element_c();
-
-	visualization_element_c(const std::string & name, bool add_to_legend);
-
-	virtual void draw(void * misc) = 0;
-
-private:
-	std::string name;
-	bool add_to_legend;
-};
-
-class visualization_points_c : public visualization_element_c
-{
-public:
-	//
-};
-
-class visualization_curve_c : public visualization_element_c
-{
-public:
-	//
-};
-
 class visualization_c
 {
 public:
-	visualization_c();
+	visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min, const vector_2d_c & max);
 
-	void set_flow(std::shared_ptr<flow_c> flow);
+	virtual ~visualization_c();
 
 	/**
-	 * Zet de naam van de output van de draw_* methods, als 
-	void set_output(const std::string & filename);
+	 * Redelijk voor de hand liggend, de minima van het plot-bereik zitten in min,
+	 * de maxima in max.
+	 */
+	void set_range(const vector_2d_c & min, const vector_2d_c & max);
 
-	virtual void draw_psi() = 0;
+	/**
+	 * Standaard zijn de bins == (0, 0)
+	 * Als de bins == (0, 0), moet niks getekend worden van dat veld.
+	 * Als de bins != (0, 0), worden de bins gevonden door round(abs(x)), round(abs(y))
+	 * Ge rond de absolute waarden van de vector af.
+	 */
+	void set_psi_bins(const vector_2d_c & bins);
+	void set_phi_bins(const vector_2d_c & bins);
+	void set_velocity_bins(const vector_2d_c & bins);
 
-	virtual void draw_phi() = 0;
+	/**
+	 * Tekent de velden/airfoil/extra stroomlijnen/stagnatiepunten.
+	 *
+	 * Pas in deze method worden de grids opgevuld met punten.
+	 *
+	 * Als de filename == "", print naar het scherm, anders naar het
+	 * bestand dat gegeven is door filename.c_str()
+	 */
+	virtual void draw(const std::string & filename = "") = 0;
 
-	virtual void draw_velocity() = 0;
+	//
 
 private:
 	std::shared_ptr<flow_c> flow;
+	vector_2d_c min;
+	vector_2d_c max;
+
+	vector_2d_c psi_bins;
+	vector_2d_c phi_bins;
+	vector_2d_c velocity_bins;
 };
 ```
