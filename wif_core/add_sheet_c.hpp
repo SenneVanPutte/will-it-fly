@@ -8,39 +8,56 @@
 namespace wif_core
 {
 
-
-enum E_CHOOSEFUNC
-{
-	/**
-	 * want to calculate phi
-	 */
-	EC_PHI,
-
-	/**
-	 * want to calculate psi
-	 */
-	EC_PSI
-};
 /**
  * helper class for flow_accumulate_c
  */
-class add_sheet_c
+class add_sheet_phi_c
 {
 public:
-	add_sheet_c(const vector_2d_c &, E_CHOOSEFUNC);
+	add_sheet_phi_c(const vector_2d_c &);
 
-	~add_sheet_c();
+	~add_sheet_phi_c();
 
 	double operator()(double, std::shared_ptr<flow_c>) const;
-
-	vector_2d_c operator()(vector_2d_c, std::shared_ptr<flow_c>) const;
-
-	E_CHOOSEFUNC  what;
 
 	vector_2d_c position;
 
 };
 
+
+
+/**
+ * helper class for flow_accumulate_c
+ */
+class add_sheet_psi_c
+{
+public:
+	add_sheet_psi_c(const vector_2d_c &);
+
+	~add_sheet_psi_c();
+
+	double operator()(double, std::shared_ptr<flow_c>) const;
+
+	vector_2d_c position;
+
+};
+
+
+/**
+ * helper class for flow_accumulate_c
+ */
+class add_sheet_v_c
+{
+public:
+	add_sheet_v_c(const vector_2d_c &);
+
+	~add_sheet_v_c();
+
+	vector_2d_c operator()(vector_2d_c, std::shared_ptr<flow_c>) const;
+
+	vector_2d_c position;
+
+};
 
 }
 

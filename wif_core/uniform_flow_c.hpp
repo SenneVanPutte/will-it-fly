@@ -24,17 +24,17 @@ public:
 	/**
 	 * gives the streamfunction at a given possition
 	 */
-	double get_psi(const vector_2d_c &) const;
+	double get_psi(const vector_2d_c & position) const;
 
 	/**
 	 * gives the streampotential at a given possition
 	 */
-	double get_phi(const vector_2d_c &) const;
+	double get_phi(const vector_2d_c & position) const;
 
 	/**
 	 * gives the velocity at a given possition
 	 */
-	vector_2d_c get_velocity(const vector_2d_c &) const;
+	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
 protected:
 private:
