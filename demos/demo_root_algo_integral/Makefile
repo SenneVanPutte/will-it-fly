@@ -5,10 +5,10 @@ OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
 OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
 CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC_FLAGS=-Wall $(shell root-config --cflags)
 INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+LIBS=$(shell root-config --libs)
 
 demo : $(OBJ_DEMO)
 	echo "Building ${DEMO_NAME}"
