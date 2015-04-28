@@ -20,6 +20,14 @@ public:
 	airfoil_c();
 
 	/**
+	 * Generates a polygon with gives center, raduis and corners. Use to simulate a circles for large amount of corners
+	 * @midpoint: center point of circle/polygon
+	 * @radius:: radius of center/polygon
+	 * @corners: amount of corners
+	 */
+	airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners);
+
+	/**
 	 * Read the file's data
 	 */
 	airfoil_c(const std::string & filename);
@@ -31,11 +39,16 @@ public:
 
 	/**
 	 * New airfoil named old name + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
+	 * @n subdivisions
+	 * @projection_center centerpoint of the circle that is projected from
+	 * @radius raduis of the circle taht is prjected from
+	 * @epsilon see intersect
 	 */
 	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius, double epsilon = 0.0001) const;
 
 	/**
 	 * Check if the last points is the same as the first, within a certain error
+	 * @epsilon maximum distance as with points are considered the same
 	 */
 	bool is_closed(double epsilon = 0.0001) const;
 
@@ -43,6 +56,11 @@ public:
 	 * Check if the airfoil contains at least 1 point.
 	 */
 	bool is_valid() const;
+
+	/**
+	 * Returns the points
+	 */
+	const std::vector<vector_2d_c> & get_points() const;
 
 	/**
 	 * Makes pairss ([i], [i+1]) lines, with i = 0 to points.size()-1.
