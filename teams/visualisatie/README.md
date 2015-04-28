@@ -83,4 +83,48 @@ private:
 	vector_2d_c phi_bins;
 	vector_2d_c velocity_bins;
 };
+
+
+// In een visualisation_vtk_c.hpp
+
+class visualisation_vtk_c : public visualisation_c
+{
+public:
+	visualisation_vtk_c();
+
+	//
+	virtual ~visualisation_vtk_c();
+
+	virtual void draw(const std::string & filename = "");
+
+private:
+	// Smart pointers gebruiken in plaats van gewoon sterretjes.
+
+	void add_lines_to_renderer(vtkRenderer * renderer, const std::vector<line_2d_c> & lines);
+
+	void add_points_to_renderer(vtkRenderer * renderer, const std::vector<vector_2d_c> & points);
+
+	//
+
+	void add_psi_field(vtkRenderer * renderer);
+
+	void add_phi_field(vtkRenderer * renderer);
+
+	void add_velocity_field(vtkRenderer * renderer);
+};
+
+
+// In een visualisation_root_c.hpp
+
+class visualisation_root_c : public visualisation_c
+{
+public:
+	//
+
+	virtual void draw(const std::string & filename = "");
+
+private:
+	//
+};
+
 ```
