@@ -22,23 +22,15 @@ airfoil_c::airfoil_c(const std::string & filename)
 	//selig format
 	std::ifstream detect(filename);
 	std::string line1;
-	std::string line2;
-	std::string line3;
 	std::getline(detect, line1);
-	std::getline(detect, line2);
-	std::getline(detect, line3);
-	std::cout << line1 << std::endl;
-	std::cout << line2 << std::endl;
-	std::cout << line3 << std::endl;
+	double testval;
+	detect >> testval;
 	detect.close();
 	std::ifstream data(filename);
+	std::cout << "testvalue :" << testval << std::endl;
 
-	if(line3.empty())
+	if(testval > 1)
 	{
-		//
-
-		double len1;
-		double len2;
 		std::string data_pit;
 		std::getline(data, this->name);
 		std::getline(data, data_pit);
@@ -72,10 +64,10 @@ airfoil_c::airfoil_c(const std::string & filename)
 
 
 airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name) :
-	name(name)
+	name(name),
+	points(points)
 {
-	this->points.resize(points.size());
-	copy(points.begin(), points.end(), this->points.begin());
+	//
 }
 
 
@@ -178,13 +170,13 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 
 bool airfoil_c::is_closed(double epsilon) const
 {
-	return((this->points.front() - this->points.back()).get_length_sq() < pow(epsilon, 2));
+	return (this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon);
 }
 
 
 bool airfoil_c::is_valid() const
 {
-	return not this->points.empty();
+	return !this->points.empty();
 }
 
 

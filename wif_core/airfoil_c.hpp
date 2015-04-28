@@ -15,51 +15,48 @@ class airfoil_c
 {
 public:
 	/**
-	 * Lege constructor: zonder points
+	 * Empty constructor. Gives an airfoil without points nor lines.
 	 */
 	airfoil_c();
 
 	/**
-	 * Leest de file in filename, laat points leeg als er iets misloopt. Moet beiden .dat formaten kunnen lezen.
-	 * name wordt gelijk gesteld aan de naam die binnen de file staat.
+	 * Read the file's data
 	 */
 	airfoil_c(const std::string & filename);
 
 	/**
-	 * Naam is name
+	 * Create airfoil with given name and vector
 	 */
 	airfoil_c(std::vector<vector_2d_c> & points, const std::string & name);
 
 	/**
-	 * Naam nieuwe airfoil is oude naam + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
+	 * New airfoil named old name + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
 	 */
 	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius, double epsilon = 0.0001) const;
 
 	/**
-	 * Is het laatste punt hetzelfde als de eerste, dan is de curve gesloten. De epsilon dient voor
-	 * floating point weirdness met afrondingen tegen te gaan.
+	 * Check if the last points is the same as the first, within a certain error
 	 */
 	bool is_closed(double epsilon = 0.0001) const;
 
 	/**
-	 * Zit er ten minste 1 punt in de vector (handig als tijdens het lezen iets misloopt).
+	 * Check if the airfoil contains at least 1 point.
 	 */
 	bool is_valid() const;
 
 	/**
-	 * Maakt van alle koppels ([i], [i+1]) lijnstukken, met i = 0 tot i < points.size()-1.
+	 * Makes pairss ([i], [i+1]) lines, with i = 0 to points.size()-1.
 	 */
 	std::vector<line_2d_c> get_lines() const;
 
 	/**
-	 * Hetzelfde als get_lines, maar de lijnstukken worden in omgekeerde volgorde weergegeven,
-	 * (merk op dat begin en end nog wel dezelfde waarden hebben)
+	 * Same as get_lines() but in the reversed order
 	 */
 	std::vector<line_2d_c> get_lines_reversed() const;
 
 
 	/**
-	 * Geeft de naam.
+	 * Gives the name
 	 */
 	std::string get_name() const;
 

@@ -61,7 +61,7 @@ void demo_vectors(double x1, double y1, double x2, double y2, double n)
 
 void demo_intersection(const wif_core::line_2d_c & line1, const wif_core::line_2d_c & line2)
 {
-	wif_core::vector_2d_c intersect(0, 0);
+	wif_core::vector_2d_c intersect(0.0, 0.0);
 	wif_core::E_INTERSECTION ei = line1.get_intersection(line2, intersect);
 
 	std::cout << line1 <<  " and " << line2 <<  "-> " << get_intersection_str(ei).c_str() << " in " << intersect << std::endl;
@@ -74,18 +74,18 @@ int main()
 	std::cout << wif_algo::get_version() << std::endl;
 	std::cout << wif_viz::get_version()  << std::endl;
 
-	demo_vectors(1, 1, 1, -1, 2);
-	demo_vectors(1, 0, 1, 0, 0.5);
-	demo_vectors(1, 1, 1, 1, 0);
+	demo_vectors(1.0, 1.0, 1.0, -1.0, 2.0);
+	demo_vectors(1.0, 0.0, 1.0, 0.0, 0.5);
+	demo_vectors(1.0, 1.0, 1.0, 1.0, 0.0);
 
 
-	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(0, 1, 1, 0));
-	demo_intersection(wif_core::line_2d_c(0, 0, -1, -1), wif_core::line_2d_c(0, 1, 1, 0));
-	demo_intersection(wif_core::line_2d_c(0, 0, -1, 1), wif_core::line_2d_c(0, 1, 1, 0));
-	demo_intersection(wif_core::line_2d_c(0, 0, 2, 1), wif_core::line_2d_c(0, 1, 1, 0));
-	demo_intersection(wif_core::line_2d_c(0, 0, 2, 2), wif_core::line_2d_c(1, 1, 3, 3));
-	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(2, 2, 3, 3));
-	demo_intersection(wif_core::line_2d_c(0, 0, 1, 1), wif_core::line_2d_c(1, 1, 2, 2));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, 1.0, 1.0), wif_core::line_2d_c(0.0, 1.0, 1.0, 0.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, -1.0, -1.0), wif_core::line_2d_c(0.0, 1.0, 1.0, 0.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, -1.0, 1.0), wif_core::line_2d_c(0.0, 1.0,  1.0, 0.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, 2.0, 1.0), wif_core::line_2d_c(0.0, 1.0, 1.0, 0.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, 2.0, 2.0), wif_core::line_2d_c(1.0, 1.0, 3.0, 3.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, 1.0, 1.0), wif_core::line_2d_c(2.0, 2.0, 3.0, 3.0));
+	demo_intersection(wif_core::line_2d_c(0.0, 0.0, 1.0, 1.0), wif_core::line_2d_c(1.0, 1.0, 2.0, 2.0));
 
 	return(0);
 }
