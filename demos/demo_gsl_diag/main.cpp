@@ -26,7 +26,7 @@ double func(double s, void * p)
 	double yc = (params->yc);
 	double xa = (params->xa);
 	double ya = (params->ya);
-	double func = ((xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta))/(pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
+	double func = ((xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta)) / (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
 	/*double noemer = (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
 	double func = teller / noemer;*/
 	return func;
@@ -127,7 +127,7 @@ int main()
 				gsl_integration_cquad(&FUNC, s_0, s_1[j], 0., 1e-7, w1, &result, &error, &nevals);
 				gsl_integration_cquad_workspace_free(w1);
 
-				gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j,result/(2.*pi));
+				gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j, result / (2.*pi));
 
 
 
@@ -139,7 +139,7 @@ int main()
 	}
 
 	gsl_vector_view b
-	   = gsl_vector_view_array(b_data, n);
+	    = gsl_vector_view_array(b_data, n);
 
 	//printf("a = \n");
 	//gsl_matrix_fprintf(stdout, &a.matrix, "%g");
@@ -166,5 +166,5 @@ int main()
 
 
 	return 0;
->>>>>>> ddde39fa86d4decede69cafef4bca12cdf9a8229
+	>>> >>> > ddde39fa86d4decede69cafef4bca12cdf9a8229
 }
