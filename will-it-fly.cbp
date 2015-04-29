@@ -53,6 +53,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="demos/demo_algo_diagonalizationspeed/DiagonalizationSpeedTest.cpp" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLDiagonalizer.cpp" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLDiagonalizer.h" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLIntegrator.cpp" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLIntegrator.h" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/ROOTDiagonalizer.cpp" />
+		<Unit filename="demos/demo_algo_diagonalizationspeed/ROOTDiagonalizer.h" />
+		<Unit filename="demos/demo_algo_integrationspeed/GSLIntegrator.cpp" />
+		<Unit filename="demos/demo_algo_integrationspeed/GSLIntegrator.h" />
+		<Unit filename="demos/demo_algo_integrationspeed/IntegrationSpeedTest.cpp" />
+		<Unit filename="demos/demo_algo_integrationspeed/ROOTIntegrator.cpp" />
+		<Unit filename="demos/demo_algo_integrationspeed/ROOTIntegrator.h" />
 		<Unit filename="demos/demo_core_airfoil/main.cpp" />
 		<Unit filename="demos/demo_core_flow_elements/main.cpp" />
 		<Unit filename="demos/demo_core_vector_line/main.cpp" />
