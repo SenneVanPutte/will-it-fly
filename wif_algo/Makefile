@@ -11,7 +11,7 @@ INCLUDE=-I../build/include/wif_core
 
 #Vul GSL_LIBS aan met de GSL libraries die je gebruikt. bv. -lgsl.
 GSL_LIBDIR=-L/usr/lib
-GSL_LIBS=
+GSL_LIBS=-lgsl -lgslcblas -lm
 GSL_INCLUDE=-I/usr/include/gsl
 ROOT_LIBS=$(shell root-config --libs)
 ROOT_INCLUDE=$(shell root-config --cflags)
