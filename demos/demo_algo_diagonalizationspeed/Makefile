@@ -8,7 +8,8 @@ CC=g++ -std=c++11
 CC_FLAGS=-Wall
 INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
-LIBS=-lgsl -lgslcblas -lm
+LIBS+=$(shell root-config --libs)
+LIBS+=-lgsl -lgslcblas -lm
 
 demo : $(OBJ_DEMO)
 	echo "Building ${DEMO_NAME}"

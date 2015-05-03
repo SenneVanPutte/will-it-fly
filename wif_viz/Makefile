@@ -7,14 +7,14 @@ OBJ_PATH=$(addprefix ../build/obj/wif_viz/, $(OBJ_VIZ))
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
 
-INCLUDE=-I../build/include/wif_core
+INCLUDE=-I../build/include/
 
 #Vul VTK_LIBS aan met de vtk libraries die je gebruikt. bv. -lvtkCommon.
 VTK_LIBDIR=-L/usr/lib/
 VTK_LIBS=
 VTK_INCLUDE=-I/usr/include/vtk-5.8/
-ROOT_LIBS=$(shell root-config --libs)
-ROOT_INCLUDE=$(shell root-config --cflags)
+ROOT_LIBS=$(`root-config --libs`)
+ROOT_INCLUDE=$(`root-config --cflags`)
 
 viz : $(OBJ_VIZ)
 	echo "Building wif-viz"
