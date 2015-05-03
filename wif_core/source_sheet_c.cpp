@@ -28,18 +28,36 @@ source_sheet_c::~source_sheet_c()
 
 double source_sheet_c::get_psi(const vector_2d_c & pos) const
 {
-	double a = line.begin.y - pos.y;
+
+	//double a = line.begin.y - pos.y;
+	//double b = line.end.y - line.begin.y;
+	//double c = line.begin.x - pos.x;
+	//double d = line.end.x - line.begin.x;
+
+	//double temp1 = a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d;
+	//double temp2 = atan2(b * c - a * d, a * b + c * d)
+	  //             - atan2(b * c - a * d, a * b + b * b + d * d + c * d);
+	//double temp3 = 4 * M_PI * (b * b + d * d);
+
+	//return ((a * b - b * c) * (log(temp1) - log(a * a + c * c))
+	  //      + 2 * (b * b + d * d) * (temp2)) * sigma / (temp3);
+
+
+    double a = line.begin.y - pos.y;
 	double b = line.end.y - line.begin.y;
 	double c = line.begin.x - pos.x;
 	double d = line.end.x - line.begin.x;
 
-	double temp1 = a * a + 2 * a * b + b * b + d * d + c * c + 2 * c * d;
-	double temp2 = atan2(b * c - a * d, a * b + c * d)
-	               - atan2(b * c - a * d, a * b + b * b + d * d + c * d);
-	double temp3 = 4 * M_PI * (b * b + d * d);
+	double coef1=b*c-a*d;
+	double coef2=a*b+c*d;
+	double lo1=log(a*a+2*a*b+b*b+2*c*d+d*d);
+	double lo2=log(b*b+d*d);
+	double at1=atan2(coef1,coef2+a*a+c*c);
+	double at2=atan2(coef1,coef2);
+	double at3=atan2(a+b,c+d);
 
-	return ((a * b - b * c) * (log(temp1) - log(a * a + c * c))
-	        + 2 * (b * b + d * d) * (temp2)) * sigma / (temp3);
+	return ((coef1*(lo1-lo2)+2*coef2*(at1-at2))/(2*a*a+2*c*c)+at3)*sigma/(2*M_PI);
+
 }
 
 double source_sheet_c::get_phi(const vector_2d_c & pos) const
