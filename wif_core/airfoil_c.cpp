@@ -57,7 +57,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 			double x;
 			double y;
 			data >> x >> y;
-			this->points.push_back(vector_2d_c(x, y));
+			this->points.emplace_back(x, y);
 		}
 	}
 }
@@ -68,6 +68,15 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 	points(points)
 {
 	//
+}
+
+airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
+	name("circle")
+{
+	for (unsigned int i=0;i<corners;i++)
+	{
+		points.push_back(vector_2d_radian(radius, (M_PI * i) / corners) + midpoint);
+	}
 }
 
 
@@ -90,6 +99,12 @@ std::vector<line_2d_c> airfoil_c::get_lines() const
 	}
 
 	return ret;
+}
+
+
+const std::vector<vector_2d_c> & airfoil_c::get_points() const
+{
+	return points;
 }
 
 
