@@ -39,10 +39,10 @@ public:
 
 	/**
 	 * New airfoil named old name + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
-	 * @n subdivisions
-	 * @projection_center centerpoint of the circle that is projected from
-	 * @radius raduis of the circle taht is prjected from
-	 * @epsilon see intersect
+	 * @param n subdivisions
+	 * @param projection_center centerpoint of the circle that is projected from
+	 * @param radius raduis of the circle taht is prjected from
+	 * @param epsilon see intersect
 	 */
 	airfoil_c get_circle_projection(uint32_t n, const vector_2d_c & projection_center, double radius, double epsilon = 0.0001) const;
 
