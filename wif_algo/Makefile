@@ -7,7 +7,7 @@ OBJ_PATH=$(addprefix ../build/obj/wif_algo/,  $(OBJ_ALGO))
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
 
-INCLUDE=-I../build/include/wif_core
+INCLUDE=-I../build/include/
 
 #Vul GSL_LIBS aan met de GSL libraries die je gebruikt. bv. -lgsl.
 GSL_LIBDIR=-L/usr/lib

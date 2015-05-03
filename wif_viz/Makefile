@@ -7,7 +7,7 @@ OBJ_PATH=$(addprefix ../build/obj/wif_viz/, $(OBJ_VIZ))
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
 
-INCLUDE=-I../build/include/wif_core
+INCLUDE=-I../build/include/
 
 #Vul VTK_LIBS aan met de vtk libraries die je gebruikt. bv. -lvtkCommon.
 VTK_LIBDIR=-L/usr/lib/
