@@ -96,6 +96,12 @@
 		<Unit filename="wif_core/wif_core.hpp">
 			<Option target="all" />
 		</Unit>
+		<Unit filename="wif_viz/visualization.cpp" />
+		<Unit filename="wif_viz/visualization.hpp" />
+		<Unit filename="wif_viz/visualization_root.cpp" />
+		<Unit filename="wif_viz/visualization_root.hpp" />
+		<Unit filename="wif_viz/visualization_vtk.cpp" />
+		<Unit filename="wif_viz/visualization_vtk.hpp" />
 		<Unit filename="wif_viz/wif_viz.cpp">
 			<Option target="all" />
 		</Unit>
