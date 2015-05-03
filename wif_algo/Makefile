@@ -13,8 +13,8 @@ INCLUDE=-I../build/include/
 GSL_LIBDIR=-L/usr/lib
 GSL_LIBS=-lgsl -lgslcblas -lm
 GSL_INCLUDE=-I/usr/include/gsl
-ROOT_LIBS=$(shell root-config --libs)
-ROOT_INCLUDE=$(shell root-config --cflags)
+ROOT_LIBS=$(`shell root-config --libs`)
+ROOT_INCLUDE=$(`shell root-config --cflags`)
 
 
 algo : $(OBJ_ALGO)
