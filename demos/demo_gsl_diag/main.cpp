@@ -166,5 +166,4 @@ int main()
 
 
 	return 0;
-	>>> >>> > ddde39fa86d4decede69cafef4bca12cdf9a8229
 }

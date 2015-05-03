@@ -128,9 +128,9 @@ int main()
 
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
-	double sigma = (params->d);
-	double x = (params->e);
-	double y = (params->f);
+	double sigma = (alpha3->d);
+	double x = (alpha3->e);
+	double y = (alpha3->f);
 	double Act_X = sigma * x / 2 / 3.14 * log(((pow(x, 2) + (y - int_bound_min)) / ((pow(x, 2) + (y - int_bound_max))));
 
 	               printf("result velocity x = % .18f\n", result);
