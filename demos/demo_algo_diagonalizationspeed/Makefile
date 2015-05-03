@@ -7,6 +7,8 @@ OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
 INCLUDE=-I../../build/include
+INCLUDE+=$(shell root-config --cflags)
+INCLUDE+=-I/usr/include/gsl
 LIBDIR=-L../../build/lib
 LIBS+=$(shell root-config --libs)
 LIBS+=-lgsl -lgslcblas -lm
