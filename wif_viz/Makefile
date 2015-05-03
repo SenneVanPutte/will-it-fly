@@ -13,8 +13,8 @@ INCLUDE=-I../build/include/wif_core
 VTK_LIBDIR=-L/usr/lib/
 VTK_LIBS=
 VTK_INCLUDE=-I/usr/include/vtk-5.8/
-ROOT_LIBS=$(shell root-config --libs)
-ROOT_INCLUDE=$(shell root-config --cflags)
+ROOT_LIBS=$(`root-config --libs`)
+ROOT_INCLUDE=$(`root-config --cflags`)
 
 viz : $(OBJ_VIZ)
 	echo "Building wif-viz"
