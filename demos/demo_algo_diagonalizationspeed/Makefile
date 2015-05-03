@@ -13,9 +13,11 @@ LIBDIR=-L../../build/lib
 LIBS+=$(shell root-config --libs)
 LIBS+=-lgsl -lgslcblas -lm
 
-demo : $(OBJ_DEMO)
+demo : ../../build/bin/wif_$(DEMO_NAME)
+
+../../build/bin/wif_$(DEMO_NAME): $(OBJ_PATH)
 	echo "Building ${DEMO_NAME}"
 	$(CC) $(CC_FLAGS) -o ../../build/bin/wif_$(DEMO_NAME) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 
-%.o : %.cpp
-	$(CC) -c $(CC_FLAGS) $(INCLUDE) -o ../../build/obj/demos/$(DEMO_NAME)/$@ $<
+../../build/obj/demos/$(DEMO_NAME)/%.o : %.cpp
+	$(CC) -c $(CC_FLAGS) $(INCLUDE) -o $@ $<

@@ -16,11 +16,12 @@ GSL_INCLUDE=-I/usr/include/gsl
 ROOT_LIBS=$(`shell root-config --libs`)
 ROOT_INCLUDE=$(`shell root-config --cflags`)
 
+algo: ../build/lib/libwif_algo.so 
 
-algo : $(OBJ_ALGO)
+../build/lib/libwif_algo.so : $(OBJ_PATH)
 	echo "Building wif-algo"
 	$(CC) -shared -o ../build/lib/libwif_algo.so $(OBJ_PATH)
 
-%.o : %.cpp
-	$(CC) -c -fPIC $(CC_FLAGS) -o ../build/obj/wif_algo/$@ $< $(INCLUDE) $(GSL_INCLUDE) $(GSL_LIBDIR) $(GSL_LIBS) $(ROOT_INCLUDE) $(ROOT_LIBDIR) 		$(ROOT_LIBS)
+../build/obj/wif_algo/%.o : %.cpp
+	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(GSL_INCLUDE) $(GSL_LIBDIR) $(GSL_LIBS) $(ROOT_INCLUDE) $(ROOT_LIBDIR) $(ROOT_LIBS)
 
