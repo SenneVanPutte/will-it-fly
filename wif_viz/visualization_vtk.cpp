@@ -1,5 +1,35 @@
 #include "visualization_vtk.hpp"
 
+#include <iostream>
+
+#include "vtkCubeAxesActor.h"
+
+#include "vtkVersion.h"
+#include <vtkSmartPointer.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPoints.h>
+#include <vtkGlyph3D.h>
+#include "vtkSmartPointer.h"
+#include "vtkFloatArray.h"
+#include "vtkPointData.h"
+#include "vtkMath.h"
+#include "vtkSphereSource.h"
+
+#include "vtkActor.h"
+#include "vtkCamera.h"
+#include "vtkArrowSource.h"
+
+#include "vtkPolyDataMapper.h"
+#include "vtkProperty.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRenderer.h"
+#include "vtkInteractorStyleTrackballCamera.h"
+#include "vtkInteractorStyleImage.h"
+#include "vtkWindowToImageFilter.h"
+#include "vtkPNGWriter.h"
+
 namespace wif_viz
 {
 
@@ -21,7 +51,7 @@ visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	std::cout << "Creating grid... " << std::endl;
 
 	// grid dimensions
-	static int dims[3] = { bins.x, bins.y , 1 };
+	static int dims[3] = { round(abs(bins.x)), round(abs(bins.y)) , 1 };
 	int size = dims[0] * dims[1] * dims[2];
 
 	// vectors

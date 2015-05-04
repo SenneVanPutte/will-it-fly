@@ -3,7 +3,37 @@
 
 #include "visualization.hpp"
 
-#include <vtkSmartPointer>
+//#include <vtkSmartPointer>
+
+#include <iostream>
+
+#include "vtkCubeAxesActor.h"
+
+#include "vtkVersion.h"
+#include <vtkSmartPointer.h>
+#include <vtkPointData.h>
+#include <vtkPolyData.h>
+#include <vtkPoints.h>
+#include <vtkGlyph3D.h>
+#include "vtkSmartPointer.h"
+#include "vtkFloatArray.h"
+#include "vtkPointData.h"
+#include "vtkMath.h"
+#include "vtkSphereSource.h"
+
+#include "vtkActor.h"
+#include "vtkCamera.h"
+#include "vtkArrowSource.h"
+
+#include "vtkPolyDataMapper.h"
+#include "vtkProperty.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkRenderer.h"
+#include "vtkInteractorStyleTrackballCamera.h"
+#include "vtkInteractorStyleImage.h"
+#include "vtkWindowToImageFilter.h"
+#include "vtkPNGWriter.h"
 
 namespace wif_viz
 {

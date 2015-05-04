@@ -11,7 +11,7 @@ INCLUDE=-I../build/include/
 
 #Vul VTK_LIBS aan met de vtk libraries die je gebruikt. bv. -lvtkCommon.
 VTK_LIBDIR=-L/usr/lib/
-VTK_LIBS=
+VTK_LIBS=-lwif_core -lwif_algo -lwif_viz -lvtkRendering -lvtkGraphics -lvtkFiltering -lvtkCommon -lvtkIO
 VTK_INCLUDE=-I/usr/include/vtk-5.8/
 ROOT_LIBS=$(`root-config --libs`)
 ROOT_INCLUDE=$(`root-config --cflags`)
