@@ -3,6 +3,8 @@
 
 #include "visualization.hpp"
 
+#include <vtkSmartPointer>
+
 namespace wif_viz
 {
 
@@ -15,11 +17,12 @@ public:
 	virtual ~visualization_vtk_c();
 
 	//
-
+	void set_velocityarrows(const vector_2d_c & bins);
+	
 	virtual void draw(const std::string & filename = "");
 
 private:
-	//
+	std::vector<vtkSmartPointer<vtkActor>> actors;
 };
 
 

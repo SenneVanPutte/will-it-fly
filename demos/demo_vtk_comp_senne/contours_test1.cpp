@@ -23,85 +23,53 @@
 
 #include <vtkMath.h>
 
-int main (int argc, char *argv[])
+#include <vector>
+#include <algorithm>
+
+int main ()
 {
   int pointThreshold = 10;
 
-  vtkSmartPointer<vtkPolyData> polyData =
-    vtkSmartPointer<vtkPolyData>::New();
-  vtkSmartPointer<vtkContourFilter> contours =
-    vtkSmartPointer<vtkContourFilter>::New();
+  double xmin = -10, xmax = 10, ymin = -10, ymax = 10;
+  int nx = 20, ny = 20, ncont = 20;
 
-     // If a file is present, read it, otherwise generate some random
-  // scalars on a plane
-//  if (argc > 1)
-//    {
-//    vtkSmartPointer<vtkXMLPolyDataReader> reader =
-//      vtkSmartPointer<vtkXMLPolyDataReader>::New();
-//    reader->SetFileName("xxyygrid.vtk");
-//    reader->Update();
-//
-//    double range[2];
-//    reader->GetOutput()->GetScalarRange(range);
-//    polyData = reader->GetOutput();
-//
-//    std::cout << "range: " << range[0] << ", " << range[1] << std::endl;
-//    contours->SetValue(0, (range[1] + range[0]) / 2.0);
-//
-//    contours->SetInputConnection(reader->GetOutputPort());
-//    if (argc == 3)
-//      {
-//      contours->SetValue(0, atof(argv[2]));
-//      }
-//    else if (argc == 4)
-//      {
-//      contours->SetValue(0, atof(argv[2]));
-//      contours->SetValue(1, atof(argv[3]));
-//      }
-//    else if (argc == 5)
-//      {
-//      contours->GenerateValues(atoi(argv[2]),
-//                               atof(argv[3]),
-//                               atof(argv[4]));
-//      }
-//    }
-//  else
-//    {
-    vtkSmartPointer<vtkPlaneSource> plane =
-      vtkSmartPointer<vtkPlaneSource>::New();
-    plane->SetXResolution(20);
-    plane->SetYResolution(20);
-    plane->SetOrigin(-10, -10, 0);
-    plane->SetPoint1(10, -10, 0);
-    plane->SetPoint2(-10, 10, 0);
+  vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+  vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
+
+
+    vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
+    plane->SetXResolution(nx);
+    plane->SetYResolution(ny);
+    plane->SetOrigin(xmin, ymin, 0);
+    plane->SetPoint1(xmax, ymin, 0);
+    plane->SetPoint2(xmin, ymax, 0);
     plane->Update();
-    vtkPoints *pointys     =
-    plane->GetOutput()->GetPoints();
+    vtkPoints *pointys = plane->GetOutput()->GetPoints();
 
+    vtkSmartPointer<vtkDoubleArray> veld = vtkSmartPointer<vtkDoubleArray>::New();
+    veld->SetNumberOfComponents(1);
+    veld->SetName("Isovalues");
 
-    vtkSmartPointer<vtkDoubleArray> randomScalars =
-      vtkSmartPointer<vtkDoubleArray>::New();
-    randomScalars->SetNumberOfComponents(1);
-    randomScalars->SetName("Isovalues");
+    std::vector<double> veldcomp;
+    double vecy[3];
     for (int i = 0; i < plane->GetOutput()->GetNumberOfPoints(); i++)
-      {
-      double vecy[3];
+    {
+        pointys->GetPoint(i,vecy);
+        veld->InsertNextTuple1(vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+        veldcomp.push_back(vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+    }
 
-      pointys->GetPoint(i,vecy);
-     std::cout << vecy[0] << ", " << vecy[1] << ", " << vecy[2] << endl;
-      randomScalars->InsertNextTuple1(vecy[0]*vecy[0] + vecy[1]*vecy[1]);
-      std::cout << vecy[0]*vecy[0] + vecy[1]*vecy[1] << endl;
-      }
-    plane->GetOutput()->GetPointData()->SetScalars(randomScalars);
+    double minimum = *std::min_element(veldcomp.begin(), veldcomp.end());
+    double maximum = *std::max_element(veldcomp.begin(), veldcomp.end());
+    //cout << "min/max: " << minimum << ", " << maximum << endl;
+    plane->GetOutput()->GetPointData()->SetScalars(veld);
     polyData = plane->GetOutput();
     contours->SetInputConnection(plane->GetOutputPort());
-    contours->GenerateValues(20, 0, 200);
+    contours->GenerateValues(ncont, minimum, maximum);
     pointThreshold = 0;
-  //}
 
   // Connect the segments of the conours into polylines
-  vtkSmartPointer<vtkStripper> contourStripper =
-    vtkSmartPointer<vtkStripper>::New();
+  vtkSmartPointer<vtkStripper> contourStripper = vtkSmartPointer<vtkStripper>::New();
   contourStripper->SetInputConnection(contours->GetOutputPort());
   contourStripper->Update();
 
@@ -111,94 +79,77 @@ int main (int argc, char *argv[])
             << numberOfContourLines << " contours lines."
             << std::endl;
 
-  vtkPoints *points     =
-    contourStripper->GetOutput()->GetPoints();
-  vtkCellArray *cells   =
-    contourStripper->GetOutput()->GetLines();
-  vtkDataArray *scalars =
-    contourStripper->GetOutput()->GetPointData()->GetScalars();
+  vtkPoints *points = contourStripper->GetOutput()->GetPoints();
+  vtkCellArray *cells = contourStripper->GetOutput()->GetLines();
+  vtkDataArray *scalars = contourStripper->GetOutput()->GetPointData()->GetScalars();
 
   // Create a polydata that contains point locations for the contour
   // line labels
-  vtkSmartPointer<vtkPolyData> labelPolyData =
-    vtkSmartPointer<vtkPolyData>::New();
-  vtkSmartPointer<vtkPoints> labelPoints =
-    vtkSmartPointer<vtkPoints>::New();
-  vtkSmartPointer<vtkDoubleArray> labelScalars =
-    vtkSmartPointer<vtkDoubleArray>::New();
+  vtkSmartPointer<vtkPolyData> labelPolyData = vtkSmartPointer<vtkPolyData>::New();
+  vtkSmartPointer<vtkPoints> labelPoints = vtkSmartPointer<vtkPoints>::New();
+  vtkSmartPointer<vtkDoubleArray> labelScalars = vtkSmartPointer<vtkDoubleArray>::New();
   labelScalars->SetNumberOfComponents(1);
   labelScalars->SetName("Isovalues");
 
   vtkIdType *indices;
   vtkIdType numberOfPoints;
   unsigned int lineCount = 0;
-  for (cells->InitTraversal();
-       cells->GetNextCell(numberOfPoints, indices);
-       lineCount++)
+  for (cells->InitTraversal(); cells->GetNextCell(numberOfPoints, indices); lineCount++)
     {
-    if (numberOfPoints < pointThreshold)
-      {
-      continue;
-      }
-    std::cout << "Line " << lineCount << ": " << std::endl;
+        if (numberOfPoints < pointThreshold)
+        {
+            continue;
+        }
+        std::cout << "Line " << lineCount << ": " << std::endl;
 
     // Compute the point id to hold the label
 
      // Mid point or a random point
-    vtkIdType midPointId = indices[numberOfPoints / 2];
-    midPointId =
-      indices[static_cast<vtkIdType>(vtkMath::Random(0, numberOfPoints))];
-
-    double midPoint[3];
-    points->GetPoint(midPointId, midPoint);
-    std::cout << "\tmidPoint is " << midPointId << " with coordinate "
-              << "("
-              << midPoint[0] << ", "
-              << midPoint[1] << ", "
-              << midPoint[2] << ")"
-              << " and value " << scalars->GetTuple1(midPointId)
-              << std::endl;
-    labelPoints->InsertNextPoint(midPoint);
-    labelScalars->InsertNextTuple1(scalars->GetTuple1(midPointId));
+        vtkIdType midPointId = indices[numberOfPoints / 2];
+        midPointId = indices[static_cast<vtkIdType>(vtkMath::Random(0, numberOfPoints))];
+    //vtkMath::Random(0, numberOfPoints)
+        double midPoint[3];
+        points->GetPoint(midPointId, midPoint);//midPointId, midPoint
+        std::cout << "\tmidPoint is " << midPointId << " with coordinate "
+                << "("
+                << midPoint[0] << ", "
+                << midPoint[1] << ", "
+                << midPoint[2] << ")"
+                << " and value " << scalars->GetTuple1(midPointId)
+                << std::endl;
+        labelPoints->InsertNextPoint(midPoint);//midPoint
+        labelScalars->InsertNextTuple1(scalars->GetTuple1(midPointId));//midPointId
     }
 
   labelPolyData->SetPoints(labelPoints);
   labelPolyData->GetPointData()->SetScalars(labelScalars);
 
-  vtkSmartPointer<vtkPolyDataMapper> contourMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
   contourMapper->SetInputConnection(contourStripper->GetOutputPort());
   contourMapper->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> isolines =
-    vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkActor> isolines = vtkSmartPointer<vtkActor>::New();
   isolines->SetMapper(contourMapper);
 
-  vtkSmartPointer<vtkLookupTable> surfaceLUT =
-    vtkSmartPointer<vtkLookupTable>::New();
-  surfaceLUT->SetRange(
-    polyData->GetPointData()->GetScalars()->GetRange());
+  vtkSmartPointer<vtkLookupTable> surfaceLUT = vtkSmartPointer<vtkLookupTable>::New();
+  surfaceLUT->SetRange(polyData->GetPointData()->GetScalars()->GetRange());
   surfaceLUT->Build();
 
-  vtkSmartPointer<vtkPolyDataMapper> surfaceMapper =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
+  vtkSmartPointer<vtkPolyDataMapper> surfaceMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 #if VTK_MAJOR_VERSION <= 5
   surfaceMapper->SetInput(polyData);
 #else
   surfaceMapper->SetInputData(polyData);
 #endif
   surfaceMapper->ScalarVisibilityOn();
-  surfaceMapper->SetScalarRange(
-    polyData->GetPointData()->GetScalars()->GetRange());
+  surfaceMapper->SetScalarRange(polyData->GetPointData()->GetScalars()->GetRange());
   surfaceMapper->SetLookupTable(surfaceLUT);
 
-  vtkSmartPointer<vtkActor> surface =
-    vtkSmartPointer<vtkActor>::New();
+  vtkSmartPointer<vtkActor> surface = vtkSmartPointer<vtkActor>::New();
   surface->SetMapper(surfaceMapper);
 
   // The labeled data mapper will place labels at the points
-  vtkSmartPointer<vtkLabeledDataMapper> labelMapper =
-    vtkSmartPointer<vtkLabeledDataMapper>::New();
+  vtkSmartPointer<vtkLabeledDataMapper> labelMapper = vtkSmartPointer<vtkLabeledDataMapper>::New();
   labelMapper->SetFieldDataName("Isovalues");
 #if VTK_MAJOR_VERSION <= 5
   labelMapper->SetInput(labelPolyData);
@@ -208,21 +159,17 @@ int main (int argc, char *argv[])
   labelMapper->SetLabelModeToLabelScalars();
   labelMapper->SetLabelFormat("%6.2f");
 
-  vtkSmartPointer<vtkActor2D> isolabels =
-    vtkSmartPointer<vtkActor2D>::New();
+  vtkSmartPointer<vtkActor2D> isolabels = vtkSmartPointer<vtkActor2D>::New();
   isolabels->SetMapper(labelMapper);
 
   // Create a renderer and render window
-  vtkSmartPointer<vtkRenderer> renderer =
-      vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
   renderWindow->AddRenderer(renderer);
 
   // Create an interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
   // Add the actors to the scene
