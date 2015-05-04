@@ -13,7 +13,7 @@ demo : viz_demos algo_demos core_demos team_demos
 team_demos : team_viz_demos team_core_demos team_algo_demos
 
 # De demos van de viz library
-viz_demos :
+viz_demos : demo_vtk
 
 # De demos van de algo library
 algo_demos :
