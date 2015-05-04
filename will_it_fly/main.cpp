@@ -28,6 +28,7 @@ bool cmd_option_exists(char ** _begin,
 
 int main(int argc, char ** argv)
 {
+	/*
 	if(cmd_option_exists(argv, argv + argc, "--help"))
 	{
 		std::cout << "Will it fly" << std::endl;
@@ -47,6 +48,7 @@ int main(int argc, char ** argv)
 		std::cout << foil_filename.c_str() << std::endl;
 		return 0;
 	}
+	*/
 
 	std::cout << wif_core::get_version() << std::endl;
 	std::cout << wif_algo::get_version() << std::endl;
