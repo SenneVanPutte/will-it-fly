@@ -14,7 +14,9 @@ char * get_cmd_option(char ** _begin,
 	char ** itr = std::find(_begin, _end, option);
 
 	if((itr != _end) && (++itr != _end))
+	{
 		return *itr;
+	}
 
 	return 0;
 }

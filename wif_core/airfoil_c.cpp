@@ -73,7 +73,7 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle")
 {
-	for (unsigned int i=0;i<corners;i++)
+	for(unsigned int i = 0; i < corners; i++)
 	{
 		points.push_back(vector_2d_radian(radius, (M_PI * i) / corners) + midpoint);
 	}
@@ -215,6 +215,8 @@ std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil)
 	{
 		output << v.x << "\t" << v.y << std::endl;
 	}
+
+	return output;
 };
 
 
