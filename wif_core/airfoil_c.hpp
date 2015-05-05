@@ -92,8 +92,8 @@ private:
 	vector_2d_c get_intersection_first(const line_2d_c & line) const;
 
 private:
-	std::vector<vector_2d_c> points;
 	std::string name;
+	std::vector<vector_2d_c> points;
 
 	friend std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil);
 
