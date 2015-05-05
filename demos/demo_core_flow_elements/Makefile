@@ -10,6 +10,7 @@ INCLUDE=-I../../build/include
 INCLUDE+=$(shell root-config --cflags)
 LIBDIR=-L../../build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
+LIBS+=$(shell root-config --libs)
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
