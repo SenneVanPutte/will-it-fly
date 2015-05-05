@@ -31,7 +31,7 @@ team_core_demos :
 
 team_algo_demos : root_algo_demos gsl_demos demo_algo_diagonalizationspeed demo_algo_integrationspeed
 
-vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_merel demo_vtk_comp_senne
+vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_merel demo_vtk_comp_senne demo_vtk_lines
 
 gsl_demos : demo_gsl_integral demo_gsl_diag demo_gsl_andy
 
