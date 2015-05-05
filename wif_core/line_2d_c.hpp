@@ -49,7 +49,7 @@ public:
 	double get_length() const;
 
 	/**
-	 * calculates lenght of line squared. Faster then pow(get_length(),2)
+	 * calculates lenght of line squared. Faster than pow(get_length(),2)
 	 */
 	double get_length_sq() const;
 
@@ -70,6 +70,11 @@ public:
 	 * use values smaller then 0 or larger then 1 for points on the line, but not on the segment.
 	 */
 	vector_2d_c get_point_on_line(double place) const;
+
+	/**
+	 * gives the transformed vector in a space where the line is parallel to the x axis.
+	*/
+	vector_2d_c get_transformed(vector_2d_c vec,double & ymin,double & ymax);
 
 	/**
 	 * Calculates whether 2 line segments intersect or not, and sets the vector intersect on the intersection.
