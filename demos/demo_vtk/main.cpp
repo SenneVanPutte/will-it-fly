@@ -12,14 +12,19 @@ int main()
 
 	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>();
 
-	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();
-	flow->add_flow(std::make_shared<wif_core::source_sink_c>(wif_core::vector_2d_c(0, 0), 100));
+	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
+	std::shared_ptr<wif_core::source_sheet_c> ss = std::make_shared<wif_core::source_sheet_c>();
+	
+	flow->add_flow(ss);//wif_core::line_2d_c(-1,-1,1,1), 1));
+	//flow->add_flow(unifl);
+	
+	std::cout << ss->get_psi({1, 1});
 
 	wif_core::vector_2d_c min, max, bins;
-	min.x = -10;
-	min.y = -10;
-	max.x = 10;
-	max.y = 10;
+	min.x = -2;
+	min.y = -2;
+	max.x = 2;
+	max.y = 2;
 	bins.x = 100;
 	bins.y = 100;
 	//int binsx = 20, binsy = 20;
@@ -28,6 +33,7 @@ int main()
 
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
+	vizy->set_phi_bins(bins);
 
 	vizy->draw("test.png");
 
