@@ -221,7 +221,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 			pos.y = vecy[1];
 			//pointys->GetPoint(i,vecy);
 			//veld = flow->get_psi(pos);
-			double testval = flow->get_psi(pos);
+			double testval = std::sin(flow->get_psi(pos));
 			
 			std::cout << pos << " " << testval << std::endl;
 			
