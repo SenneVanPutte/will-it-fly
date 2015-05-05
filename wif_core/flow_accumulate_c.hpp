@@ -6,6 +6,7 @@
 #include <vector>
 #include "line_2d_c.hpp"
 #include <memory>
+#include "airfoil_c.hpp"
 
 using std::vector;
 using std::shared_ptr;
@@ -21,6 +22,8 @@ public:
 	flow_accumulate_c(const vector<shared_ptr<flow_c>> & flow);
 
 	flow_accumulate_c(shared_ptr<flow_c> flow);
+
+	flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
 
 	virtual ~flow_accumulate_c();
 
@@ -44,9 +47,6 @@ public:
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
-	/**
-	 * temporary function for testing
-	 */
 	void add_source_sheet(line_2d_c, double);
 
 protected:

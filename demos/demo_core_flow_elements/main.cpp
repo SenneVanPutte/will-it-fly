@@ -62,6 +62,9 @@ void draw_source_sheet()
 
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
+	vector<double> sigmas = {1, 1, 1};
+	wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 3);
+
 	flow_accumulate_c flow = flow_accumulate_c();
 	flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0, -1.0, 1.0, 1.0), 2));
 	flow.add_flow(std::make_shared<uniform_flow_c>(0, 0));
