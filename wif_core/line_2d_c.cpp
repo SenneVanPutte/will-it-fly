@@ -55,7 +55,7 @@ vector_2d_c line_2d_c::get_point_on_line(double place) const
 	return this->begin + this->get_difference() * place;
 }
 
-vector_2d_c line_2d_c::get_transformed(const vector_2d_c & pos, double & ymin, double & ymax)
+vector_2d_c line_2d_c::get_transformed(const vector_2d_c & pos, double & ymin, double & ymax) const
 {
 	vector_2d_c diff = this->get_difference();
 	double l = this->get_length();
