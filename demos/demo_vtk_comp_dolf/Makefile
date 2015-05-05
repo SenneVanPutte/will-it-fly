@@ -8,7 +8,7 @@ CC=g++ -std=c++11
 CC_FLAGS=-Wall
 INCLUDE=-I../../build/include -I/usr/include/vtk-5.8/
 LIBDIR=-L../../build/lib
-LIBS=-lvtkCommon -lvtkFiltering -lvtkGraphics -lvtkRendering -lvtkIO
+LIBS=-lvtkCommon -lvtkFiltering -lvtkGraphics -lvtkRendering -lvtkIO -lvtkHybrid
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
