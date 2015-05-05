@@ -25,22 +25,22 @@ source_sink_c::~source_sink_c()
 
 double source_sink_c::get_phi(const vector_2d_c & pos) const
 {
-    vector_2d_c diff= pos-location;
-	return atan(diff.y/diff.x)*sigma/(2*M_PI);
+	vector_2d_c diff = pos - location;
+	return atan(diff.y / diff.x) * sigma / (2 * M_PI);
 }
 
 double source_sink_c::get_psi(const vector_2d_c & pos) const
 {
-	vector_2d_c diff= pos-location;
-	return log(diff.get_length_sq())*sigma/(4*M_PI);
+	vector_2d_c diff = pos - location;
+	return log(diff.get_length_sq()) * sigma / (4 * M_PI);
 }
 
 vector_2d_c source_sink_c::get_velocity(const vector_2d_c & pos) const
 {
-	vector_2d_c diff= pos-location;
-	double vx=diff.x/(diff.get_length_sq())*sigma/(2*M_PI);
-	double vy=diff.y/(diff.get_length_sq())*sigma/(2*M_PI);
-	return vector_2d_c(vx,vy);
+	vector_2d_c diff = pos - location;
+	double vx = diff.x / (diff.get_length_sq()) * sigma / (2 * M_PI);
+	double vy = diff.y / (diff.get_length_sq()) * sigma / (2 * M_PI);
+	return vector_2d_c(vx, vy);
 
 }
 

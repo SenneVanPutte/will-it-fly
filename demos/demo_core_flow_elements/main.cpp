@@ -60,53 +60,55 @@ void test_flow_acc()
 void draw_source_sheet()
 {
 
-    TCanvas *c1 = new TCanvas("c1","c1",600,600);
+	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
-    flow_accumulate_c flow = flow_accumulate_c();
-    flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0,-1.0,1.0,1.0),2));
-    flow.add_flow(std::make_shared<uniform_flow_c>(0,0));
+	flow_accumulate_c flow = flow_accumulate_c();
+	flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0, -1.0, 1.0, 1.0), 2));
+	flow.add_flow(std::make_shared<uniform_flow_c>(0, 0));
 
-    double xmin=-2;
-    double xmax=2;
-    double ymin=-2;
-    double ymax=2;
+	double xmin = -2;
+	double xmax = 2;
+	double ymin = -2;
+	double ymax = 2;
 
-    int lx=1000;
-    int ly=1000;
+	int lx = 1000;
+	int ly = 1000;
 
-    TH2F* hist=new TH2F("hist","name",lx,xmin,xmax,ly,ymin,ymax);
+	TH2F * hist = new TH2F("hist", "name", lx, xmin, xmax, ly, ymin, ymax);
 
-    int xbinmax= hist->GetXaxis()->GetLast();
-    int ybinmax= hist->GetYaxis()->GetLast();
+	int xbinmax = hist->GetXaxis()->GetLast();
+	int ybinmax = hist->GetYaxis()->GetLast();
 
-    for(int i=hist->GetXaxis()->GetFirst();i<=xbinmax;i++){
-        for(int j=hist->GetYaxis()->GetFirst();j<=ybinmax;j++){
-        double x=hist->GetXaxis()->GetBinCenter(i);
-        double y=hist->GetYaxis()->GetBinCenter(j);
+	for(int i = hist->GetXaxis()->GetFirst(); i <= xbinmax; i++)
+	{
+		for(int j = hist->GetYaxis()->GetFirst(); j <= ybinmax; j++)
+		{
+			double x = hist->GetXaxis()->GetBinCenter(i);
+			double y = hist->GetYaxis()->GetBinCenter(j);
 
-        double a=flow.get_psi(vector_2d_c(x,y));
+			double a = flow.get_psi(vector_2d_c(x, y));
 
-        hist->SetBinContent(i,j,atan(a));
+			hist->SetBinContent(i, j, atan(a));
 
-        }
-    }
+		}
+	}
 
-    //hist->SetContour(10);
+	//hist->SetContour(10);
 
-    hist->GetXaxis()->SetTitle("x");
-    hist->GetYaxis()->SetTitle("Y");
-    hist->SetStats(0);
-    hist->SetLineColor(1);
+	hist->GetXaxis()->SetTitle("x");
+	hist->GetYaxis()->SetTitle("Y");
+	hist->SetStats(0);
+	hist->SetLineColor(1);
 
-    hist->Draw("CONT3");
-    TImage *img= TImage::Create();
+	hist->Draw("CONT3");
+	TImage * img = TImage::Create();
 
-   img->FromPad(c1);
-    img->WriteImage("demo.png");
+	img->FromPad(c1);
+	img->WriteImage("demo.png");
 
-    delete hist;
-    delete img;
-    delete c1;
+	delete hist;
+	delete img;
+	delete c1;
 
 
 }

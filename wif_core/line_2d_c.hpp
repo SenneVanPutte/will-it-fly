@@ -74,7 +74,7 @@ public:
 	/**
 	 * gives the transformed vector in a space where the line is parallel to the x axis.
 	*/
-	vector_2d_c get_transformed(const vector_2d_c & pos,double & ymin,double & ymax) const;
+	vector_2d_c get_transformed(const vector_2d_c & pos, double & ymin, double & ymax) const;
 
 	/**
 	 * Calculates whether 2 line segments intersect or not, and sets the vector intersect on the intersection.
