@@ -6,9 +6,9 @@ OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
-INCLUDE=-I../../build/include
-LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+INCLUDE=-I../../build/include -I/usr/include/vtk-5.8
+LIBDIR=-L../../build/lib 
+LIBS= -lwif_core -lwif_algo -lwif_viz -lvtkRendering -lvtkCommon -lvtkIO -lvtkRendering -lvtkFiltering
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
