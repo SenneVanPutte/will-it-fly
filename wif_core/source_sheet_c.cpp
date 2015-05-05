@@ -1,5 +1,6 @@
 #include "source_sheet_c.hpp"
 #include <cmath>
+#include <iostream>
 
 using std::log;
 using std::atan2;
@@ -42,7 +43,7 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 	//return ((a * b - b * c) * (log(temp1) - log(a * a + c * c))
 	  //      + 2 * (b * b + d * d) * (temp2)) * sigma / (temp3);
 
-
+/*
     double b = line.begin.y - pos.y;
 	double a = line.end.y - line.begin.y;
 	double d = line.begin.x - pos.x;
@@ -57,6 +58,24 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 	double at3=atan2(a+b,c+d);
 
 	return ((coef1*(lo1-lo2)+2*coef2*(at1-at2))/(2*a*a+2*c*c)+at3)*sigma/(2*M_PI);
+*/
+
+double ymin=0;
+double ymax=0;
+
+vector_2d_c transpos= line.get_transformed(pos,ymin,ymax);
+double x=transpos.x;
+double y=transpos.y;
+
+//std::cout<<ymin<<'\n'<<ymax<<'\n';
+
+double lo1=log(ymax*ymax-2*ymax*y+x*x+y*y);
+double lo2=log(ymin*ymin-2*ymin*y+x*x+y*y);
+double at1=atan((ymax-y)/x);
+double at2=atan((ymin-y)/x);
+
+return sigma/(4*M_PI)*(x*(lo1-lo2)+2*(y-ymax)*at1-2*(y-ymin)*at2);
+
 
 }
 
@@ -84,17 +103,15 @@ double source_sheet_c::get_phi(const vector_2d_c & pos) const
 
 vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
 {
-	//return vector_2d_c(line.end.x, line.begin.y) - pos;
-	vector_2d_c diff = line.end - line.begin;
-	double l = line.get_length();
-	double ymin = (line.begin.x * diff.x - line.begin.y * diff.y) / l;
-	double ymax = (line.end.x * diff.x + line.end.y * diff.y) / l;
+	double ymin=0;
+    double ymax=0;
 
-	double x = (diff.y * pos.x - diff.x * pos.y + line.begin.y * line.end.x - line.end.y * line.begin.x) / l;
-	double y = (diff.x * pos.x + diff.y * pos.y) / l;
+    vector_2d_c transpos= line.get_transformed(pos,ymin,ymax);
+    double x=transpos.x;
+    double y=transpos.y;
 
-	double vx = log((x * x + (y - ymin)) / (x * x + (y - ymax))) * sigma * x / (2 * M_PI);
-	double vy = log((x * x + (y - ymin) * (y - ymin)) / (x * x + (y - ymax) * (y - ymax))) * sigma / (M_PI);
+	double vx = (atan((y-ymin)/x)-atan((y-ymax)/x))* sigma / (2 * M_PI);
+	double vy = log((x * x + (y - ymin) * (y - ymin)) / (x * x + (y - ymax) * (y - ymax))) * sigma / (4*M_PI);
 	return vector_2d_c(vx, vy);
 }
 

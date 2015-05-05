@@ -62,9 +62,9 @@ void draw_source_sheet()
 
     TCanvas *c1 = new TCanvas("c1","c1",600,600);
 
-    flow_accumulate_c flow = flow_accumulate_c(std::make_shared<uniform_flow_c>(0,0));
-    flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0,0.0,1.0,0.0),1));
-    //flow.add_flow(std::make_shared<uniform_flow_c>(0,1));
+    flow_accumulate_c flow = flow_accumulate_c();
+    flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0,-1.0,1.0,1.0),2));
+    flow.add_flow(std::make_shared<uniform_flow_c>(0,0));
 
     double xmin=-2;
     double xmax=2;
@@ -91,7 +91,7 @@ void draw_source_sheet()
         }
     }
 
-    hist->SetContour(10);
+    //hist->SetContour(10);
 
     hist->GetXaxis()->SetTitle("x");
     hist->GetYaxis()->SetTitle("Y");
