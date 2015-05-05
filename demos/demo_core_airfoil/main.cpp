@@ -20,5 +20,7 @@ int main()
 	wif_core::airfoil_c airfoil(test, "flat");
 	std::cout << airfoil;
 	std::cout << airfoil.get_circle_projection(10, wif_core::vector_2d_c(0.5, 0.0), 0.5);
+	wif_core::airfoil_c airfoil3(wif_core::vector_2d_c(0.5, 0.0), 0.5, 8);
+	std::cout << airfoil3;
 
 }

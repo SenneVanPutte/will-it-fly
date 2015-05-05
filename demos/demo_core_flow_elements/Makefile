@@ -10,9 +10,12 @@ INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 
-demo : $(OBJ_DEMO)
-	echo "Building $(DEMO_NAME)"
+demo : ../../build/bin/wif_$(DEMO_NAME)
+
+../../build/bin/wif_$(DEMO_NAME): $(OBJ_PATH)
+	echo "Building ${DEMO_NAME}"
 	$(CC) $(CC_FLAGS) -o ../../build/bin/wif_$(DEMO_NAME) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
+
 
 %.o : %.cpp
 	$(CC) -c $(CC_FLAGS) $(INCLUDE) -o ../../build/obj/demos/$(DEMO_NAME)/$@ $<# Makefile
@@ -33,3 +36,4 @@ demo : $(OBJ_DEMO)
 
 %.o : %.cpp
 	$(CC) -c $(CC_FLAGS) $(INCLUDE) -o ../../build/obj/demos/$(DEMO_NAME)/$@ $<
+

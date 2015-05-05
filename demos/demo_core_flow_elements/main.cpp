@@ -86,12 +86,12 @@ void draw_source_sheet()
 
         double a=flow.get_psi(vector_2d_c(x,y));
 
-        hist->SetBinContent(i,j,a);
+        hist->SetBinContent(i,j,atan(a));
 
         }
     }
 
-    hist->SetContour(20);
+    hist->SetContour(10);
 
     hist->GetXaxis()->SetTitle("x");
     hist->GetYaxis()->SetTitle("Y");

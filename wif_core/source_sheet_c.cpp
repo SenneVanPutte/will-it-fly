@@ -43,10 +43,10 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 	  //      + 2 * (b * b + d * d) * (temp2)) * sigma / (temp3);
 
 
-    double a = line.begin.y - pos.y;
-	double b = line.end.y - line.begin.y;
-	double c = line.begin.x - pos.x;
-	double d = line.end.x - line.begin.x;
+    double b = line.begin.y - pos.y;
+	double a = line.end.y - line.begin.y;
+	double d = line.begin.x - pos.x;
+	double c = line.end.x - line.begin.x;
 
 	double coef1=b*c-a*d;
 	double coef2=a*b+c*d;
