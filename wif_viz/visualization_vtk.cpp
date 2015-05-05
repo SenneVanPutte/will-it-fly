@@ -1,35 +1,30 @@
 #include "visualization_vtk.hpp"
 #include "visualization.hpp"
 
-#include <iostream>
-
-#include "vtkCubeAxesActor.h"
-
-#include "vtkVersion.h"
 #include <vtkSmartPointer.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtkAppendPolyData.h>
+#include <vtkClipPolyData.h>
+#include <vtkCleanPolyData.h>
+#include <vtkContourFilter.h>
+
+#include <vtkFloatArray.h>
+#include <vtkCellData.h>
 #include <vtkPointData.h>
-#include <vtkPolyData.h>
-#include <vtkPoints.h>
-#include <vtkGlyph3D.h>
-#include "vtkSmartPointer.h"
-#include "vtkFloatArray.h"
-#include "vtkPointData.h"
-#include "vtkMath.h"
-#include "vtkSphereSource.h"
+#include <vtkScalarsToColors.h>
+#include <vtkLookupTable.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkActor.h>
 
-#include "vtkActor.h"
-#include "vtkCamera.h"
-#include "vtkArrowSource.h"
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkPlaneSource.h>
+#include <vtkDoubleArray.h>
 
-#include "vtkPolyDataMapper.h"
-#include "vtkProperty.h"
-#include "vtkRenderWindow.h"
-#include "vtkRenderWindowInteractor.h"
-#include "vtkRenderer.h"
-#include "vtkInteractorStyleTrackballCamera.h"
-#include "vtkInteractorStyleImage.h"
-#include "vtkWindowToImageFilter.h"
-#include "vtkPNGWriter.h"
+#include <vector>
+#include <algorithm>
 
 namespace wif_viz
 {
@@ -50,10 +45,10 @@ visualization_vtk_c::~visualization_vtk_c()
 void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 {
 	std::cout << "Creating grid... " << std::endl;
-	
+
 	int binsx = round(abs(bins.x));
 	int binsy = round(abs(bins.y));
-	
+
 	// grid dimensions
 	static int dims[3] = { binsx, binsy , 1 };
 	int size = dims[0] * dims[1] * dims[2];
@@ -76,7 +71,7 @@ void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	//std::cout << "x in [" << -grens << "," << grens << "]" << endl;
 	//std::cout << "y in [" << -grens << "," << grens << "]" << endl;
 	//std::cout << "stapgrootte: " << stapgrootte << endl;
-	
+
 	v[2] = 0;
 
 	for(int j = 0; j < dims[1]; j++)
@@ -174,7 +169,7 @@ void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 
 	actors.push_back(cubeAxesActor);
 	actors.push_back(superquadricActor);
-	
+
 	//renderer->AddActor2D(cubeAxesActor);
 	//renderer->AddActor2D(superquadricActor);
 	//renderer->AddActor2D(maakPunt(0,0));
@@ -185,58 +180,184 @@ void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 
 void visualization_vtk_c::draw(const std::string & filename)
 {
-	if (velocity_bins.x != 0 && velocity_bins.y != 0)
+	if(velocity_bins.x != 0 && velocity_bins.y != 0)
 	{
-		
+		std::cout << "test" << endl;
 	}
-	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	const char * c = filename.c_str();
-	for(std::vector<vtkSmartPointer<vtkActor>>::iterator it = actors.begin(); it != actors.end(); ++it) 
+
+	if(psi_bins.x != 0 && psi_bins.y)
 	{
-		//if ( it == actors.begin())
-		//{
-			//continue;
-		//}
-		renderer->AddActor2D(*it);
+		int pointThreshold = 10;
+
+		double xmin = min_range.x, xmax = max_range.x, ymin = min_range.y, ymax = max_range.y;
+		int nx = round(abs(psi_bins.x)), ny = round(abs(psi_bins.y)), ncont = 20;
+
+		vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+
+		vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
+		plane->SetXResolution(nx);
+		plane->SetYResolution(ny);
+		plane->SetOrigin(xmin, ymin, 0);
+		plane->SetPoint1(xmax, ymin, 0);
+		plane->SetPoint2(xmin, ymax, 0);
+		plane->Update();
+		vtkPoints * pointys = plane->GetOutput()->GetPoints();
+
+		vtkSmartPointer<vtkDoubleArray> veld = vtkSmartPointer<vtkDoubleArray>::New();
+		veld->SetNumberOfComponents(1);
+		veld->SetName("Isovalues");
+
+		std::vector<double> veldcomp;
+		double vecy[3];
+		wif_core::vector_2d_c pos, vel;
+
+		for(int i = 0; i < plane->GetOutput()->GetNumberOfPoints(); i++)
+		{
+			pointys->GetPoint(i, vecy);
+			pos.x = vecy[0];
+			pos.y = vecy[1];
+			//pointys->GetPoint(i,vecy);
+			//veld = flow->get_psi(pos);
+			veld->InsertNextTuple1(flow->get_psi(pos));//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+			veldcomp.push_back(flow->get_psi(pos));//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+		}
+
+		double minimum = *std::min_element(veldcomp.begin(), veldcomp.end());
+		double maximum = *std::max_element(veldcomp.begin(), veldcomp.end());
+		//cout << "min/max: " << minimum << ", " << maximum << endl;
+		plane->GetOutput()->GetPointData()->SetScalars(veld);
+		polyData = plane->GetOutput();
+		//contours->SetInputConnection(plane->GetOutputPort());
+		//contours->GenerateValues(ncont, minimum, maximum);
+		pointThreshold = 0;
+
+
+
+
+
+
+		// Read the file
+		//vtkSmartPointer<vtkXMLPolyDataReader> reader =
+		//vtkSmartPointer<vtkXMLPolyDataReader>::New();
+
+		//reader->SetFileName( argv[1] );
+		//reader->Update(); // Update so that we can get the scalar range
+
+
+		double scalarRange[2];
+		plane->GetOutput()->GetPointData()->GetScalars()->GetRange(scalarRange);
+
+		vtkSmartPointer<vtkAppendPolyData> appendFilledContours =
+		    vtkSmartPointer<vtkAppendPolyData>::New();
+
+		int numberOfContours = ncont;
+
+		double delta =
+		    (scalarRange[1] - scalarRange[0]) /
+		    static_cast<double>(numberOfContours - 1);
+
+		// Keep the clippers alive
+		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersLo;
+		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersHi;
+
+		for(int i = 0; i < numberOfContours; i++)
+		{
+			double valueLo = scalarRange[0] + static_cast<double>(i) * delta;
+			double valueHi = scalarRange[0] + static_cast<double>(i + 1) * delta;
+			clippersLo.push_back(vtkSmartPointer<vtkClipPolyData>::New());
+			clippersLo[i]->SetValue(valueLo);
+
+			if(i == 0)
+			{
+				clippersLo[i]->SetInputConnection(plane->GetOutputPort());
+			}
+			else
+			{
+				clippersLo[i]->SetInputConnection(clippersHi[i - 1]->GetOutputPort(1));
+			}
+
+			clippersLo[i]->InsideOutOff();
+			clippersLo[i]->Update();
+
+			clippersHi.push_back(vtkSmartPointer<vtkClipPolyData>::New());
+			clippersHi[i]->SetValue(valueHi);
+			clippersHi[i]->SetInputConnection(clippersLo[i]->GetOutputPort());
+			clippersHi[i]->GenerateClippedOutputOn();
+			clippersHi[i]->InsideOutOn();
+			clippersHi[i]->Update();
+
+			if(clippersHi[i]->GetOutput()->GetNumberOfCells() == 0)
+			{
+				continue;
+			}
+
+			vtkSmartPointer<vtkFloatArray> cd =
+			    vtkSmartPointer<vtkFloatArray>::New();
+			cd->SetNumberOfComponents(1);
+			cd->SetNumberOfTuples(clippersHi[i]->GetOutput()->GetNumberOfCells());
+			cd->FillComponent(0, valueLo);
+
+			clippersHi[i]->GetOutput()->GetCellData()->SetScalars(cd);
+			appendFilledContours->AddInputConnection(clippersHi[i]->GetOutputPort());
+		}
+
+		vtkSmartPointer<vtkCleanPolyData> filledContours =
+		    vtkSmartPointer<vtkCleanPolyData>::New();
+		filledContours->SetInputConnection(appendFilledContours->GetOutputPort());
+
+		vtkSmartPointer<vtkLookupTable> lut =
+		    vtkSmartPointer<vtkLookupTable>::New();
+		lut->SetNumberOfTableValues(numberOfContours + 1);
+		lut->Build();
+		vtkSmartPointer<vtkPolyDataMapper> contourMapper =
+		    vtkSmartPointer<vtkPolyDataMapper>::New();
+		contourMapper->SetInputConnection(filledContours->GetOutputPort());
+		contourMapper->SetScalarRange(scalarRange[0], scalarRange[1]);
+		contourMapper->SetScalarModeToUseCellData();
+		contourMapper->SetLookupTable(lut);
+
+		vtkSmartPointer<vtkActor> contourActor =
+		    vtkSmartPointer<vtkActor>::New();
+		contourActor->SetMapper(contourMapper);
+		contourActor->GetProperty()->SetInterpolationToFlat();
+
+		vtkSmartPointer<vtkContourFilter> contours =
+		    vtkSmartPointer<vtkContourFilter>::New();
+		contours->SetInputConnection(filledContours->GetOutputPort());
+		contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+
+		vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer =
+		    vtkSmartPointer<vtkPolyDataMapper>::New();
+		contourLineMapperer->SetInputConnection(contours->GetOutputPort());
+		contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
+		contourLineMapperer->ScalarVisibilityOff();
+
+		vtkSmartPointer<vtkActor> contourLineActor =
+		    vtkSmartPointer<vtkActor>::New();
+		contourLineActor->SetMapper(contourLineMapperer);
+		contourLineActor->GetProperty()->SetLineWidth(2);
+
+		// The usual renderer, render window and interactor
+		vtkSmartPointer<vtkRenderer> ren1 =
+		    vtkSmartPointer<vtkRenderer>::New();
+		vtkSmartPointer<vtkRenderWindow> renWin =
+		    vtkSmartPointer<vtkRenderWindow>::New();
+		vtkSmartPointer<vtkRenderWindowInteractor>
+		iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+
+		ren1->SetBackground(.1, .2, .3);
+		renWin->AddRenderer(ren1);
+		iren->SetRenderWindow(renWin);
+
+		// Add the actors
+		ren1->AddActor(contourActor);
+		ren1->AddActor(contourLineActor);
+
+		// Begin interaction
+		renWin->Render();
+		iren->Start();
 	}
-	
-	renderer->ResetCamera();
-	
-	vtkSmartPointer<vtkRenderWindow> renderWindow =
-	    vtkSmartPointer<vtkRenderWindow>::New();
-	renderWindow->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	    vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderWindow);
-
-	vtkSmartPointer<vtkInteractorStyleImage> imageStyle = vtkSmartPointer<vtkInteractorStyleImage>::New();
-	renderWindow->GetInteractor()->SetInteractorStyle(imageStyle);
-
-	renderWindow->Render();
-	renderWindowInteractor->Start();
-	
-	if (filename != "")
-	{
-		vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
-		windowToImageFilter->SetInput(renderWindow);
-		windowToImageFilter->SetMagnification(2); //set the resolution of the output image (3 times the current resolution of vtk render window)
-		windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
-		windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
-		windowToImageFilter->Update();
-
-		vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
-		writer->SetInputConnection(windowToImageFilter->GetOutputPort());
-		writer->SetFileName(c);
-		std::cout << "heyooo1" << endl;
-		writer->Write();
-		std::cout << "heyooo" << endl;
-//		renderWindow->Render();
-//		renderer->ResetCamera();
-//		renderWindow->Render();
-//		renderWindowInteractor->Start();
-		renderWindowInteractor->Start();
-	}
 }
 
 

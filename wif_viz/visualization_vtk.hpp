@@ -48,7 +48,7 @@ public:
 
 	//
 	//virtual void set_velocityarrows(const vector_2d_c & bins);
-	
+
 	virtual void draw(const std::string & filename = "");
 
 private:

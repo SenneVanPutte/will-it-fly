@@ -44,7 +44,7 @@ public:
 	 * bestand dat gegeven is door filename.c_str()
 	 */
 	//virtual void set_velocityarrows(const vector_2d_c & bins) = 0;
-	
+
 	virtual void draw(const std::string & filename = "") = 0;
 
 	//
