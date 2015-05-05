@@ -27,6 +27,17 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 
+#include <vtkActor2D.h>
+#include <vtkIntArray.h>
+#include <vtkLabelPlacementMapper.h>
+#include <vtkPointSetToLabelHierarchy.h>
+#include <vtkPointSource.h>
+#include <vtkStringArray.h>
+ 
+
+
+ 
+
 
 
 #include<iostream>
@@ -73,16 +84,16 @@ int main(){
 	
 // Maakt de punten 
   double O1[3] = {0.0, 0.0, 0.0};   //oorsprong 1
-  double P1[3] = {2.0, -2.0, 0.0};	//punt 1
+  double Q1[3] = {4.0, -2.0, 0.0};	//punt 1
   double O2[3] = {-1.0, 3.0, 0.0};	//oorsprong 2
-  double P2[3] = {-3.0, 0.0, 0.0};	//punt 2
+  double Q2[3] = {-3.0, 0.0, 0.0};	//punt 2
   
 // Maak een vtk object om de punten in op te slagen
   vtkSmartPointer<vtkPoints> pts = vtkSmartPointer<vtkPoints>::New();
   pts->InsertNextPoint(O1);
-  pts->InsertNextPoint(P1);
+  pts->InsertNextPoint(Q1);
   pts->InsertNextPoint(O2);
-  pts->InsertNextPoint(P2);
+  pts->InsertNextPoint(Q2);
   
 // kleuren aanmaken
   unsigned char red[3] = {255, 0, 0};
@@ -131,9 +142,29 @@ int main(){
 
 
 
+// PUNT
+// definieer de plaats van het punt
+  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  const float P[3] = {1.0, 2.0, 0.0};
+  
+// Create the topology of the point (a vertex)
+  vtkSmartPointer<vtkCellArray> vertices = vtkSmartPointer<vtkCellArray>::New();
+  vtkIdType pid[1];
+  pid[0] = points->InsertNextPoint(P);
+  vertices->InsertNextCell(1,pid);
+  
+// Create a polydata object
+  vtkSmartPointer<vtkPolyData> point = vtkSmartPointer<vtkPolyData>::New();
+    
+// Set the points and vertices we created as the geometry and topology of the polydata
+  point->SetPoints(points);
+  point->SetVerts(vertices);
 
 
 
+ 
+ 
+ 
 
 
 
@@ -201,6 +232,32 @@ int main(){
   renWin->AddRenderer(renderer);
   iren->SetRenderWindow(renWin);
   renderer->AddActor(actorlijn);
+  
+  
+  // VISUALISATIE PUNT
+  vtkSmartPointer<vtkPolyDataMapper> mapperpunt = vtkSmartPointer<vtkPolyDataMapper>::New();
+#if VTK_MAJOR_VERSION <= 5
+  mapperpunt->SetInput(point);
+#else
+  mapperpunt->SetInputData(point);
+#endif
+ 
+  vtkSmartPointer<vtkActor> actorpunt = vtkSmartPointer<vtkActor>::New();
+  actorpunt->SetMapper(mapperpunt);
+  actorpunt->GetProperty()->SetPointSize(10);
+ 
+ 
+  renderer->AddActor(actorpunt);
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
  
   renWin->Render();
   iren->Initialize();
