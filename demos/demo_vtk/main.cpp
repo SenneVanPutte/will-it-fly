@@ -10,19 +10,20 @@ int main()
 	std::cout << wif_algo::get_version() << std::endl;
 	std::cout << wif_viz::get_version()  << std::endl;
 	
-	uniform_flow_c *unifl = uniform_flow();
-	vector_2d_c min, max, bins;
+	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>();
+	wif_core::vector_2d_c min, max, bins;
 	min.x = -10;
 	min.y = -10;
 	max.x = 10;
 	max.y = 10;
 	bins.x = 20;
 	bins.y = 20;
+	//int binsx = 20, binsy = 20;
 	
-	visualization_vtk_c vizy = visualization_vtk_c(unifl,min,max);
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(unifl, min, max);
 	
-	vizy.set_velocityarrows(bins);
+	vizy->set_velocityarrows(bins);
 	
-	vizy.draw("test.png");
+	vizy->draw("test.png");
 	
 }

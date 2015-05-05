@@ -1,4 +1,5 @@
 #include "visualization_vtk.hpp"
+#include "visualization.hpp"
 
 #include <iostream>
 
@@ -35,7 +36,7 @@ namespace wif_viz
 
 
 visualization_vtk_c::visualization_vtk_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range) :
-	visualization_c(flow, min_range, max_range), actors(vtkSmartPointer<vtkActor>::New())
+	visualization_c(flow, min_range, max_range), actors()
 {
 	//this-> actors = vtkSmartPointer<vtkActor>::New();
 }
@@ -45,13 +46,16 @@ visualization_vtk_c::~visualization_vtk_c()
 {
 	//
 }
-
-visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
+/*
+void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 {
 	std::cout << "Creating grid... " << std::endl;
-
+	
+	int binsx = round(abs(bins.x));
+	int binsy = round(abs(bins.y));
+	
 	// grid dimensions
-	static int dims[3] = { round(abs(bins.x)), round(abs(bins.y)) , 1 };
+	static int dims[3] = { binsx, binsy , 1 };
 	int size = dims[0] * dims[1] * dims[2];
 
 	// vectors
@@ -64,13 +68,14 @@ visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	points->Allocate(size);
 
 	// fill in data
+	double minx = min_range.x, maxx=max_range.x, miny=min_range.y, maxy=max_range.y;
 	vector_2d_c pos,vel;
 	float x[3];
 	float v[3];
-	float stapgroottex = (2 * grens) / dims[0], stapgroottey = (2 * grens) / dims[1];
-	std::cout << "x in [" << -grens << "," << grens << "]" << endl;
-	std::cout << "y in [" << -grens << "," << grens << "]" << endl;
-	std::cout << "stapgrootte: " << stapgrootte << endl;
+	float stapgroottex = (maxx - minx) / dims[0], stapgroottey = (maxy - miny) / dims[1];
+	//std::cout << "x in [" << -grens << "," << grens << "]" << endl;
+	//std::cout << "y in [" << -grens << "," << grens << "]" << endl;
+	//std::cout << "stapgrootte: " << stapgrootte << endl;
 	
 	v[2] = 0;
 
@@ -152,7 +157,7 @@ visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor =
 	    vtkSmartPointer<vtkCubeAxesActor>::New();
 	cubeAxesActor->SetBounds(glyph3D->GetOutput()->GetBounds());
-	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
+	//cubeAxesActor->SetCamera(renderer->GetActiveCamera());
 
 
 	cubeAxesActor->DrawXGridlinesOff();
@@ -176,18 +181,22 @@ visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	//renderer->ResetCamera();
 	//renderer->GetActiveCamera()->Azimuth(0);
 	//renderer->GetActiveCamera()->Elevation(0);
-}
+}*/
 
 void visualization_vtk_c::draw(const std::string & filename)
 {
+	if (velocity_bins.x != 0 && velocity_bins.y != 0)
+	{
+		
+	}
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-	
+	const char * c = filename.c_str();
 	for(std::vector<vtkSmartPointer<vtkActor>>::iterator it = actors.begin(); it != actors.end(); ++it) 
 	{
-		if ( it == actors.begin())
-		{
-			continue;
-		}
+		//if ( it == actors.begin())
+		//{
+			//continue;
+		//}
 		renderer->AddActor2D(*it);
 	}
 	
@@ -218,7 +227,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 		vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
 		writer->SetInputConnection(windowToImageFilter->GetOutputPort());
-		writer->SetFileName(filename);
+		writer->SetFileName(c);
 		std::cout << "heyooo1" << endl;
 		writer->Write();
 		std::cout << "heyooo" << endl;
