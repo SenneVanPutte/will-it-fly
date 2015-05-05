@@ -215,6 +215,8 @@ std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil)
 	{
 		output << v.x << "\t" << v.y << std::endl;
 	}
+
+	return output;
 };
 
 
