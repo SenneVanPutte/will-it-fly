@@ -22,7 +22,7 @@ std::shared_ptr<visualization_c> create_visualization_vtk(std::shared_ptr<flow_c
 
 std::shared_ptr<visualization_c> create_visualization_root(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range)
 {
-	return std::make_shared<visualization_root_c>(flow, min_range, max_range);
+	//return std::make_shared<visualization_root_c>(flow, min_range, max_range);
 }
 
 

@@ -43,6 +43,8 @@ public:
 	 * Als de filename == "", print naar het scherm, anders naar het
 	 * bestand dat gegeven is door filename.c_str()
 	 */
+	//virtual void set_velocityarrows(const vector_2d_c & bins) = 0;
+
 	virtual void draw(const std::string & filename = "") = 0;
 
 	//
@@ -55,6 +57,9 @@ protected:
 	vector_2d_c psi_bins;
 	vector_2d_c phi_bins;
 	vector_2d_c velocity_bins;
+
+private:
+
 };
 
 
