@@ -22,8 +22,10 @@ public:
 
 	virtual void draw(const std::string & filename = "");
 
-protected:
+	void FillBins();
 
+protected:
+	TH2F * velocity, *psi, *phi;
 	//
 };
 
