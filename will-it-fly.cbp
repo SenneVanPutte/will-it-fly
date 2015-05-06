@@ -105,6 +105,13 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 			</Target>
+			<Target title="demo_root">
+				<Option output="build/bin/wif_demo_vtk" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
 			<Target title="demo_root_algo_diag">
 				<Option output="build/bin/wif_demo_root_algo_diag" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/exec" />
@@ -154,8 +161,15 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 			</Target>
-			<Target title="demo_vtk_lines">
-				<Option output="build/bin/wif_demo_vtk_lines" prefix_auto="1" extension_auto="1" />
+			<Target title="demo_vtk_dolf">
+				<Option output="build/bin/wif_demo_vtk_dolf" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_merel">
+				<Option output="build/bin/wif_demo_vtk_merel" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/exec" />
 				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
 				<Option type="1" />
@@ -187,6 +201,7 @@
 		<Unit filename="demos/demo_gsl_andy/main.cpp" />
 		<Unit filename="demos/demo_gsl_diag/main.cpp" />
 		<Unit filename="demos/demo_gsl_integral/main.cpp" />
+		<Unit filename="demos/demo_root/main.cpp" />
 		<Unit filename="demos/demo_root_algo_diag/main.cpp" />
 		<Unit filename="demos/demo_root_algo_integral/main.cpp" />
 		<Unit filename="demos/demo_template/main.cpp" />
@@ -199,13 +214,10 @@
 		<Unit filename="demos/demo_vtk_comp_merel/veldmetlijnen.cpp" />
 		<Unit filename="demos/demo_vtk_comp_senne/contours_test1.cpp" />
 		<Unit filename="demos/demo_vtk_comp_senne/main.cpp" />
-		<Unit filename="demos/demo_vtk_lines/main.cpp" />
-		<Unit filename="wif_algo/wif_algo.cpp">
-			<Option target="all" />
-		</Unit>
-		<Unit filename="wif_algo/wif_algo.hpp">
-			<Option target="all" />
-		</Unit>
+		<Unit filename="demos/demo_vtk_dolf/main.cpp" />
+		<Unit filename="demos/demo_vtk_merel/main.cpp" />
+		<Unit filename="wif_algo/wif_algo.cpp" />
+		<Unit filename="wif_algo/wif_algo.hpp" />
 		<Unit filename="wif_core/add_sheet_c.cpp" />
 		<Unit filename="wif_core/add_sheet_c.hpp" />
 		<Unit filename="wif_core/airfoil_c.cpp" />
@@ -234,12 +246,8 @@
 		<Unit filename="wif_viz/visualization_root.hpp" />
 		<Unit filename="wif_viz/visualization_vtk.cpp" />
 		<Unit filename="wif_viz/visualization_vtk.hpp" />
-		<Unit filename="wif_viz/wif_viz.cpp">
-			<Option target="all" />
-		</Unit>
-		<Unit filename="wif_viz/wif_viz.hpp">
-			<Option target="all" />
-		</Unit>
+		<Unit filename="wif_viz/wif_viz.cpp" />
+		<Unit filename="wif_viz/wif_viz.hpp" />
 		<Unit filename="will_it_fly/main.cpp">
 			<Option target="all" />
 		</Unit>
