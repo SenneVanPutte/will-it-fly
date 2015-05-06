@@ -5,10 +5,11 @@ OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
 OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
 CC=g++
-CC_FLAGS=-std=c++11 -g -Wall
+CC_FLAGS=-std=c++11 -g -Wall $(shell root-config --cflags)
+
 INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+LIBS= $(shell root-config --libs)
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
