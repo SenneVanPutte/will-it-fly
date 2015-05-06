@@ -4,7 +4,6 @@
 #include "vector_2d_c.hpp"
 
 
-
 namespace wif_core
 {
 
@@ -36,6 +35,8 @@ private:
 
 };
 
-}
+
+} // namespace wif_core
+
 
 #endif // __FLOW_SHEET_HPP_INCLUDED__

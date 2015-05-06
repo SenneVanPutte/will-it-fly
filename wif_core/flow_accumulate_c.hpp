@@ -5,7 +5,6 @@
 #include <memory>
 #include <vector>
 
-
 #include "airfoil_c.hpp"
 #include "flow_c.hpp"
 #include "line_2d_c.hpp"
