@@ -10,10 +10,6 @@ OBJ_PATH=$(addprefix ./build/obj/wif/, $(OBJ_WIF))
 
 PATH:=/home/uauser/Software/root-v5.34.25/builddir/bin:$(PATH)
 
-INCLUDE_CORE={add_sheet_c.hpp}
-INCLUDE_ALGO=
-INCLUDE_VIZ=
-
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
 
@@ -22,7 +18,9 @@ LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 EXECUTABLE=./build/bin/wif
 
-all : demos $(EXECUTABLE)
+INSTALL_PATH=~/install
+
+all : demos wif
 	echo "Building all"
 
 doxygen : builddir
@@ -71,13 +69,13 @@ team_core_demos :
 
 team_algo_demos : root_algo_demos gsl_demos demo_algo_diagonalizationspeed demo_algo_integrationspeed
 
-vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_merel demo_vtk_comp_senne demo_vtk_lines
+vtk_compilatie_demos : demo_vtk_comp_dolf demo_vtk_comp_kristof demo_vtk_comp_merel demo_vtk_comp_senne demo_vtk_merel
 
 gsl_demos : demo_gsl_integral demo_gsl_diag demo_gsl_andy
 
 root_algo_demos : demo_root_algo_diag demo_root_algo_integral
 
-wif : wifcore wifalgo wifviz
+wif : libs
 	mkdir -p ./build/obj/wif
 	$(MAKE) -C ./will_it_fly willitfly
 
@@ -85,20 +83,33 @@ wifcore : builddir
 	mkdir -p ./build/obj/wif_core
 	mkdir -p ./build/include/wif_core
 	cat ./wif_core/install_headers.txt | xargs -I % cp -u ./wif_core/% ./build/include/wif_core
+	cat ./wif_core/install_headers.txt | xargs -I % chmod 755 ./build/include/wif_core/%
 	$(MAKE) -C ./wif_core core
 
 wifalgo : wif_core
 	mkdir -p ./build/obj/wif_algo
 	mkdir -p ./build/include/wif_algo
 	cat ./wif_algo/install_headers.txt | xargs -I % cp -u ./wif_algo/% ./build/include/wif_algo
+	cat ./wif_algo/install_headers.txt | xargs -I % chmod 755 ./build/include/wif_algo/%
 	$(MAKE) -C ./wif_algo algo
 
 wifviz : wif_core
 	mkdir -p ./build/obj/wif_viz
 	mkdir -p ./build/include/wif_viz
 	cat ./wif_viz/install_headers.txt | xargs -I % cp -u ./wif_viz/% ./build/include/wif_viz
+	cat ./wif_viz/install_headers.txt | xargs -I % chmod 755 ./build/include/wif_viz/%
 	$(MAKE) -C ./wif_viz viz
 
 clean :
 	echo "Cleaning build directory"
 	rm -rf ./build
+
+install: all
+	cp -ru ./build/lib/* $(INSTALL_PATH)/lib/
+	chmod 755 $(INSTALL_PATH)/lib/*
+	cp -ru ./build/include/* $(INSTALL_PATH)/include/
+	cp -ru ./build/bin/* $(INSTALL_PATH)/bin/
+	chmod 755 $(INSTALL_PATH)/bin/*
+	#$(MAKE) clean
+
+uninstall:
