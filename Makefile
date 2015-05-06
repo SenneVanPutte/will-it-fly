@@ -34,12 +34,12 @@ doxygen :
 demos : wifcore wifalgo wifviz
 	cd ./demos; $(MAKE) demo
 
-$(EXECUTABLE): $(OBJ_PATH)
+$(EXECUTABLE): $(SRC_PATH)
 	echo "Building binary"
 	echo $(SRC_PATH)
 	$(CC) $(CC_FLAGS) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 
-wif : wifcore wifalgo wifviz
+$(SRC_PATH) : wifcore wifalgo wifviz
 	mkdir -p ./build/obj/wif
 	$(MAKE) -C ./will_it_fly willitfly
 
