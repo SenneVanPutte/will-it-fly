@@ -9,6 +9,7 @@ OBJ_WIF=$(SRC_WIF:.cpp=.o)
 OBJ_PATH=$(addprefix ./build/obj/wif/, $(OBJ_WIF))
 
 PATH:=/home/uauser/Software/root-v5.34.25/builddir/bin:$(PATH)
+LD_LIBRARY_PATH:=/home/uauser/Software/root-v5.34.25/builddir/lib:$(LD_LIBRARY_PATH)
 
 CC=g++ -std=c++11
 CC_FLAGS=-Wall
