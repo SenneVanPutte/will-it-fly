@@ -42,4 +42,15 @@ vector_2d_c uniform_flow_c::get_velocity() const
 	return U;
 }
 
+double uniform_flow_c::get_angle() const
+{
+
+	return U.get_angle();
+}
+
+double uniform_flow_c::get_strength() const
+{
+	return U.get_length();
+}
+
 }

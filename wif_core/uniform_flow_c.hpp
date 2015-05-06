@@ -41,6 +41,10 @@ public:
 	 */
 	vector_2d_c get_velocity() const;
 
+	double get_strength() const;
+
+	double get_angle() const;
+
 protected:
 private:
 	vector_2d_c U;

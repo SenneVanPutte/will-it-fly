@@ -23,7 +23,7 @@ public:
 
 	flow_accumulate_c(shared_ptr<flow_c> flow);
 
-	flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
+	//flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
 
 	virtual ~flow_accumulate_c();
 
@@ -49,11 +49,14 @@ public:
 
 	void add_source_sheet(line_2d_c, double);
 
+	static flow_accumulate_c & airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil);
+
 protected:
 
 private:
 	vector<shared_ptr<flow_c>> flows;
 };
+
 
 
 
