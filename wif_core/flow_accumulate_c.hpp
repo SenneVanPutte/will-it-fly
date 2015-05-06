@@ -57,9 +57,15 @@ public:
 	 */
 	void add_vortex_sheet(line_2d_c line, double lambda);
 
-	void airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil);
+	/**
+	 * adds source sheets with lines on the airfoil and strenghts given in sigmas
+	 */
+	void add_source_sheets(const vector<double> & sigmas, const airfoil_c & foil);
 
-	void airfoil_to_vortex_sheet(double strenght, const airfoil_c & foil);
+	/**
+	 * adds vortex sheets with lines on the airfoil and a given strenght.
+	 */
+	void add_vortex_sheets(double strength, const airfoil_c & foil);
 
 protected:
 

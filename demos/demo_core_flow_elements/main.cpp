@@ -72,8 +72,8 @@ void draw_source_sheet()
 	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
 	//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
 
-	flow.airfoil_to_source_sheet(sigmas, foil);
-	flow.airfoil_to_vortex_sheet(1, foil);
+	flow.add_source_sheets(sigmas, foil);
+	flow.add_vortex_sheets(1, foil);
 
 	/*cout << flow.get_psi(pos) << "\n";
 	cout << flow.get_phi(pos) << "\n";*/

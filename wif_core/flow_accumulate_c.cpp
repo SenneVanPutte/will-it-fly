@@ -34,7 +34,7 @@ flow_accumulate_c::flow_accumulate_c(shared_ptr<flow_c> flow)
 	flows.push_back(flow);
 }
 
-void flow_accumulate_c::airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil)
+void flow_accumulate_c::add_source_sheets(const vector<double> & sigmas, const airfoil_c & foil)
 {
 	vector<line_2d_c> lines = foil.get_lines();
 	int l = lines.size();
@@ -45,7 +45,7 @@ void flow_accumulate_c::airfoil_to_source_sheet(const vector<double> & sigmas, c
 	}
 }
 
-void flow_accumulate_c::airfoil_to_vortex_sheet(double strenght, const airfoil_c & foil)
+void flow_accumulate_c::add_vortex_sheets(double strenght, const airfoil_c & foil)
 {
 	vector<line_2d_c> lines = foil.get_lines();
 	int l = lines.size();
