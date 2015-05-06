@@ -18,7 +18,7 @@ LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 EXECUTABLE=./build/bin/wif
 
-INSTALL_PATH=~/install
+INSTALL_PATH=/usr/
 
 all : demos wif
 	echo "Building all"
@@ -105,11 +105,24 @@ clean :
 	rm -rf ./build
 
 install: all
+	echo "Installing... Please wait."
 	cp -ru ./build/lib/* $(INSTALL_PATH)/lib/
 	chmod 755 $(INSTALL_PATH)/lib/*
 	cp -ru ./build/include/* $(INSTALL_PATH)/include/
-	cp -ru ./build/bin/* $(INSTALL_PATH)/bin/
-	chmod 755 $(INSTALL_PATH)/bin/*
+	cp -ru ./build/bin/wif $(INSTALL_PATH)/bin/
+	chmod 755 $(INSTALL_PATH)/bin/wif
 	#$(MAKE) clean
+	echo "Done"
 
 uninstall:
+	echo "Uninstalling... Please wait."
+	rm -f $(INSTALL_PATH)/lib/libwif_core.so
+	rm -f $(INSTALL_PATH)/lib/libwif_algo.so
+	rm -f $(INSTALL_PATH)/lib/libwif_viz.so
+	rm -rf $(INSTALL_PATH)/include/wif_core
+	rm -rf $(INSTALL_PATH)/include/wif_algo
+	rm -rf $(INSTALL_PATH)/include/wif_viz
+	rm -f $(INSTALL_PATH)/bin/wif
+	echo "Done"
+	
+
