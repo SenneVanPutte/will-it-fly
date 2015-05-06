@@ -15,7 +15,10 @@ int main()
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
 	//std::shared_ptr<wif_core::airfoil_c> ss = std::make_shared<wif_core::source_sheet_c>(wif_core::line_2d_c(-1,-1,1,1), 1);
 
-	std::shared_ptr<wif_core::flow_c> ff = std::make_shared<wif_core::flow_accumulate_c>(std::vector<double>(10, 1), wif_core::airfoil_c({0, 0}, 1, 10));
+	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
+
+	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();
+	ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 
 	//flow->add_flow(ss);//wif_core::line_2d_c(-1,-1,1,1), 1));
 	//flow->add_flow(unifl);
@@ -27,11 +30,11 @@ int main()
 	min.y = -2;
 	max.x = 2;
 	max.y = 2;
-	bins.x = 100;
-	bins.y = 100;
+	bins.x = 10;
+	bins.y = 10;
 	//int binsx = 20, binsy = 20;
 
-	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_root(ff, min, max);
 
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);

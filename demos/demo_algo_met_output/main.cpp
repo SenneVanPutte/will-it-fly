@@ -15,7 +15,8 @@ int main()
 	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
 #endif //
 
-	std::shared_ptr<wif_core::flow_c> ff = std::make_shared<wif_core::flow_accumulate_c>(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
+	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();
+	ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 
 	wif_core::vector_2d_c min, max, bins;
 	min.x = -2;

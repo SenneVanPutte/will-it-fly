@@ -116,7 +116,7 @@
 				<Option compiler="gcc" />
 			</Target>
 			<Target title="demo_root">
-				<Option output="build/bin/wif_demo_vtk" prefix_auto="1" extension_auto="1" />
+				<Option output="build/bin/wif_demo_root" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/exec" />
 				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
 				<Option type="1" />
