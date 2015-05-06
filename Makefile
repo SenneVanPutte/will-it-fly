@@ -22,7 +22,7 @@ LIBDIR=-L./build/lib
 LIBS=-lwif_core -lwif_algo -lwif_viz
 EXECUTABLE=./build/bin/wif
 
-all : demos exec
+all : demos $(EXECUTABLE)
 	echo "Building all"
 
 doxygen :
@@ -34,7 +34,7 @@ doxygen :
 demos : wifcore wifalgo wifviz
 	cd ./demos; $(MAKE) demo
 
-exec: wif
+$(EXECUTABLE): $(OBJ_PATH)
 	echo "Building binary"
 	echo $(SRC_PATH)
 	$(CC) $(CC_FLAGS) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
