@@ -1,12 +1,15 @@
 #ifndef __ADD_SHEET_C_HPP_INCLUDED__
 #define __ADD_SHEET_C_HPP_INCLUDED__
 
+
 #include "flow_c.hpp"
 #include "vector_2d_c.hpp"
 #include <memory>
 
+
 namespace wif_core
 {
+
 
 /**
  * helper class for flow_accumulate_c
@@ -20,10 +23,10 @@ public:
 
 	double operator()(double, std::shared_ptr<flow_c>) const;
 
+public:
 	vector_2d_c position;
 
 };
-
 
 
 /**
@@ -38,6 +41,7 @@ public:
 
 	double operator()(double, std::shared_ptr<flow_c>) const;
 
+public:
 	vector_2d_c position;
 
 };
@@ -55,10 +59,13 @@ public:
 
 	vector_2d_c operator()(vector_2d_c, std::shared_ptr<flow_c>) const;
 
+public:
 	vector_2d_c position;
 
 };
 
-}
 
-#endif // ADD_SHEET_C_HPP
+} // namespace wif_core
+
+
+#endif // __ADD_SHEET_C_HPP_INCLUDED__
