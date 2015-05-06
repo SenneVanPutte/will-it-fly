@@ -47,7 +47,7 @@ public:
 
 	//
 
-private:
+protected:
 	std::shared_ptr<flow_c> flow;
 	vector_2d_c min_range;
 	vector_2d_c max_range;

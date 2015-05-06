@@ -13,8 +13,8 @@ INCLUDE=-I../build/include/
 VTK_LIBDIR=-L/usr/lib/
 VTK_LIBS=
 VTK_INCLUDE=-I/usr/include/vtk-5.8/
-ROOT_LIBS=$(`root-config --libs`)
-ROOT_INCLUDE=$(`root-config --cflags`)
+ROOT_LIBS=$(shell root-config --libs)
+ROOT_INCLUDE=$(shell root-config --cflags)
 
 viz: ../build/lib/libwif_viz.so
 
@@ -23,5 +23,5 @@ viz: ../build/lib/libwif_viz.so
 	$(CC) -shared -o ../build/lib/libwif_viz.so $(OBJ_PATH)
 
 ../build/obj/wif_viz/%.o : %.cpp
-	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(VTK_INCLUDE) $(VTK_LIBDIR) $(VTK_LIBS) $(ROOT_INCLUDE) $(ROOT_LIBDIR) $(ROOT_LIBS)
+	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(VTK_INCLUDE) $(ROOT_INCLUDE) $(VTK_LIBDIR) $(ROOT_LIBS) $(VTK_LIBS)
 

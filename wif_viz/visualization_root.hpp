@@ -2,7 +2,13 @@
 #define __VISUALISATION_ROOT_HPP_INCLUDED__
 
 #include "visualization.hpp"
-
+#include <TROOT.h>
+#include <THistPainter.h>
+#include <TCanvas.h>
+#include <TH2.h>
+#include <TStyle.h>
+#include <TMarker.h>
+#include <TArrow.h>
 namespace wif_viz
 {
 
@@ -14,11 +20,10 @@ public:
 
 	virtual ~visualization_root_c();
 
-	//
-
 	virtual void draw(const std::string & filename = "");
 
-private:
+protected:
+
 	//
 };
 
