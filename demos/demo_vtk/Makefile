@@ -13,7 +13,7 @@ LIBS=-lwif_core -lwif_algo -lwif_viz
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
-../../build/bin/wif_$(DEMO_NAME): $(OBJ_PATH)
+../../build/bin/wif_$(DEMO_NAME) : $(OBJ_PATH)
 	echo "Building ${DEMO_NAME}"
 	$(CC) $(CC_FLAGS) -o ../../build/bin/wif_$(DEMO_NAME) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
 

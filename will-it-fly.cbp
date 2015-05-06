@@ -19,10 +19,10 @@
 				<Option compiler="gcc" />
 			</Target>
 			<Target title="wif">
-				<Option output="will-it-fly" prefix_auto="1" extension_auto="1" />
-				<Option type="1" />
+				<Option output="build/bin/wif" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 			</Target>
 			<Target title="wif_core">
 				<Option output="will-it-fly" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
@@ -49,6 +49,118 @@
 				<Option type="4" />
 				<Option compiler="gcc" />
 			</Target>
+			<Target title="demo_algo_diagonalizationspeed">
+				<Option output="build/bin/wif_demo_algo_diagonalizationspeed" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_algo_integrationspeed">
+				<Option output="build/bin/wif_demo_algo_integrationspeed" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_core_airfoil">
+				<Option output="build/bin/wif_demo_core_airfoil" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_core_flow_elements">
+				<Option output="build/bin/wif_demo_core_flow_elements" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_core_vector_line">
+				<Option output="build/bin/wif_demo_core_vector_line" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_gsl_andy">
+				<Option output="build/bin/wif_demo_gsl_andy" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_gsl_diag">
+				<Option output="build/bin/wif_demo_gsl_diag" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_gsl_integral">
+				<Option output="build/bin/wif_demo_gsl_integral" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_root_algo_diag">
+				<Option output="build/bin/wif_demo_root_algo_diag" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_root_algo_integral">
+				<Option output="build/bin/wif_demo_root_algo_integral" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk">
+				<Option output="build/bin/wif_demo_vtk" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_comp_dolf">
+				<Option output="build/bin/wif_demo_vtk_comp_dolf" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_comp_kristof">
+				<Option output="build/bin/wif_demo_vtk_comp_kristof" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_comp_merel">
+				<Option output="build/bin/wif_demo_vtk_comp_merel" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_comp_senne">
+				<Option output="build/bin/wif_demo_vtk_comp_senne" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="demo_vtk_lines">
+				<Option output="build/bin/wif_demo_vtk_lines" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="build/exec" />
+				<Option object_output="/home/uauser/eindwerk/will-it-fly/.objs" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -68,17 +180,22 @@
 		<Unit filename="demos/demo_core_airfoil/main.cpp" />
 		<Unit filename="demos/demo_core_flow_elements/main.cpp" />
 		<Unit filename="demos/demo_core_vector_line/main.cpp" />
+		<Unit filename="demos/demo_gsl_andy/main.cpp" />
 		<Unit filename="demos/demo_gsl_diag/main.cpp" />
 		<Unit filename="demos/demo_gsl_integral/main.cpp" />
-		<Unit filename="demos/demo_integral_gsl/main.cpp" />
 		<Unit filename="demos/demo_root_algo_diag/main.cpp" />
 		<Unit filename="demos/demo_root_algo_integral/main.cpp" />
-		<Unit filename="demos/demo_vector_line/main.cpp" />
+		<Unit filename="demos/demo_template/main.cpp" />
 		<Unit filename="demos/demo_vtk/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_dolf/axes.cpp" />
 		<Unit filename="demos/demo_vtk_comp_dolf/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_kristof/axes.cpp" />
 		<Unit filename="demos/demo_vtk_comp_kristof/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_merel/main.cpp" />
+		<Unit filename="demos/demo_vtk_comp_merel/veldmetlijnen.cpp" />
+		<Unit filename="demos/demo_vtk_comp_senne/contours_test1.cpp" />
 		<Unit filename="demos/demo_vtk_comp_senne/main.cpp" />
+		<Unit filename="demos/demo_vtk_lines/main.cpp" />
 		<Unit filename="wif_algo/wif_algo.cpp">
 			<Option target="all" />
 		</Unit>

@@ -21,6 +21,7 @@ algo: ../build/lib/libwif_algo.so
 ../build/lib/libwif_algo.so : $(OBJ_PATH)
 	echo "Building wif-algo"
 	$(CC) -shared -o ../build/lib/libwif_algo.so $(OBJ_PATH)
+	ln -sLf ../lib/libwif_algo.so ../build/exec/libwif_algo.so
 
 ../build/obj/wif_algo/%.o : %.cpp
 	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(GSL_INCLUDE) $(GSL_LIBDIR) $(GSL_LIBS) $(ROOT_INCLUDE) $(ROOT_LIBDIR) $(ROOT_LIBS)

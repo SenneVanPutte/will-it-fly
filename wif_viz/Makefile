@@ -22,6 +22,7 @@ viz: ../build/lib/libwif_viz.so
 ../build/lib/libwif_viz.so : $(OBJ_PATH)
 	echo "Building wif-viz"
 	$(CC)  -shared -o ../build/lib/libwif_viz.so $(OBJ_PATH) $(LIBDIR) $(VTK_LIBDIR) $(VTK_LIBS) $(ROOT_LIBDIR) $(ROOT_LIBS)
+	ln -sLf ../lib/libwif_viz.so ../build/exec/libwif_viz.so
 
 ../build/obj/wif_viz/%.o : %.cpp
 	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(VTK_INCLUDE) $(ROOT_INCLUDE) 
