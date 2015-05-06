@@ -14,8 +14,8 @@ LIBDIR=-L../build/lib
 VTK_LIBDIR=-L/usr/lib/
 VTK_LIBS=-lwif_core -lwif_algo -lvtkRendering -lvtkGraphics -lvtkFiltering -lvtkCommon -lvtkIO -lvtkHybrid -lvtkWidgets
 VTK_INCLUDE=-I/usr/include/vtk-5.8/
-ROOT_LIBS=$(`root-config --libs`)
-ROOT_INCLUDE=$(`root-config --cflags`)
+ROOT_LIBS=$(shell root-config --libs)
+ROOT_INCLUDE=$(shell root-config --cflags)
 
 viz: ../build/lib/libwif_viz.so
 
@@ -25,5 +25,5 @@ viz: ../build/lib/libwif_viz.so
 	ln -sLf ../lib/libwif_viz.so ../build/exec/libwif_viz.so
 
 ../build/obj/wif_viz/%.o : %.cpp
-	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(VTK_INCLUDE) $(ROOT_INCLUDE) 
+	$(CC) -c -fPIC $(CC_FLAGS) -o $@ $< $(INCLUDE) $(VTK_INCLUDE) $(ROOT_INCLUDE) $(VTK_LIBDIR) $(ROOT_LIBS) $(VTK_LIBS)
 

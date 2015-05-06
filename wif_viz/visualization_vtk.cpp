@@ -428,7 +428,8 @@ void visualization_vtk_c::draw(const std::string & filename)
 				testval = -1;
 			}
 
-			std::cout << testval << std::endl;
+			//std::cout << testval << std::endl;
+
 			veld->InsertNextTuple1(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 			veldcomp.push_back(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 		}
