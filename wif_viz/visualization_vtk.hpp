@@ -47,7 +47,9 @@ public:
 	virtual ~visualization_vtk_c();
 
 	//
-	//virtual void set_velocityarrows(const vector_2d_c & bins);
+	void createGrid(int nX, int nY, bool psiorphi);
+
+	void contour_plot(bool psiorphi, int contlines);//true geeft psi, false geeft phi
 
 	virtual void draw(const std::string & filename = "");
 
