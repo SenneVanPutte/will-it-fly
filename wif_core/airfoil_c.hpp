@@ -1,10 +1,10 @@
 #ifndef __AIRFOIL_C_HPP_INCLUDED__
 #define __AIRFOIL_C_HPP_INCLUDED__
 
+
 #include <string>
 #include <vector>
 #include "line_2d_c.hpp"
-
 
 
 namespace wif_core
@@ -72,7 +72,6 @@ public:
 	 */
 	std::vector<line_2d_c> get_lines_reversed() const;
 
-
 	/**
 	 * Gives the name
 	 */
@@ -101,6 +100,7 @@ private:
 
 
 std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil);
+
 
 } // namespace wif_core
 
