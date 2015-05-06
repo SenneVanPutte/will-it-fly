@@ -74,6 +74,7 @@
 		<Unit filename="demos/demo_root_algo_diag/main.cpp" />
 		<Unit filename="demos/demo_root_algo_integral/main.cpp" />
 		<Unit filename="demos/demo_vector_line/main.cpp" />
+		<Unit filename="demos/demo_vtk/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_dolf/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_kristof/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_merel/main.cpp" />

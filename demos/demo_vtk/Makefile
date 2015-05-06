@@ -9,7 +9,7 @@ CC_FLAGS=-Wall
 
 INCLUDE=-I../../build/include
 LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+LIBS=-lwif_core -lwif_algo -lwif_viz 
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 

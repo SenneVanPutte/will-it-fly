@@ -67,7 +67,7 @@ double source_sheet_c::get_psi(const vector_2d_c & pos) const
 	double x = transpos.x;
 	double y = transpos.y;
 
-//std::cout<<ymin<<'\n'<<ymax<<'\n';
+	//std::cout<<ymin<<'\n'<<ymax<<'\n';
 
 	double lo1 = log(ymax * ymax - 2 * ymax * y + x * x + y * y);
 	double lo2 = log(ymin * ymin - 2 * ymin * y + x * x + y * y);
