@@ -197,9 +197,9 @@ void visualization_vtk_c::draw(const std::string & filename)
 		vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
 		plane->SetXResolution(nx);
 		plane->SetYResolution(ny);
-		
+
 		std::cout << nx << ny << std::endl;
-		
+
 		plane->SetOrigin(xmin, ymin, 0);
 		plane->SetPoint1(xmax, ymin, 0);
 		plane->SetPoint2(xmin, ymax, 0);
@@ -222,19 +222,25 @@ void visualization_vtk_c::draw(const std::string & filename)
 			//pointys->GetPoint(i,vecy);
 			//veld = flow->get_psi(pos);
 			double testval = std::sin(flow->get_psi(pos));
-			
+
 			std::cout << pos << " " << testval << std::endl;
-			
+
 			if(testval > 500)
+			{
 				testval = 1;
+			}
+
 			if(testval < -500)
+			{
 				testval = -1;
-			
+			}
+
 			//std::cout << testval << std::endl;
 			veld->InsertNextTuple1(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 			veldcomp.push_back(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 		}
-std::cout << "1" << std::endl;
+
+		std::cout << "1" << std::endl;
 		double minimum = *std::min_element(veldcomp.begin(), veldcomp.end());
 		double maximum = *std::max_element(veldcomp.begin(), veldcomp.end());
 		//cout << "min/max: " << minimum << ", " << maximum << endl;
@@ -268,7 +274,7 @@ std::cout << "1" << std::endl;
 		double delta =
 		    (scalarRange[1] - scalarRange[0]) /
 		    static_cast<double>(numberOfContours - 1);
-std::cout << "2" << std::endl;
+		std::cout << "2" << std::endl;
 		// Keep the clippers alive
 		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersLo;
 		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersHi;
@@ -313,7 +319,8 @@ std::cout << "2" << std::endl;
 			clippersHi[i]->GetOutput()->GetCellData()->SetScalars(cd);
 			appendFilledContours->AddInputConnection(clippersHi[i]->GetOutputPort());
 		}
-std::cout << "3" << std::endl;
+
+		std::cout << "3" << std::endl;
 		vtkSmartPointer<vtkCleanPolyData> filledContours =
 		    vtkSmartPointer<vtkCleanPolyData>::New();
 		filledContours->SetInputConnection(appendFilledContours->GetOutputPort());
@@ -344,7 +351,7 @@ std::cout << "3" << std::endl;
 		contourLineMapperer->SetInputConnection(contours->GetOutputPort());
 		contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
 		contourLineMapperer->ScalarVisibilityOff();
-std::cout << "4" << std::endl;
+		std::cout << "4" << std::endl;
 		vtkSmartPointer<vtkActor> contourLineActor =
 		    vtkSmartPointer<vtkActor>::New();
 		contourLineActor->SetMapper(contourLineMapperer);
@@ -365,16 +372,16 @@ std::cout << "4" << std::endl;
 		// Add the actors
 		ren1->AddActor(contourActor);
 		ren1->AddActor(contourLineActor);
-std::cout << "5" << std::endl;
+		std::cout << "5" << std::endl;
 		// Begin interaction
 		renWin->Render();
 		iren->Start();
 		std::cout << "6" << std::endl;
 	}
-	
+
 	if(phi_bins.x != 0 && phi_bins.y)
 	{
-		
+
 		int pointThreshold = 10;
 
 		double xmin = min_range.x, xmax = max_range.x, ymin = min_range.y, ymax = max_range.y;
@@ -385,9 +392,9 @@ std::cout << "5" << std::endl;
 		vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
 		plane->SetXResolution(nx);
 		plane->SetYResolution(ny);
-		
+
 		std::cout << nx << ny << std::endl;
-		
+
 		plane->SetOrigin(xmin, ymin, 0);
 		plane->SetPoint1(xmax, ymin, 0);
 		plane->SetPoint2(xmin, ymax, 0);
@@ -410,17 +417,23 @@ std::cout << "5" << std::endl;
 			//pointys->GetPoint(i,vecy);
 			//veld = flow->get_psi(pos);
 			double testval = flow->get_phi(pos);
-			
+
 			if(testval > 500)
+			{
 				testval = 1;
+			}
+
 			if(testval < -500)
+			{
 				testval = -1;
-			
+			}
+
 			//std::cout << testval << std::endl;
 			veld->InsertNextTuple1(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 			veldcomp.push_back(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 		}
-std::cout << "1" << std::endl;
+
+		std::cout << "1" << std::endl;
 		double minimum = *std::min_element(veldcomp.begin(), veldcomp.end());
 		double maximum = *std::max_element(veldcomp.begin(), veldcomp.end());
 		//cout << "min/max: " << minimum << ", " << maximum << endl;
@@ -454,7 +467,7 @@ std::cout << "1" << std::endl;
 		double delta =
 		    (scalarRange[1] - scalarRange[0]) /
 		    static_cast<double>(numberOfContours - 1);
-std::cout << "2" << std::endl;
+		std::cout << "2" << std::endl;
 		// Keep the clippers alive
 		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersLo;
 		std::vector<vtkSmartPointer<vtkClipPolyData> > clippersHi;
@@ -499,7 +512,8 @@ std::cout << "2" << std::endl;
 			clippersHi[i]->GetOutput()->GetCellData()->SetScalars(cd);
 			appendFilledContours->AddInputConnection(clippersHi[i]->GetOutputPort());
 		}
-std::cout << "3" << std::endl;
+
+		std::cout << "3" << std::endl;
 		vtkSmartPointer<vtkCleanPolyData> filledContours =
 		    vtkSmartPointer<vtkCleanPolyData>::New();
 		filledContours->SetInputConnection(appendFilledContours->GetOutputPort());
@@ -530,7 +544,7 @@ std::cout << "3" << std::endl;
 		contourLineMapperer->SetInputConnection(contours->GetOutputPort());
 		contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
 		contourLineMapperer->ScalarVisibilityOff();
-std::cout << "4" << std::endl;
+		std::cout << "4" << std::endl;
 		vtkSmartPointer<vtkActor> contourLineActor =
 		    vtkSmartPointer<vtkActor>::New();
 		contourLineActor->SetMapper(contourLineMapperer);
@@ -551,7 +565,7 @@ std::cout << "4" << std::endl;
 		// Add the actors
 		ren1->AddActor(contourActor);
 		ren1->AddActor(contourLineActor);
-std::cout << "5" << std::endl;
+		std::cout << "5" << std::endl;
 		// Begin interaction
 		renWin->Render();
 		iren->Start();

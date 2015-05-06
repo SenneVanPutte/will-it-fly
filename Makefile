@@ -29,8 +29,7 @@ doxygen : builddir
 	doxygen
 	ln -sLf ./html/index.html ./build/doc/index.html
 
-demos : wifcore wifalgo wifviz
-	cd ./demos; $(MAKE) demo
+libs : wifcore wifalgo wifviz
 
 # Makefile demos
 
@@ -44,12 +43,12 @@ builddir :
 	mkdir -p ./build/exec
 
 demo_% : export DEMO_NAME = $@
-demo_% : builddir wifcore wifalgo wifviz
+demo_% : builddir libs
 	mkdir -p ./build/obj/demos
 	mkdir -p ./build/obj/demos/$@
 	$(MAKE) -C ./demos/$@ demo
 
-demo : viz_demos algo_demos core_demos team_demos
+demos : viz_demos algo_demos core_demos team_demos
 
 team_demos : team_viz_demos team_core_demos team_algo_demos
 

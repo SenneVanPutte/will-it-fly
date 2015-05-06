@@ -6,8 +6,8 @@
 
 int main()
 {
-    /* Deze code geeft een gigantische memory leak. Het crasht mijn vb... Fixt dit aub
-    Gebruik ook geen absolute paden...
+	/* Deze code geeft een gigantische memory leak. Het crasht mijn vb... Fixt dit aub
+	Gebruik ook geen absolute paden...
 	std::string filename1 = "/home/uauser/eindopdracht/will-it-fly/wif_core/airfoils/lednicer.dat";
 	wif_core::airfoil_c airfoil1(filename1);
 	std::cout << airfoil1;
@@ -24,7 +24,7 @@ int main()
 	std::cout << airfoil.get_circle_projection(10, wif_core::vector_2d_c(0.5, 0.0), 0.5);
 	wif_core::airfoil_c airfoil3(wif_core::vector_2d_c(0.5, 0.0), 0.5, 8);
 	std::cout << airfoil3;
-    */
+	*/
 
-    return 0; // Komaan mensen? return code vergeten????
+	return 0; // Komaan mensen? return code vergeten????
 }

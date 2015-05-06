@@ -165,6 +165,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<ExtraCommands>
+			<Add before="./fix_style.sh" />
+			<Mode after="always" />
+		</ExtraCommands>
 		<Unit filename="demos/demo_algo_diagonalizationspeed/DiagonalizationSpeedTest.cpp" />
 		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLDiagonalizer.cpp" />
 		<Unit filename="demos/demo_algo_diagonalizationspeed/GSLDiagonalizer.h" />
