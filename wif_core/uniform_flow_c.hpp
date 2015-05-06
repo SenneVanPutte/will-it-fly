@@ -36,6 +36,15 @@ public:
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
+	/**
+	 * gives the velocity of the uniform flow
+	 */
+	vector_2d_c get_velocity() const;
+
+	double get_strength() const;
+
+	double get_angle() const;
+
 protected:
 private:
 	vector_2d_c U;
