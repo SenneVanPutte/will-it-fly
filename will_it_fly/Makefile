@@ -13,6 +13,7 @@ LIBS=-lwif_core -lwif_algo -lwif_viz
 
 willitfly : $(OBJ_PATH)
 	echo "Building will-it-fly"
+	$(CC) -o ../build/bin/wif $(OBJ_PATH) $(LIBDIR) $(LIBS)
 
 ../build/obj/wif/%.o : %.cpp
-	$(CC) -c $(CC_FLAGS) -o $@ $< $(INCLUDE) $(LIBDIR) $(LIBS)
+	$(CC) -c $(CC_FLAGS) -o $@ $< $(INCLUDE)

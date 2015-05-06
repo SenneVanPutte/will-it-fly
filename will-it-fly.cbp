@@ -21,7 +21,7 @@
 			<Target title="wif">
 				<Option output="build/bin/wif" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/exec" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
 			</Target>
 			<Target title="wif_core">

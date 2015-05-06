@@ -77,12 +77,7 @@ gsl_demos : demo_gsl_integral demo_gsl_diag demo_gsl_andy
 
 root_algo_demos : demo_root_algo_diag demo_root_algo_integral
 
-$(EXECUTABLE): $(SRC_PATH)
-	echo "Building binary"
-	echo $(SRC_PATH)
-	$(CC) $(CC_FLAGS) -o $(EXECUTABLE) $(OBJ_PATH) $(INCLUDE) $(LIBDIR) $(LIBS)
-
-$(SRC_PATH) : wifcore wifalgo wifviz
+wif : wifcore wifalgo wifviz
 	mkdir -p ./build/obj/wif
 	$(MAKE) -C ./will_it_fly willitfly
 
