@@ -75,7 +75,7 @@ airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int c
 {
 	for(unsigned int i = 0; i < corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2*M_PI * i) / corners) + midpoint);
+		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 
