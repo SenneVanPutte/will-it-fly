@@ -2,6 +2,7 @@
 
 #include <numeric>
 #include "source_sheet_c.hpp"
+#include "vortex_sheet_c.hpp"
 #include "add_sheet_c.hpp"
 #include <assert.h>
 
@@ -33,15 +34,25 @@ flow_accumulate_c::flow_accumulate_c(shared_ptr<flow_c> flow)
 	flows.push_back(flow);
 }
 
-flow_accumulate_c & flow_accumulate_c::airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil)
+void flow_accumulate_c::airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil)
 {
-	flow_accumulate_c flow;
 	vector<line_2d_c> lines = foil.get_lines();
 	int l = lines.size();
 
 	for(int i = 0; i < l; i++)
 	{
-		flow.add_source_sheet(lines[i], sigmas[i]);
+		this->add_source_sheet(lines[i], sigmas[i]);
+	}
+}
+
+void flow_accumulate_c::airfoil_to_vortex_sheet(double strenght, const airfoil_c & foil)
+{
+	vector<line_2d_c> lines = foil.get_lines();
+	int l = lines.size();
+
+	for(int i = 0; i < l; i++)
+	{
+		this->add_vortex_sheet(lines[i], strenght);
 	}
 }
 
@@ -72,6 +83,12 @@ vector_2d_c flow_accumulate_c::get_velocity(const vector_2d_c & pos) const
 void flow_accumulate_c::add_source_sheet(line_2d_c line, double sigma)
 {
 	std::shared_ptr<source_sheet_c> point = std::make_shared<source_sheet_c>(line, sigma);
+	flows.push_back(point);
+}
+
+void flow_accumulate_c::add_vortex_sheet(line_2d_c line, double sigma)
+{
+	std::shared_ptr<vortex_sheet_c> point = std::make_shared<vortex_sheet_c>(line, sigma);
 	flows.push_back(point);
 }
 

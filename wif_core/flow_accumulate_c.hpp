@@ -47,9 +47,19 @@ public:
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
-	void add_source_sheet(line_2d_c, double);
+	/**
+	 * adds a source sheet to flows on a line and with strength sigma
+	 */
+	void add_source_sheet(line_2d_c line, double sigma);
 
-	static flow_accumulate_c & airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil);
+	/**
+	 * add a vortex sheet to flows on a line and with strength lambda
+	 */
+	void add_vortex_sheet(line_2d_c line, double lambda);
+
+	void airfoil_to_source_sheet(const vector<double> & sigmas, const airfoil_c & foil);
+
+	void airfoil_to_vortex_sheet(double strenght, const airfoil_c & foil);
 
 protected:
 

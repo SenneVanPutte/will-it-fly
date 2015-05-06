@@ -65,12 +65,15 @@ void draw_source_sheet()
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
 	vector<double> sigmas(20, 2);
-	//wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 20);
+	wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 20);
 
 	flow_accumulate_c flow = flow_accumulate_c();
 	//flow_accumulate_c flow = flow_accumulate_c();
-	flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
+	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
 	//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
+
+	flow.airfoil_to_source_sheet(sigmas, foil);
+	flow.airfoil_to_vortex_sheet(1, foil);
 
 	/*cout << flow.get_psi(pos) << "\n";
 	cout << flow.get_phi(pos) << "\n";*/
