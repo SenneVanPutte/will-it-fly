@@ -220,11 +220,8 @@
 		<Unit filename="demos/demo_vtk_comp_dolf/axes.cpp" />
 		<Unit filename="demos/demo_vtk_comp_dolf/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_kristof/axes.cpp" />
-		<Unit filename="demos/demo_vtk_comp_kristof/main.cpp" />
-		<Unit filename="demos/demo_vtk_comp_merel/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_merel/veldmetlijnen.cpp" />
 		<Unit filename="demos/demo_vtk_comp_senne/contours_test1.cpp" />
-		<Unit filename="demos/demo_vtk_comp_senne/main.cpp" />
 		<Unit filename="demos/demo_vtk_dolf/main.cpp" />
 		<Unit filename="demos/demo_vtk_merel/main.cpp" />
 		<Unit filename="wif_algo/wif_algo.cpp" />
