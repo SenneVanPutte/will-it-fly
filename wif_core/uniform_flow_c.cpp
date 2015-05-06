@@ -37,4 +37,9 @@ vector_2d_c uniform_flow_c::get_velocity(const vector_2d_c & pos) const
 	return U;
 }
 
+vector_2d_c uniform_flow_c::get_velocity() const
+{
+	return U;
+}
+
 }
