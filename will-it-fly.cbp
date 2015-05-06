@@ -218,7 +218,6 @@
 		<Unit filename="demos/demo_template/main.cpp" />
 		<Unit filename="demos/demo_vtk/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_dolf/axes.cpp" />
-		<Unit filename="demos/demo_vtk_comp_dolf/main.cpp" />
 		<Unit filename="demos/demo_vtk_comp_kristof/axes.cpp" />
 		<Unit filename="demos/demo_vtk_comp_merel/veldmetlijnen.cpp" />
 		<Unit filename="demos/demo_vtk_comp_senne/contours_test1.cpp" />
