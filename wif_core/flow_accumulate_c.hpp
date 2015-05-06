@@ -29,7 +29,7 @@ public:
 
 	flow_accumulate_c(shared_ptr<flow_c> flow);
 
-	flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
+	//flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
 
 	virtual ~flow_accumulate_c();
 
@@ -53,7 +53,25 @@ public:
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
-	void add_source_sheet(line_2d_c, double);
+	/**
+	 * adds a source sheet to flows on a line and with strength sigma
+	 */
+	void add_source_sheet(line_2d_c line, double sigma);
+
+	/**
+	 * add a vortex sheet to flows on a line and with strength lambda
+	 */
+	void add_vortex_sheet(line_2d_c line, double lambda);
+
+	/**
+	 * adds source sheets with lines on the airfoil and strenghts given in sigmas
+	 */
+	void add_source_sheets(const vector<double> & sigmas, const airfoil_c & foil);
+
+	/**
+	 * adds vortex sheets with lines on the airfoil and a given strenght.
+	 */
+	void add_vortex_sheets(double strength, const airfoil_c & foil);
 
 protected:
 
@@ -65,5 +83,5 @@ private:
 
 } // namespace wif_core
 
-
 #endif // __FLOWS_ACCUMULATE_HPP_INCLUDED__
+
