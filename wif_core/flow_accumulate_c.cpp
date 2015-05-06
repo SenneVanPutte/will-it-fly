@@ -4,6 +4,7 @@
 #include "source_sheet_c.hpp"
 #include "add_sheet_c.hpp"
 #include <assert.h>
+#include <iostream>
 
 using std::vector;
 using std::shared_ptr;

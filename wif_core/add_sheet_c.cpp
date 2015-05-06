@@ -1,5 +1,7 @@
 #include "add_sheet_c.hpp"
 
+#include <iostream>
+
 namespace wif_core
 {
 
@@ -15,7 +17,7 @@ add_sheet_phi_c::~add_sheet_phi_c()
 	//dtor
 }
 
-double add_sheet_phi_c::operator()(double init, std::shared_ptr<flow_c>  flow) const
+double add_sheet_phi_c::operator()(double init, std::shared_ptr<flow_c> flow) const
 {
 	return init + flow.get()->get_phi(position);
 }
