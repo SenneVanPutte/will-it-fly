@@ -65,15 +65,18 @@ void draw_source_sheet()
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
 	vector<double> sigmas(20, 2);
-	wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 20);
+	wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindopdracht/will-it-fly/wif_core/airfoils/selig.dat");
+	cout << "loaded";
+	wif_core::airfoil_c foil = foilfull.get_circle_projection(4, vector_2d_c(0.5, 0), 0.5, 0.001);
 
+	cout << foil;
 	flow_accumulate_c flow = flow_accumulate_c();
 	//flow_accumulate_c flow = flow_accumulate_c();
 	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
 	//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
 
 	flow.add_source_sheets(sigmas, foil);
-	flow.add_vortex_sheets(1, foil);
+	//flow.add_vortex_sheets(1, foil);
 
 	/*cout << flow.get_psi(pos) << "\n";
 	cout << flow.get_phi(pos) << "\n";*/
@@ -83,8 +86,8 @@ void draw_source_sheet()
 	double ymin = -3;
 	double ymax = 3;
 
-	int lx = 20;
-	int ly = 20;
+	int lx = 1000;
+	int ly = 1000;
 
 	TH2F * hist = new TH2F("hist", "name", lx, xmin, xmax, ly, ymin, ymax);
 
@@ -117,7 +120,7 @@ void draw_source_sheet()
 	hist->SetStats(0);
 	hist->SetLineColor(1);
 
-	hist->Draw("Lego");
+	hist->Draw("CONT3");
 	TImage * img = TImage::Create();
 
 	img->FromPad(c1);
