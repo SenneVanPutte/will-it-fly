@@ -4,6 +4,7 @@
 #include <wif_algo/wif_algo.hpp>
 #include <wif_viz/wif_viz.hpp>
 
+
 int main()
 {
 	std::cout << wif_core::get_version() << std::endl;
@@ -47,5 +48,7 @@ int main()
 	//vizy->set_velocity_bins(bins);
 
 	vizy->draw("circle");
+
+	return 0;
 
 }
