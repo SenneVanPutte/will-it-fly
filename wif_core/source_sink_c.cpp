@@ -41,7 +41,6 @@ vector_2d_c source_sink_c::get_velocity(const vector_2d_c & pos) const
 	double vx = diff.x / (diff.get_length_sq()) * sigma / (2 * M_PI);
 	double vy = diff.y / (diff.get_length_sq()) * sigma / (2 * M_PI);
 	return vector_2d_c(vx, vy);
-
 }
 
 }

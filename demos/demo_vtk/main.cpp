@@ -35,8 +35,8 @@ int main()
 	min.y = -2;
 	max.x = 2;
 	max.y = 2;
-	bins.x = 301;
-	bins.y = 301;
+	bins.x = 101;
+	bins.y = 101;
 	//int binsx = 20, binsy = 20;
 
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
