@@ -3,13 +3,12 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-<<<<<<< HEAD
 #include <assert.h>
-=======
+
 #include <iterator>
 #include <sstream>
 
->>>>>>> ddc8e0cbe7b63af27ec3581ff0e33fae81696411
+
 
 namespace wif_core
 {
@@ -34,7 +33,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
-	assert(data&&"file does not exist or is damaged in any way.");
+	assert(data && "file does not exist or is damaged in any way.");
 
 	if(testval > 1)
 	{
@@ -94,7 +93,7 @@ std::vector<line_2d_c> airfoil_c::get_lines() const
 {
 	std::vector<line_2d_c> ret;
 
-	for(unsigned int index = 0; index < this->points.size()-1; index++)
+	for(unsigned int index = 0; index < this->points.size() - 1; index++)
 	{
 		if(index == this->points.size() - 1)
 		{

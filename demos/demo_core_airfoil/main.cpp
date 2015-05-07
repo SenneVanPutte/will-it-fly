@@ -11,7 +11,8 @@ int main()
 	system("cd /home/uauser/Shared/coord_seligFmt.tar/coord_seligFmt");
 	system("ls >> files.txt");
 	std::ifstream filelist("/home/uauser/Shared/coord_seligFmt.tar/coord_seligFmt/files.txt");
-	while (!filelist.eof())
+
+	while(!filelist.eof())
 	{
 		std::string filename1;
 		filelist >> filename1;
