@@ -15,7 +15,11 @@ int main()
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
 	//std::shared_ptr<wif_core::airfoil_c> ss = std::make_shared<wif_core::source_sheet_c>(wif_core::line_2d_c(-1,-1,1,1), 1);
 
-	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
+#if 1
+	wif_core::airfoil_c airfoil({0, 0}, 1, 300);
+#else
+	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
+#endif //
 
 	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>(unifl);
 	//ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
