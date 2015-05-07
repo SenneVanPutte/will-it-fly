@@ -4,6 +4,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkXMLPolyDataReader.h>
 #include <vtkAppendPolyData.h>
+#include "vtkStructuredGridWriter.h"
 #include <vtkClipPolyData.h>
 #include <vtkCleanPolyData.h>
 #include <vtkContourFilter.h>
@@ -178,8 +179,52 @@ void visualization_vtk_c::set_velocityarrows(const vector_2d_c & bins)
 	//renderer->GetActiveCamera()->Elevation(0);
 }*/
 
+uint32_t round_abs(double x)
+{
+	return std::round(std::abs(x));
+}
+
+bool one_is_zero(const vector_2d_c & vec)
+{
+	return (round_abs(vec.x) * round_abs(vec.y)) != 0;
+}
+
+void write_to_file(vtkSmartPointer<vtkStructuredGrid> grid, const std::string & name)
+{
+	vtkSmartPointer<vtkStructuredGridWriter> writer = vtkStructuredGridWriter::New();
+	writer->SetFileName(name.c_str());
+	writer->SetInput(grid);
+	writer->Write();
+}
+
 void visualization_vtk_c::draw(const std::string & filename)
 {
+	//
+	if(filename.c_str())
+	{
+		if(one_is_zero(psi_bins))
+		{
+			write_to_file(construct_psi_grid(), "psi-test.vtk");
+		}
+
+		if(one_is_zero(phi_bins))
+		{
+			write_to_file(construct_phi_grid(), "phi-test.vtk");
+		}
+
+		if(one_is_zero(velocity_bins))
+		{
+			write_to_file(construct_velocity_grid(), "velocity-test.vtk");
+		}
+	}
+	else
+	{
+		//
+	}
+
+	return;
+
+
 	if(velocity_bins.x != 0 && velocity_bins.y != 0)
 	{
 		std::cout << "test" << endl;
@@ -211,33 +256,30 @@ void visualization_vtk_c::draw(const std::string & filename)
 		veld->SetName("Isovalues");
 
 		std::vector<double> veldcomp;
-		double vecy[3];
-		wif_core::vector_2d_c pos, vel;
 
 		for(int i = 0; i < plane->GetOutput()->GetNumberOfPoints(); i++)
 		{
+			double vecy[3];
 			pointys->GetPoint(i, vecy);
-			pos.x = vecy[0];
-			pos.y = vecy[1];
-			//pointys->GetPoint(i,vecy);
-			//veld = flow->get_psi(pos);
-			double testval = std::sin(flow->get_psi(pos));
 
-			std::cout << pos << " " << testval << std::endl;
+			wif_core::vector_2d_c pos(vecy[0], vecy[1]);
 
-			if(testval > 500)
+			double val = flow->get_psi(pos);
+
+			std::cout << pos << " " << val << std::endl;
+
+			if(val > 500)
 			{
-				testval = 1;
+				val = 1;
 			}
 
-			if(testval < -500)
+			if(val < -500)
 			{
-				testval = -1;
+				val = -1;
 			}
 
-			//std::cout << testval << std::endl;
-			veld->InsertNextTuple1(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
-			veldcomp.push_back(testval);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+			veld->InsertNextTuple1(val);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
+			veldcomp.push_back(val);//vecy[0]*vecy[0] + vecy[1]*vecy[1]);
 		}
 
 		std::cout << "1" << std::endl;
@@ -573,6 +615,149 @@ void visualization_vtk_c::draw(const std::string & filename)
 		std::cout << "6" << std::endl;
 	}
 
+}
+
+vtkSmartPointer<vtkPoints> visualization_vtk_c::construct_points(const vector_2d_c & binning) const
+{
+	uint32_t bin_x = round_abs(binning.x);
+	uint32_t bin_y = round_abs(binning.y);
+
+	uint32_t s = (bin_x + 1) * (bin_y + 1);
+
+	vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+	points->Allocate(s);
+
+	const vector_2d_c delta = max_range - min_range;
+	const vector_2d_c delta_it(delta.x / bin_x, delta.y / bin_y);
+
+	for(int i = 0; i <= bin_x; i++)
+	{
+		for(int j = 0; j <= bin_y; j++)
+		{
+			vector_2d_c pos(i * delta_it.x, j * delta_it.y);
+
+			pos += min_range;
+
+			points->InsertNextPoint(pos.x, pos.y, 0.0);
+		}
+	}
+
+	return points;
+}
+
+vtkSmartPointer<vtkDoubleArray> visualization_vtk_c::construct_field(const vector_2d_c & binning, bool scalar) const
+{
+	uint32_t bin_x = round_abs(binning.x);
+	uint32_t bin_y = round_abs(binning.y);
+
+	vtkSmartPointer<vtkDoubleArray> vectors = vtkSmartPointer<vtkDoubleArray>::New();
+	//vectors->Allocate((bin_x + 1) * (bin_y + 1));
+
+	if(scalar)
+	{
+		vectors->SetNumberOfComponents(1);
+		vectors->SetName("ScalarField");
+	}
+	else
+	{
+		vectors->SetNumberOfComponents(3);
+		vectors->SetName("VelocityField");
+	}
+
+	return vectors;
+}
+
+vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::combine_grid(const vector_2d_c & binning, vtkSmartPointer<vtkPoints> points, vtkSmartPointer<vtkDoubleArray> field) const
+{
+	uint32_t bin_x = round_abs(binning.x);
+	uint32_t bin_y = round_abs(binning.y);
+
+	std::cout << "Test" << std::endl;
+	vtkSmartPointer<vtkStructuredGrid> grid = vtkSmartPointer<vtkStructuredGrid>::New();
+
+	grid->SetDimensions(bin_x + 1, bin_y + 1, 1);
+	grid->SetPoints(points);
+
+	if(field->GetNumberOfComponents() > 1)
+	{
+		grid->GetPointData()->SetVectors(field);
+	}
+	else
+	{
+		grid->GetPointData()->SetScalars(field);
+	}
+
+	std::cout << "Test2" << std::endl;
+
+	return grid;
+}
+
+vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_psi_grid() const
+{
+	vtkSmartPointer<vtkPoints> points = construct_points(psi_bins);
+	vtkSmartPointer<vtkDoubleArray> field = construct_field(psi_bins, true);
+
+	for(int i = 0; i < points->GetNumberOfPoints(); i++)
+	{
+		double x[3];
+
+		points->GetPoint(i, x);
+
+		const vector_2d_c pos(x[0], x[1]);
+
+		double t = flow->get_psi(pos);
+
+		//field->InsertNextTuple(&t);
+		field->InsertNextValue(t);
+	}
+
+	return combine_grid(psi_bins, points, field);
+}
+
+vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_phi_grid() const
+{
+	vtkSmartPointer<vtkPoints> points = construct_points(phi_bins);
+	vtkSmartPointer<vtkDoubleArray> field = construct_field(phi_bins, true);
+
+	for(int i = 0; i < points->GetNumberOfPoints(); i++)
+	{
+		double x[3];
+
+		points->GetPoint(i, x);
+
+		const vector_2d_c pos(x[0], x[1]);
+
+		double t = flow->get_phi(pos);
+
+		//field->InsertNextTuple1(t);
+		field->InsertNextValue(t);
+	}
+
+	return combine_grid(phi_bins, points, field);
+}
+
+vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid() const
+{
+	vtkSmartPointer<vtkPoints> points = construct_points(velocity_bins);
+	vtkSmartPointer<vtkDoubleArray> field = construct_field(velocity_bins, false);
+
+	for(int i = 0; i < points->GetNumberOfPoints(); i++)
+	{
+		double x[3];
+
+		points->GetPoint(i, x);
+
+		const vector_2d_c pos(x[0], x[1]);
+		const vector_2d_c velo = flow->get_velocity(pos);
+		double v[3] = {velo.x, velo.y, 0.0};
+
+		std::cout << pos << std::endl;
+		std::cout << velo << std::endl;
+
+		field->InsertNextTuple(v);
+	}
+
+	return combine_grid(velocity_bins, points, field);
 }
 
 
