@@ -14,7 +14,9 @@
 #include <vtkPointData.h>
 #include <vtkScalarsToColors.h>
 #include <vtkLookupTable.h>
+#include "vtkColorTransferFunction.h"
 #include <vtkPolyDataMapper.h>
+#include "vtkDataSetMapper.h"
 #include <vtkProperty.h>
 #include <vtkActor.h>
 
@@ -200,26 +202,134 @@ void write_to_file(vtkSmartPointer<vtkStructuredGrid> grid, const std::string & 
 void visualization_vtk_c::draw(const std::string & filename)
 {
 	//
-	if(filename.c_str())
+	if((filename.size() > 1) && (filename.find('.') == std::string::npos))
 	{
+		/// Enkel uitvoeren als de filename geen extensie heeft.
+
 		if(one_is_zero(psi_bins))
 		{
-			write_to_file(construct_psi_grid(), "psi-test.vtk");
+			write_to_file(construct_psi_grid(), filename + "-psi.vtk");
 		}
 
 		if(one_is_zero(phi_bins))
 		{
-			write_to_file(construct_phi_grid(), "phi-test.vtk");
+			write_to_file(construct_phi_grid(), filename + "-phi.vtk");
 		}
 
 		if(one_is_zero(velocity_bins))
 		{
-			write_to_file(construct_velocity_grid(), "velocity-test.vtk");
+			write_to_file(construct_velocity_grid(), filename + "-velocity.vtk");
 		}
 	}
 	else
 	{
-		//
+		vtkSmartPointer<vtkRenderer> renderer = vtkRenderer::New();
+
+		vtkSmartPointer<vtkRenderWindow> renWin = vtkRenderWindow::New();
+		renWin->AddRenderer(renderer);
+		renWin->SetSize(1000 , 1000);
+
+		vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkInteractorStyleTrackballCamera::New();
+
+		vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkRenderWindowInteractor::New();
+
+		iren->SetInteractorStyle(style);
+		iren->SetRenderWindow(renWin);
+
+		renderer->SetBackground(0, 0, 0);     // stelt de kleur van de achtergrond in
+		renderer->ResetCamera();
+
+		renWin->AddRenderer(renderer);
+		iren->SetRenderWindow(renWin);
+
+		if(one_is_zero(psi_bins))
+		{
+			vtkSmartPointer<vtkStructuredGrid> psi_grid = construct_psi_grid();
+
+			vtkSmartPointer<vtkDataSetMapper> mapperveld = vtkDataSetMapper::New();
+			mapperveld->SetInput(psi_grid);
+
+			vtkSmartPointer<vtkColorTransferFunction> lut = vtkColorTransferFunction::New();
+
+			double values[2];
+
+			psi_grid->GetPointData()->GetScalars()->GetRange(values);
+
+			std::cout << values[0] << std::endl;
+
+			lut->AddRGBPoint(values[0], 0, 0, 1);
+			lut->AddRGBPoint(values[1], 1, 0, 0);
+
+			mapperveld->SetLookupTable(lut);
+
+			vtkSmartPointer<vtkActor> actorveld = vtkActor::New();
+			actorveld->SetMapper(mapperveld);
+
+			renderer->AddActor(actorveld);
+		}
+
+		if(one_is_zero(phi_bins))
+		{
+			vtkSmartPointer<vtkStructuredGrid> phi_grid = construct_phi_grid();
+
+			vtkSmartPointer<vtkDataSetMapper> mapperveld = vtkDataSetMapper::New();
+			mapperveld->SetInput(phi_grid);
+
+			vtkSmartPointer<vtkColorTransferFunction> lut = vtkColorTransferFunction::New();
+			double minvalue = -1;
+			double maxvalue = 1;
+			lut->AddRGBPoint(minvalue, 0, 0, 1);
+			lut->AddRGBPoint(maxvalue, 1, 0, 0);
+
+			mapperveld->SetLookupTable(lut);
+
+			vtkSmartPointer<vtkActor> actorveld = vtkActor::New();
+			actorveld->SetMapper(mapperveld);
+
+			renderer->AddActor(actorveld);
+		}
+
+		if(one_is_zero(velocity_bins))
+		{
+			vtkSmartPointer<vtkStructuredGrid> velocity_grid = construct_velocity_grid();
+
+			vtkSmartPointer<vtkArrowSource> arrowSource = vtkSmartPointer<vtkArrowSource>::New();
+
+			vtkSmartPointer<vtkGlyph3D> glyph3D = vtkSmartPointer<vtkGlyph3D>::New();
+			glyph3D->SetSourceConnection(arrowSource->GetOutputPort());
+			//glyph3D->SetVectorModeToUseVector();
+#if VTK_MAJOR_VERSION <= 5
+			glyph3D->SetInput(velocity_grid);
+#else
+			glyph3D->SetInputData(input);
+#endif
+
+			glyph3D->SetColorMode(2);
+			glyph3D->SetScaleModeToScaleByVector();
+			//glyph3D->OrientOff();
+			glyph3D->SetScaleFactor(.1);
+			glyph3D->Update();
+
+
+
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			mapper->SetInputConnection(glyph3D->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			actor->SetMapper(mapper);
+			actor->GetProperty()->SetRepresentationToSurface();
+
+			renderer->AddActor(actor);
+		}
+
+		renWin->Render();
+		iren->Initialize();
+		iren->Start();
+
+		iren->GetRenderWindow()->Finalize();
+
+		// Stop the interactor
+		iren->TerminateApp();
 	}
 
 	return;
@@ -672,7 +782,6 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::combine_grid(const vecto
 	uint32_t bin_x = round_abs(binning.x);
 	uint32_t bin_y = round_abs(binning.y);
 
-	std::cout << "Test" << std::endl;
 	vtkSmartPointer<vtkStructuredGrid> grid = vtkSmartPointer<vtkStructuredGrid>::New();
 
 	grid->SetDimensions(bin_x + 1, bin_y + 1, 1);
@@ -686,8 +795,6 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::combine_grid(const vecto
 	{
 		grid->GetPointData()->SetScalars(field);
 	}
-
-	std::cout << "Test2" << std::endl;
 
 	return grid;
 }
@@ -750,9 +857,6 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid(
 		const vector_2d_c pos(x[0], x[1]);
 		const vector_2d_c velo = flow->get_velocity(pos);
 		double v[3] = {velo.x, velo.y, 0.0};
-
-		std::cout << pos << std::endl;
-		std::cout << velo << std::endl;
 
 		field->InsertNextTuple(v);
 	}

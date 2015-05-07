@@ -64,7 +64,7 @@ core_demos : demo_core_vector_line demo_core_flow_elements demo_core_airfoil
 # Hieronder demo's toevoegen als dependancies van de respectievelijke targets!
 # Gebruik dezelfde naam als uw directory!
 
-team_viz_demos : vtk_compilatie_demos
+team_viz_demos : vtk_compilatie_demos demo_vtk demo_vtk_large
 
 team_core_demos : 
 
