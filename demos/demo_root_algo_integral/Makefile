@@ -4,8 +4,9 @@ SRC_DEMO=$(wildcard *.cpp)
 OBJ_DEMO=$(SRC_DEMO:.cpp=.o)
 OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC=g++
+CC_FLAGS=-std=c++11 -g -Wall $(shell root-config --cflags)
+
 INCLUDE=-I../../build/include
 INCLUDE+=$(shell root-config --cflags)
 LIBDIR=-L../../build/lib

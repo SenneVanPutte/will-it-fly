@@ -13,4 +13,12 @@ uint32_t get_version()
 }
 
 
+calculation_results_c calculate_flow(const wif_core::airfoil_c & input, std::shared_ptr<wif_core::uniform_flow_c> uniform_flow)
+{
+	calculation_results_c c;
+
+	return c;
+}
+
+
 } // namespace wif_algo
