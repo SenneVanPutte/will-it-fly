@@ -4,7 +4,11 @@
 #include <wif_algo/wif_algo.hpp>
 #include <wif_viz/wif_viz.hpp>
 
-void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c> flow, const wif_core::vector_2d_c & min, const wif_core::vector_2d_c & max, const wif_core::vector_2d_c & binning)
+
+void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c>  flow,
+                      const wif_core::vector_2d_c                                & min,
+                      const wif_core::vector_2d_c                                & max,
+                      const wif_core::vector_2d_c                                & binning)
 {
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(flow, min, max);
 
@@ -15,7 +19,13 @@ void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c
 	vizy->draw(name);
 }
 
-void visualize_all(bool screen, const std::string & name, std::shared_ptr<wif_core::flow_c> flow, const wif_core::vector_2d_c & min, const wif_core::vector_2d_c & max, const wif_core::vector_2d_c & binning)
+
+void visualize_all(bool                               screen,
+                   const std::string                & name,
+                   std::shared_ptr<wif_core::flow_c>  flow,
+                   const wif_core::vector_2d_c      & min,
+                   const wif_core::vector_2d_c      & max,
+                   const wif_core::vector_2d_c      & binning)
 {
 	if(screen)
 	{
@@ -49,10 +59,12 @@ void visualize_all(bool screen, const std::string & name, std::shared_ptr<wif_co
 	}
 }
 
+
 std::string get_name(bool screen, const std::string & filename)
 {
 	return screen ? "" : filename;
 }
+
 
 void test_uniflow(bool screen)
 {
@@ -72,6 +84,7 @@ void test_circle(bool screen)
 	visualize_all(screen, "test-circle", flow, { -2, -2}, {2, 2}, {31, 31});
 }
 
+
 void test_circle_flow(bool screen)
 {
 	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
@@ -83,6 +96,7 @@ void test_circle_flow(bool screen)
 	visualize_all(screen, "test-circle-flow", flow, { -2, -2}, {2, 2}, {31, 31});
 }
 
+
 void tests()
 {
 	bool screen = true;
@@ -91,6 +105,7 @@ void tests()
 	//test_circle(screen);
 	//test_circle_flow(screen);
 }
+
 
 int main()
 {
