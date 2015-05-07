@@ -5,6 +5,7 @@
 #include <sstream>
 #include <algorithm>
 #include <iostream>
+#include <assert.h>
 
 namespace wif_core
 {
@@ -19,19 +20,20 @@ airfoil_c::airfoil_c() :
 
 airfoil_c::airfoil_c(const std::string & filename)
 {
-	//selig format
 	std::ifstream detect(filename);
 	std::string line1;
+	std::string data_pit;
 	std::getline(detect, line1);
 	double testval;
 	detect >> testval;
+	std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
-	std::cout << "testvalue :" << testval << std::endl;
+	assert(data&&"file does not exist or is damaged in any way.");
 
 	if(testval > 1)
 	{
-		std::string data_pit;
+
 		std::getline(data, this->name);
 		std::getline(data, data_pit);
 
@@ -41,6 +43,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 			double y;
 			data >> x >> y;
 			this->points.push_back(vector_2d_c(x, y));
+			std::cout << x << "\t" << y << std::endl;
 		}
 
 		unsigned int half_size = this->points.size() / 2;
@@ -58,6 +61,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 			double y;
 			data >> x >> y;
 			this->points.emplace_back(x, y);
+			std::cout << x << "\t" << y << std::endl;
 		}
 	}
 }
@@ -84,7 +88,7 @@ std::vector<line_2d_c> airfoil_c::get_lines() const
 {
 	std::vector<line_2d_c> ret;
 
-	for(unsigned int index = 0; index < this->points.size(); index++)
+	for(unsigned int index = 0; index < this->points.size()-1; index++)
 	{
 		if(index == this->points.size() - 1)
 		{
