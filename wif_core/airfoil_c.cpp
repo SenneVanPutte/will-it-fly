@@ -33,7 +33,11 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
-	assert(data && "file does not exist or is damaged in any way.");
+
+	if(!data.is_open())
+	{
+		return; //just give up if file does not open
+	}
 
 	if(testval > 1)
 	{
@@ -41,13 +45,13 @@ airfoil_c::airfoil_c(const std::string & filename)
 		std::getline(data, this->name);
 		std::getline(data, data_pit);
 
-		while(!data.eof())
+		while(data.good())
 		{
 			double x;
 			double y;
 			data >> x >> y;
 			this->points.push_back(vector_2d_c(x, y));
-			std::cout << x << "\t" << y << std::endl;
+			//std::cout << x << "\t" << y << std::endl;
 		}
 
 		unsigned int half_size = this->points.size() / 2;
@@ -59,15 +63,17 @@ airfoil_c::airfoil_c(const std::string & filename)
 		//selig format
 		std::getline(data, this->name);
 
-		while(!data.eof())
+		while(data.good())
 		{
 			double x;
 			double y;
 			data >> x >> y;
 			this->points.emplace_back(x, y);
-			std::cout << x << "\t" << y << std::endl;
+			//std::cout << x << "\t" << y << std::endl;
 		}
 	}
+
+	this->points.pop_back(); //reads last line double
 }
 
 
@@ -95,16 +101,10 @@ std::vector<line_2d_c> airfoil_c::get_lines() const
 
 	for(unsigned int index = 0; index < this->points.size() - 1; index++)
 	{
-		if(index == this->points.size() - 1)
-		{
-			line_2d_c r(this->points[this->points.size() - 1], this->points[0]);
-			ret.push_back(r);
-		}
-		else
-		{
-			line_2d_c r(this->points[index], this->points[index + 1]);
-			ret.push_back(r);
-		}
+
+		line_2d_c r(this->points[index], this->points[index + 1]);
+		ret.push_back(r);
+
 	}
 
 	return ret;
