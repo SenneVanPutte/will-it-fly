@@ -1,5 +1,6 @@
 #include "wif_core.hpp"
 
+
 namespace wif_core
 {
 

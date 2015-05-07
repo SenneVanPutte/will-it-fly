@@ -1,10 +1,14 @@
 #include "airfoil_c.hpp"
 
-#include <iterator>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
+#include <fstream>
 #include <iostream>
+#include <assert.h>
+
+#include <iterator>
+#include <sstream>
+
+
 
 namespace wif_core
 {
@@ -19,28 +23,42 @@ airfoil_c::airfoil_c() :
 
 airfoil_c::airfoil_c(const std::string & filename)
 {
-	//selig format
+
 	std::ifstream detect(filename);
+
+	if(!detect.is_open())
+	{
+		return; //just give up if file does not open
+	}
+
 	std::string line1;
+	std::string data_pit;
 	std::getline(detect, line1);
 	double testval;
 	detect >> testval;
+	std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
-	std::cout << "testvalue :" << testval << std::endl;
+
+	if(!data.is_open())
+	{
+		return; //just give up if file does not open
+	}
+
 
 	if(testval > 1)
 	{
-		std::string data_pit;
+
 		std::getline(data, this->name);
 		std::getline(data, data_pit);
 
-		while(!data.eof())
+		while(data.good())
 		{
 			double x;
 			double y;
 			data >> x >> y;
 			this->points.push_back(vector_2d_c(x, y));
+			//std::cout << x << "\t" << y << std::endl;
 		}
 
 		unsigned int half_size = this->points.size() / 2;
@@ -48,18 +66,21 @@ airfoil_c::airfoil_c(const std::string & filename)
 	}
 	else
 	{
-		//selig format
 
+		//selig format
 		std::getline(data, this->name);
 
-		while(!data.eof())
+		while(data.good())
 		{
 			double x;
 			double y;
 			data >> x >> y;
 			this->points.emplace_back(x, y);
+			//std::cout << x << "\t" << y << std::endl;
 		}
 	}
+
+	this->points.pop_back(); //reads last line double
 }
 
 
@@ -69,6 +90,7 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 {
 	//
 }
+
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle")
@@ -84,18 +106,12 @@ std::vector<line_2d_c> airfoil_c::get_lines() const
 {
 	std::vector<line_2d_c> ret;
 
-	for(unsigned int index = 0; index < this->points.size(); index++)
+	for(unsigned int index = 0; index < this->points.size() - 1; index++)
 	{
-		if(index == this->points.size() - 1)
-		{
-			line_2d_c r(this->points[this->points.size() - 1], this->points[0]);
-			ret.push_back(r);
-		}
-		else
-		{
-			line_2d_c r(this->points[index], this->points[index + 1]);
-			ret.push_back(r);
-		}
+
+		line_2d_c r(this->points[index], this->points[index + 1]);
+		ret.push_back(r);
+
 	}
 
 	return ret;

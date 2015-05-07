@@ -22,17 +22,17 @@ public:
 	virtual ~uniform_flow_c();
 
 	/**
-	 * gives the streamfunction at a given possition
+	 * gives the streamfunction at a given position
 	 */
 	double get_psi(const vector_2d_c & position) const;
 
 	/**
-	 * gives the streampotential at a given possition
+	 * gives the streampotential at a given position
 	 */
 	double get_phi(const vector_2d_c & position) const;
 
 	/**
-	 * gives the velocity at a given possition
+	 * gives the velocity at a given position
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
@@ -46,10 +46,14 @@ public:
 	double get_angle() const;
 
 protected:
+
 private:
 	vector_2d_c U;
+
 };
 
-}
+
+} // namespace wif_core
+
 
 #endif // __UNIFORM_FLOW_C_HPP_INCLUDED__

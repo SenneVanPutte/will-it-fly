@@ -4,8 +4,10 @@
 #include "flow_c.hpp"
 #include "line_2d_c.hpp"
 
+
 namespace wif_core
 {
+
 
 class vortex_sheet_c : public flow_c
 {
@@ -38,11 +40,14 @@ public:
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
 protected:
+
 private:
 	line_2d_c line;
 	double lambda;
 };
 
-}
 
-#endif
+} //namespace wif_core
+
+
+#endif //__VORTEX_SHEET_C_HPP_INCLUDED__
