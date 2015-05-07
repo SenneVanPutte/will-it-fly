@@ -25,6 +25,12 @@ airfoil_c::airfoil_c(const std::string & filename)
 {
 
 	std::ifstream detect(filename);
+
+	if(!detect.is_open())
+	{
+		return; //just give up if file does not open
+	}
+
 	std::string line1;
 	std::string data_pit;
 	std::getline(detect, line1);
@@ -38,6 +44,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 	{
 		return; //just give up if file does not open
 	}
+
 
 	if(testval > 1)
 	{
