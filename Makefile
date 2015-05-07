@@ -105,7 +105,7 @@ clean :
 	echo "Cleaning build directory"
 	rm -rf ./build
 
-install: all
+install:
 	echo "Installing... Please wait."
 	cp -ru ./build/lib/* $(INSTALL_PATH)/lib/
 	chmod 755 $(INSTALL_PATH)/lib/*
