@@ -16,9 +16,9 @@ int main()
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
 	//std::shared_ptr<wif_core::airfoil_c> ss = std::make_shared<wif_core::source_sheet_c>(wif_core::line_2d_c(-1,-1,1,1), 1);
 
-	<<< <<< < HEAD
+	/*<<< <<< < HEAD
 	std::shared_ptr<wif_core::flow_c> ff = std::make_shared<wif_core::flow_accumulate_c>(std::vector<double>(10, 1), wif_core::airfoil_c({0, 0}, 1, 10));
-	== == == =
+	== == == =*/
 #if 1
 	    wif_core::airfoil_c airfoil({0, 0}, 1, 30);
 #else
@@ -28,7 +28,7 @@ int main()
 	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>(unifl);
 	ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 	//ff->add_flow(std::make_shared<wif_core::source_sink_c>());
-	>>> >>> > 505c8fedaac5f2b2c9337964f3d52386e1354b1f
+	//>>> >>> > 505c8fedaac5f2b2c9337964f3d52386e1354b1f
 
 	//flow->add_flow(ss);//wif_core::line_2d_c(-1,-1,1,1), 1));
 	//flow->add_flow(unifl);
@@ -53,11 +53,11 @@ int main()
 
 	vizy->draw("circle");
 
-	<<< <<< < HEAD
+	/*<<< <<< < HEAD
 	vizy->draw("test.png");
 	//vizy->createGrid(100, 100, true);
-	== == == =
+	== == == =*/
 	    return 0;
-	>>> >>> > 505c8fedaac5f2b2c9337964f3d52386e1354b1f
+	//>>> >>> > 505c8fedaac5f2b2c9337964f3d52386e1354b1f
 
 }
