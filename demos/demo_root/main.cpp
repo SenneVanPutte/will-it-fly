@@ -34,7 +34,7 @@ int main()
 	bins.y = 10;
 	//int binsx = 20, binsy = 20;
 
-	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_root(ff, min, max);
 
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);

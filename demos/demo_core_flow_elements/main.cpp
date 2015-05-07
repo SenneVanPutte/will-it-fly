@@ -45,12 +45,14 @@ void test_source_sheets(source_sheet_c & sheet)
 
 void test_flow_acc()
 {
-	flow_accumulate_c flow = flow_accumulate_c();
-	flow.add_source_sheet(line_2d_c(1, 1, 3, 5), 3);
-	flow.add_source_sheet(line_2d_c(3, 5, 6, 1), 2);
+	shared_ptr<source_sheet_c> point = std::make_shared<source_sheet_c>();
+	flow_accumulate_c flow = flow_accumulate_c(point);
+	//flow.add_source_sheet(line_2d_c(1,2,3,4), 3);
+	//flow.add_source_sheet(line_2d_c(3, 5, 6, 1), 2);
 
-	vector_2d_c pos = vector_2d_c(3, 9);
+	vector_2d_c pos = vector_2d_c(1, 1);
 
+	cout << "ttttt" << std::endl;
 	cout << flow.get_psi(pos) << "\n";
 	cout << flow.get_phi(pos) << "\n";
 	vector_2d_c vec = flow.get_velocity(pos);
@@ -62,20 +64,27 @@ void draw_source_sheet()
 
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
-	vector<double> sigmas = {1, 1, 1};
-	wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 3);
+	vector<double> sigmas(20, 2);
+	wif_core::airfoil_c foil = wif_core::airfoil_c(vector_2d_c(0, 0), 1, 20);
 
 	flow_accumulate_c flow = flow_accumulate_c();
-	flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(-1.0, -1.0, 1.0, 1.0), 2));
-	flow.add_flow(std::make_shared<uniform_flow_c>(0, 0));
+	//flow_accumulate_c flow = flow_accumulate_c();
+	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
+	//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
 
-	double xmin = -2;
-	double xmax = 2;
-	double ymin = -2;
-	double ymax = 2;
+	flow.add_source_sheets(sigmas, foil);
+	flow.add_vortex_sheets(1, foil);
 
-	int lx = 1000;
-	int ly = 1000;
+	/*cout << flow.get_psi(pos) << "\n";
+	cout << flow.get_phi(pos) << "\n";*/
+
+	double xmin = -3;
+	double xmax = 3;
+	double ymin = -3;
+	double ymax = 3;
+
+	int lx = 20;
+	int ly = 20;
 
 	TH2F * hist = new TH2F("hist", "name", lx, xmin, xmax, ly, ymin, ymax);
 
@@ -96,14 +105,19 @@ void draw_source_sheet()
 		}
 	}
 
-	//hist->SetContour(10);
+	hist->SetContour(100);
+
+	for(int i = 0; i < 100; i++)
+	{
+		hist->SetContourLevel(i, i * M_PI / 50 - M_PI);
+	}
 
 	hist->GetXaxis()->SetTitle("x");
 	hist->GetYaxis()->SetTitle("Y");
 	hist->SetStats(0);
 	hist->SetLineColor(1);
 
-	hist->Draw("CONT3");
+	hist->Draw("Lego");
 	TImage * img = TImage::Create();
 
 	img->FromPad(c1);

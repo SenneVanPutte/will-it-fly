@@ -4,8 +4,10 @@
 #include "flow_c.hpp"
 #include "line_2d_c.hpp"
 
+
 namespace wif_core
 {
+
 
 class source_sheet_c : public flow_c
 {
@@ -38,11 +40,13 @@ public:
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
 
 protected:
+
 private:
 	line_2d_c line;
 	double sigma;
 };
 
-}
+
+} //namespace wif_core
 
 #endif // __SOURCE_SHEET_HPP_INCLUDED__

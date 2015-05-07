@@ -1,11 +1,15 @@
 #include "airfoil_c.hpp"
 
-#include <iterator>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
+#include <fstream>
 #include <iostream>
+<<<<<<< HEAD
 #include <assert.h>
+=======
+#include <iterator>
+#include <sstream>
+
+>>>>>>> ddc8e0cbe7b63af27ec3581ff0e33fae81696411
 
 namespace wif_core
 {
@@ -20,6 +24,7 @@ airfoil_c::airfoil_c() :
 
 airfoil_c::airfoil_c(const std::string & filename)
 {
+
 	std::ifstream detect(filename);
 	std::string line1;
 	std::string data_pit;
@@ -51,8 +56,8 @@ airfoil_c::airfoil_c(const std::string & filename)
 	}
 	else
 	{
-		//selig format
 
+		//selig format
 		std::getline(data, this->name);
 
 		while(!data.eof())
@@ -74,12 +79,13 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 	//
 }
 
+
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle")
 {
 	for(unsigned int i = 0; i < corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2*M_PI * i) / corners) + midpoint);
+		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 

@@ -78,7 +78,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
 
 	if(std::abs(dif1.cross(dif2)) < epsilon) //evenwijdig of samenvallend
 	{
-		if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunte ook evenwijdig is, vallen ze samen
+		if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunten ook evenwijdig is, vallen ze samen
 		{
 			const double begin_second = bdif.get_length() / dif1.get_length();
 			const double end_second = (bdif + dif2).get_length() / dif1.get_length();
@@ -121,7 +121,7 @@ std::ostream & operator << (std::ostream & output, const line_2d_c & line)
 {
 	output << "[" << line.begin << ", " << line.end << "]";
 	return output;
-};
+}
 
 
 } // namespace wif_core

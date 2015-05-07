@@ -1,27 +1,33 @@
 #include "vortex_sheet_c.hpp"
+
 #include <cmath>
+
 
 namespace wif_core
 {
+
 
 vortex_sheet_c::vortex_sheet_c() :
 	line(line_2d_c(-1, 0, 1, 0)),
 	lambda(1)
 {
-
+	//
 }
+
 
 vortex_sheet_c::vortex_sheet_c(const line_2d_c & line, double lambda):
 	line(line),
 	lambda(lambda)
 {
-	//ctor
+	//
 }
+
 
 vortex_sheet_c::~vortex_sheet_c()
 {
-	//dtor
+	//
 }
+
 
 double vortex_sheet_c::get_psi(const vector_2d_c & pos) const
 {
@@ -44,6 +50,7 @@ double vortex_sheet_c::get_psi(const vector_2d_c & pos) const
 	       * temp3;
 }
 
+
 double vortex_sheet_c::get_phi(const vector_2d_c & pos) const
 {
 	double ymin = 0;
@@ -53,7 +60,7 @@ double vortex_sheet_c::get_phi(const vector_2d_c & pos) const
 	double x = transpos.x;
 	double y = transpos.y;
 
-//std::cout<<ymin<<'\n'<<ymax<<'\n';
+	//std::cout<<ymin<<'\n'<<ymax<<'\n';
 
 	double lo1 = log(ymax * ymax - 2 * ymax * y + x * x + y * y);
 	double lo2 = log(ymin * ymin - 2 * ymin * y + x * x + y * y);
@@ -62,6 +69,7 @@ double vortex_sheet_c::get_phi(const vector_2d_c & pos) const
 
 	return -lambda / (4 * M_PI) * (x * (lo1 - lo2) + 2 * (y - ymax) * at1 - 2 * (y - ymin) * at2);
 }
+
 
 vector_2d_c vortex_sheet_c::get_velocity(const vector_2d_c & pos) const
 {
@@ -78,4 +86,4 @@ vector_2d_c vortex_sheet_c::get_velocity(const vector_2d_c & pos) const
 }
 
 
-}
+} // namespace wif_core
