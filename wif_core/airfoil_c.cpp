@@ -57,7 +57,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 			double x;
 			double y;
 			data >> x >> y;
-			this->points.push_back(vector_2d_c(x, y));
+			this->points.emplace_back(x, y);
 			//std::cout << x << "\t" << y << std::endl;
 		}
 
