@@ -1,16 +1,14 @@
 #include <iostream>
 
 #include <wif_core/wif_core.hpp>
-#include <wif_algo/wif_algo.hpp>
 #include <wif_viz/wif_viz.hpp>
-
+#include <wif_algo/wif_algo.hpp>
 
 int main()
 {
 	std::cout << wif_core::get_version() << std::endl;
-	std::cout << wif_algo::get_version() << std::endl;
 	std::cout << wif_viz::get_version()  << std::endl;
-
+	std::cout << wif_algo::get_version() << std::endl;
 	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>(0.0, 0.10);
 
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
