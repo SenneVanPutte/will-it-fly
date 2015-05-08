@@ -3,12 +3,21 @@
 
 #include <cstdint>
 #include <memory>
+#include <iostream>
+#include <stdio.h>
+#include <memory>
+#include <cmath>
+#include <gsl/gsl_linalg.h>
+#include <gsl/gsl_integration.h>
 #include <wif_core/wif_core.hpp>
 
 namespace wif_algo
 {
 
-
+struct my_func_params;
+double func(double s, void * p);
+double func(double s, void * p);
+double vortex_1(double s, void * params);
 struct calculation_results_c
 {
 	/// Een kopie van de input airfoil
@@ -25,7 +34,7 @@ struct calculation_results_c
 uint32_t get_version();
 
 /// Het toevoegen van extra parameters aan deze functie mag, zodat mensen kunnen selecteren of ze de Kutta Conditie enzo willen gebruiken.
-calculation_results_c calculate_flow(const wif_core::airfoil_c & input, std::shared_ptr<wif_core::uniform_flow_c> uniform_flow);
+calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, bool Kutta);
 
 } // namespace wif_algo
 
