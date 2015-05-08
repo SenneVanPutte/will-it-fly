@@ -94,12 +94,12 @@ private:
 	/**
 	 * returns first intersection with line
 	 */
-	vector_2d_c get_intersection_last(const line_2d_c & line) const;
+	vector_2d_c get_intersection_first(const line_2d_c & line) const;
 
 	/**
 	 * returns last intersection with line
 	 */
-	vector_2d_c get_intersection_first(const line_2d_c & line) const;
+	vector_2d_c get_intersection_last(const line_2d_c & line) const;
 
 private:
 	std::string name;

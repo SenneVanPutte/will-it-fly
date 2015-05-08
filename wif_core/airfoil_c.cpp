@@ -145,7 +145,7 @@ vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 		}
 	}
 
-	return line.get_center_point() ;
+	return vector_2d_c(INFINITY, INFINITY);
 }
 
 
@@ -162,7 +162,7 @@ vector_2d_c airfoil_c::get_intersection_last(const line_2d_c & line) const
 		}
 	}
 
-	return line.get_center_point() ;
+	return vector_2d_c(INFINITY, INFINITY);
 }
 
 
@@ -178,7 +178,11 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
 		vector_2d_c intersect = this->get_intersection_first(vert_line);
-		newpoints.push_back(intersect);
+
+		if(intersect.x != INFINITY)
+		{
+			newpoints.push_back(intersect);
+		}
 	}
 
 	for(unsigned int i = n; i < 2 * n; i++)
@@ -188,7 +192,11 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
 		vector_2d_c intersect = this->get_intersection_first(vert_line);
-		newpoints.push_back(intersect);
+
+		if(intersect.x != INFINITY)
+		{
+			newpoints.push_back(intersect);
+		}
 	}
 
 
@@ -201,13 +209,14 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 
 bool airfoil_c::is_closed(double epsilon) const
 {
+
 	return (this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon);
 }
 
 
 airfoil_c airfoil_c::closed_merge(double epsilon) const
 {
-	if(this->is_closed(epsilon) or !this->is_valid())
+	if(this->is_closed(epsilon))
 	{
 		return *this;
 	}
@@ -225,7 +234,7 @@ airfoil_c airfoil_c::closed_merge(double epsilon) const
 
 airfoil_c airfoil_c::closed_intersect(double epsilon) const
 {
-	if(this->is_closed(epsilon) or !this->is_valid())
+	if(this->is_closed(epsilon))
 	{
 		return *this;
 	}
