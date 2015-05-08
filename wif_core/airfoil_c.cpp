@@ -207,7 +207,7 @@ bool airfoil_c::is_closed(double epsilon) const
 
 airfoil_c airfoil_c::closed_merge(double epsilon) const
 {
-	if(this->is_closed(epsilon))
+	if(this->is_closed(epsilon) or !this->is_valid())
 	{
 		return *this;
 	}
@@ -215,7 +215,7 @@ airfoil_c airfoil_c::closed_merge(double epsilon) const
 	vector_2d_c endpoint = (points.front() + points.back()) / 2;
 	std::vector<vector_2d_c> newpoints;
 	newpoints.push_back(endpoint);
-	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());
+	newpoints.insert(newpoints.end(), this->points.begin() + 1, this->points.end() - 1);
 	newpoints.push_back(endpoint);
 
 	std::stringstream newname;
@@ -225,7 +225,7 @@ airfoil_c airfoil_c::closed_merge(double epsilon) const
 
 airfoil_c airfoil_c::closed_intersect(double epsilon) const
 {
-	if(this->is_closed(epsilon))
+	if(this->is_closed(epsilon) or !this->is_valid())
 	{
 		return *this;
 	}
