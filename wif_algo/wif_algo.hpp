@@ -25,7 +25,7 @@ struct calculation_results_c
 uint32_t get_version();
 
 /// Het toevoegen van extra parameters aan deze functie mag, zodat mensen kunnen selecteren of ze de Kutta Conditie enzo willen gebruiken.
-calculation_results_c calculate_flow(const wif_core::airfoil_c & input, std::shared_ptr<wif_core::uniform_flow_c> uniform_flow);
+calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, bool Kutta);
 
 } // namespace wif_algo
 
