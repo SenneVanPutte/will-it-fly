@@ -205,7 +205,7 @@ bool airfoil_c::is_closed(double epsilon) const
 }
 
 
-airfoil_c airfoil_c::close_merge(double epsilon) const
+airfoil_c airfoil_c::closed_merge(double epsilon) const
 {
 	if(this->is_closed(epsilon))
 	{
@@ -223,7 +223,7 @@ airfoil_c airfoil_c::close_merge(double epsilon) const
 	return airfoil_c(newpoints, newname.str());
 }
 
-airfoil_c airfoil_c::close_intersect(double epsilon) const
+airfoil_c airfoil_c::closed_intersect(double epsilon) const
 {
 	if(this->is_closed(epsilon))
 	{

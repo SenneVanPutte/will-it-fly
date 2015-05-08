@@ -56,12 +56,12 @@ public:
 	/**
 	* returns a closed airfoil by adding a new point inbetween the start and endpoint
 	*/
-	airfoil_c close_merge(double epsilon = 0.0001) const;
+	airfoil_c closed_merge(double epsilon = 0.0001) const;
 
 	/**
 	* returns a closed airfoil  by adding a new point on the intersection of the first and last frame
 	*/
-	airfoil_c close_intersect(double epsilon = 0.0001) const;
+	airfoil_c closed_intersect(double epsilon = 0.0001) const;
 
 	/**
 	 * Check if the airfoil contains at least 1 point.
