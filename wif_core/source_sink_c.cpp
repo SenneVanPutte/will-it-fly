@@ -41,6 +41,8 @@ double source_sink_c::get_psi(const vector_2d_c & pos) const
 }
 
 
+
+
 vector_2d_c source_sink_c::get_velocity(const vector_2d_c & pos) const
 {
 	vector_2d_c diff = pos - location;
