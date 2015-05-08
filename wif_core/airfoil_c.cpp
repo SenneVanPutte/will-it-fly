@@ -222,10 +222,9 @@ airfoil_c airfoil_c::closed_merge(double epsilon) const
 	}
 
 	vector_2d_c endpoint = (points.front() + points.back()) / 2;
-	std::vector<vector_2d_c> newpoints;
-	newpoints.push_back(endpoint);
-	newpoints.insert(newpoints.end(), this->points.begin() + 1, this->points.end() - 1);
-	newpoints.push_back(endpoint);
+	std::vector<vector_2d_c> newpoints = this->points;
+	newpoints.front() = endpoint;
+	newpoints.back() = endpoint;
 
 	std::stringstream newname;
 	newname << this->name << " closed";
