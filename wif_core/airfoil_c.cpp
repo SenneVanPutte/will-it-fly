@@ -84,7 +84,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 
 }
 
-airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name) :
+airfoil_c::airfoil_c(const std::vector<vector_2d_c> & points, const std::string & name) :
 	name(name),
 	points(points)
 {
@@ -93,11 +93,12 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
-	name("circle")
+	name("circle"),
+	points(corners, vector_2d_c(0, 0))
 {
 	for(unsigned int i = 0; i <= corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
+		points[i] = (vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 
@@ -105,12 +106,13 @@ airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int c
 std::vector<line_2d_c> airfoil_c::get_lines() const
 {
 	std::vector<line_2d_c> ret;
+	ret.resize(this->points.size() - 1, line_2d_c(0.0, 0.0, 0.0, 0.0));
 
 	for(unsigned int index = 0; index < this->points.size() - 1; index++)
 	{
 
 		line_2d_c r(this->points[index], this->points[index + 1]);
-		ret.push_back(r);
+		ret[index] = r;
 
 	}
 
@@ -221,7 +223,7 @@ airfoil_c airfoil_c::closed_merge(double epsilon) const
 		return *this;
 	}
 
-	vector_2d_c endpoint = (points.front() + points.back()) / 2;
+	vector_2d_c endpoint = (points.front() + points.back()) * 0.5;
 	std::vector<vector_2d_c> newpoints = this->points;
 	newpoints.front() = endpoint;
 	newpoints.back() = endpoint;
@@ -273,13 +275,13 @@ std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil)
 {
 	output << airfoil.name << std::endl;
 
-	for(vector_2d_c v : airfoil.points)
+	for(const vector_2d_c & v : airfoil.points)
 	{
 		output << v.x << "\t" << v.y << std::endl;
 	}
 
 	return output;
-};
+}
 
 
 } //namespace wif_core

@@ -36,7 +36,7 @@ public:
 	/**
 	 * Create airfoil with given name and vector
 	 */
-	airfoil_c(std::vector<vector_2d_c> & points, const std::string & name);
+	airfoil_c(const std::vector<vector_2d_c> & points, const std::string & name);
 
 	/**
 	 * New airfoil named old name + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
