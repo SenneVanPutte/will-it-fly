@@ -36,7 +36,7 @@ public:
 	/**
 	 * Create airfoil with given name and vector
 	 */
-	airfoil_c(std::vector<vector_2d_c> & points, const std::string & name);
+	airfoil_c(const std::vector<vector_2d_c> & points, const std::string & name);
 
 	/**
 	 * New airfoil named old name + " circle projected with $n subdivisions centered on $projection_center with radius $radius".
@@ -52,6 +52,16 @@ public:
 	 * @epsilon maximum distance as with points are considered the same
 	 */
 	bool is_closed(double epsilon = 0.0001) const;
+
+	/**
+	* returns a closed airfoil by adding a new point inbetween the start and endpoint
+	*/
+	airfoil_c closed_merge(double epsilon = 0.0001) const;
+
+	/**
+	* returns a closed airfoil  by adding a new point on the intersection of the first and last frame
+	*/
+	airfoil_c closed_intersect(double epsilon = 0.0001) const;
 
 	/**
 	 * Check if the airfoil contains at least 1 point.
@@ -84,12 +94,12 @@ private:
 	/**
 	 * returns first intersection with line
 	 */
-	vector_2d_c get_intersection_last(const line_2d_c & line) const;
+	vector_2d_c get_intersection_first(const line_2d_c & line) const;
 
 	/**
 	 * returns last intersection with line
 	 */
-	vector_2d_c get_intersection_first(const line_2d_c & line) const;
+	vector_2d_c get_intersection_last(const line_2d_c & line) const;
 
 private:
 	std::string name;
