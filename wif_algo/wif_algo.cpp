@@ -35,7 +35,7 @@ double func(double s, void * p)
 	return func;
 }
 
-double vortex_1(double s, void * params)
+double vortex_1(double s, void * p)
 {
 	struct my_func_params * params = (struct my_func_params *)p;
 	double beta = (params->beta);
@@ -51,7 +51,7 @@ double vortex_1(double s, void * params)
 	return a / b;
 }
 
-double vortex_2(double s, void * params)
+double vortex_2(double s, void * p)
 {
 	struct my_func_params * params = (struct my_func_params *)p;
 	double beta = (params->beta);
@@ -80,7 +80,7 @@ double v_t_function(double s, void * p)
 	return func;
 }
 
-calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow)
+calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, bool Kuta)
 {
 	calculation_results_c c;
 
@@ -119,10 +119,16 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		angles.push_back(lineNow.get_angle());
 	}
 
-	double U_inf = myFlow.get_strength;
-	double angle_attack = myFlow.get_angle();
+	double U_inf = myFlow->get_strength();
+	double angle_attack = myFlow->get_angle();
 	double result, error;
 	double s_0 = 0.;
+	vector<double> c_p;
+	double c_l;
+	std::shared_ptr<wif_core::flow_accumulate_c> flow;
+	int k;
+	int l;
+	size_t nevals;
 
 	if(Kuta == false)
 	{
@@ -134,8 +140,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		double b_data [n];
 
 
-		gsl_matrix_view a
-		    = gsl_matrix_view_array(a_data, n, m);
+		gsl_matrix_view a = gsl_matrix_view_array(a_data, n, m);
 
 		gsl_function FUNC;
 		FUNC.function = &func;
@@ -157,7 +162,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 					FUNC.params = &parameters;
 
-					size_t nevals;
+
 					gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
 					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
 					gsl_integration_cquad_workspace_free(w1);
@@ -200,7 +205,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 		double v_t_i;
 
-		for(unsigned int i = 0; i < corners; j++)
+		for(unsigned int i = 0; i < corners; i++)
 		{
 			v_t_i = 0;
 
@@ -210,10 +215,10 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 				V_FUNC.params = &parameters;
 
-				size_t nevals;
-				gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-				gsl_integration_cquad(&V_FUNC, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-				gsl_integration_cquad_workspace_free(w1);
+
+				gsl_integration_cquad_workspace * w2 = gsl_integration_cquad_workspace_alloc(1000);
+				gsl_integration_cquad(&V_FUNC, s_0, lengths[j], 0., 1e-7, w2, &result, &error, &nevals);
+				gsl_integration_cquad_workspace_free(w2);
 				v_t_i = v_t_i + Sigma[j] / (2 * pi) * result;
 
 			}
@@ -222,8 +227,8 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		}
 
 
-		flow.add_flow(myFlow);
-		flow.add_source_sheets(Sigma, myAirfoil)
+		flow->add_flow(myFlow);
+		flow->add_source_sheets(Sigma, myAirfoil);
 		c_l = 0;
 
 		c.airfoil = myAirfoil;
@@ -239,7 +244,6 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		double a_data [n * m];
 		double b_data [n];
 		double gamma = 1;
-
 
 		gsl_matrix_view a
 		    = gsl_matrix_view_array(a_data, n, m);
@@ -264,10 +268,10 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 					FUNC.params = &parameters;
 
-					size_t nevals;
-					gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-					gsl_integration_cquad_workspace_free(w1);
+
+					gsl_integration_cquad_workspace * w3 = gsl_integration_cquad_workspace_alloc(1000);
+					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w3, &result, &error, &nevals);
+					gsl_integration_cquad_workspace_free(w3);
 
 					gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j, result / (2.*pi));
 
@@ -286,10 +290,9 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			VORTEX1.params = &parameters;
 
-			size_t nevals;
-			gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-			gsl_integration_cquad(VORTEX1, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-			gsl_integration_cquad_workspace_free(w1);
+			gsl_integration_cquad_workspace * w4 = gsl_integration_cquad_workspace_alloc(1000);
+			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w4, &result, &error, &nevals);
+			gsl_integration_cquad_workspace_free(w4);
 
 
 			gsl_matrix_set(&a.matrix, (size_t) i, (size_t) j, -0.5 * gamma / pi * result);
@@ -306,21 +309,20 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			VORTEX1.params = &parameters;
 
-			size_t nevals;
-			gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-			gsl_integration_cquad(VORTEX1, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-			gsl_integration_cquad_workspace_free(w1);
+			gsl_integration_cquad_workspace * w5 = gsl_integration_cquad_workspace_alloc(1000);
+			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w5, &result, &error, &nevals);
+			gsl_integration_cquad_workspace_free(w5);
 
-			double a_temp = -0.5 / (pi) * result
+			double a_temp = -0.5 / (pi) * result;
 
-			struct my_func_params parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
+			parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
 
 			VORTEX1.params = &parameters;
 
 			size_t nevals;
-			gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-			gsl_integration_cquad(VORTEX1, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-			gsl_integration_cquad_workspace_free(w1);
+			gsl_integration_cquad_workspace * w6 = gsl_integration_cquad_workspace_alloc(1000);
+			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w6, &result, &error, &nevals);
+			gsl_integration_cquad_workspace_free(w6);
 
 			a_temp = a_temp - 0.5 / (pi) * result;
 
@@ -339,21 +341,20 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 		VORTEX2.params = &parameters;
 
-		size_t nevals;
-		gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-		gsl_integration_cquad(VORTEX2, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-		gsl_integration_cquad_workspace_free(w1);
+		gsl_integration_cquad_workspace * w7 = gsl_integration_cquad_workspace_alloc(1000);
+		gsl_integration_cquad(&VORTEX2, s_0, lengths[j], 0., 1e-7, w7, &result, &error, &nevals);
+		gsl_integration_cquad_workspace_free(w7);
 
-		double a_temp = -0.5 / (pi) * result
+		double a_temp = -0.5 / (pi) * result;
 
-		struct my_func_params parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
+		parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
 
 		VORTEX2.params = &parameters;
 
 		size_t nevals;
-		gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
-		gsl_integration_cquad(VORTEX2, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
-		gsl_integration_cquad_workspace_free(w1);
+		gsl_integration_cquad_workspace * w8 = gsl_integration_cquad_workspace_alloc(1000);
+		gsl_integration_cquad(&VORTEX2, s_0, lengths[j], 0., 1e-7, w8, &result, &error, &nevals);
+		gsl_integration_cquad_workspace_free(w8);
 
 		a_temp = a_temp - 0.5 / (pi) * result;
 
@@ -430,4 +431,3 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 
 } // namespace wif_algo
-_

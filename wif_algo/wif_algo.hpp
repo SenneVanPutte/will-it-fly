@@ -3,12 +3,21 @@
 
 #include <cstdint>
 #include <memory>
+#include <iostream>
+#include <stdio.h>
+#include <memory>
+#include <cmath>
+#include <gsl/gsl_linalg.h>
+#include <gsl/gsl_integration.h>
 #include <wif_core/wif_core.hpp>
 
 namespace wif_algo
 {
 
-
+struct my_func_params;
+double func(double s, void * p);
+double func(double s, void * p);
+double vortex_1(double s, void * params);
 struct calculation_results_c
 {
 	/// Een kopie van de input airfoil
