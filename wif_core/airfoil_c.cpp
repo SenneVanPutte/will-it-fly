@@ -245,7 +245,7 @@ airfoil_c airfoil_c::closed_intersect(double epsilon) const
 
 bool airfoil_c::is_valid() const
 {
-	return !this->points.empty();
+	return this->points.size() > 1;
 }
 
 
