@@ -21,7 +21,7 @@ airfoil_c::airfoil_c() :
 }
 
 
-airfoil_c::airfoil_c(const std::string & filename, double epsilon)
+airfoil_c::airfoil_c(const std::string & filename)
 {
 
 	std::ifstream detect(filename);
@@ -81,7 +81,6 @@ airfoil_c::airfoil_c(const std::string & filename, double epsilon)
 	}
 
 	this->points.pop_back(); //reads last line double. Not any more
-	make_closed();
 
 }
 
@@ -206,13 +205,41 @@ bool airfoil_c::is_closed(double epsilon) const
 }
 
 
-void airfoil_c::make_closed(double epsilon)
+airfoil_c airfoil_c::close_merge(double epsilon) const
 {
-
-	if(!this->is_closed(epsilon))
+	if(this->is_closed(epsilon))
 	{
-		this->points.push_back(this->points.front());
+		return *this;
 	}
+
+	vector_2d_c endpoint = (points.front() + points.back()) / 2;
+	std::vector<vector_2d_c> newpoints;
+	newpoints.push_back(endpoint);
+	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());
+	newpoints.push_back(endpoint);
+
+	std::stringstream newname;
+	newname << this->name << " closed";
+	return airfoil_c(newpoints, newname.str());
+}
+
+airfoil_c airfoil_c::close_intersect(double epsilon) const
+{
+	if(this->is_closed(epsilon))
+	{
+		return *this;
+	}
+
+	vector_2d_c endpoint;
+	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint);
+	std::vector<vector_2d_c> newpoints;
+	newpoints.push_back(endpoint);
+	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());
+	newpoints.push_back(endpoint);
+
+	std::stringstream newname;
+	newname << this->name << " closed";
+	return airfoil_c(newpoints, newname.str());
 }
 
 

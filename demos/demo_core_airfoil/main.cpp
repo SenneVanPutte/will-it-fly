@@ -21,6 +21,8 @@ int main()
 		std::cout << filename1 << std::endl;
 		wif_core::airfoil_c airfoil1(filename1);
 		std::cout << airfoil1;
+		std::cout << airfoil1.close_merge();
+		std::cout << airfoil1.close_intersect();
 		break;
 		//std::cout << airfoil1.get_circle_projection(9, wif_core::vector_2d_c(0.5, 0.0) , 0.5);
 	}

@@ -31,7 +31,7 @@ public:
 	/**
 	 * Read the file's data
 	 */
-	airfoil_c(const std::string & filename, double epsilon = 0.00001);
+	airfoil_c(const std::string & filename);
 
 	/**
 	 * Create airfoil with given name and vector
@@ -54,10 +54,14 @@ public:
 	bool is_closed(double epsilon = 0.0001) const;
 
 	/**
-	* Check if the last points is the same as the first, within a certain error
-	* @epsilon maximum distance as with points are considered the same
+	* returns a closed airfoil by adding a new point inbetween the start and endpoint
 	*/
-	void make_closed(double epsilon = 0.0001);
+	airfoil_c close_merge(double epsilon = 0.0001) const;
+
+	/**
+	* returns a closed airfoil  by adding a new point on the intersection of the first and last frame
+	*/
+	airfoil_c close_intersect(double epsilon = 0.0001) const;
 
 	/**
 	 * Check if the airfoil contains at least 1 point.
