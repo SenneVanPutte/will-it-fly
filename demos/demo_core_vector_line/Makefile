@@ -6,9 +6,9 @@ OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
 CC=g++
 CC_FLAGS=-std=c++11 -g -Wall
-INCLUDE=-I../../build/include
-LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+INCLUDE=-I../../build/include -I/usr/include/gsl
+LIBDIR=-L../../build/lib -L/usr/lib/ -L/usr/lib/gsl
+LIBS=-lwif_core -lwif_algo -lwif_viz -lgsl -lgslcblas -lm
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
