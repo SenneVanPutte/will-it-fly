@@ -134,7 +134,7 @@ std::vector<line_2d_c> airfoil_c::get_lines_reversed() const
 
 vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 {
-	for(line_2d_c l : this->get_lines())
+	for(const line_2d_c & l : this->get_lines())
 	{
 		vector_2d_c intersect(0, 0);
 		E_INTERSECTION intersect_type = line.get_intersection(l, intersect);
@@ -151,7 +151,7 @@ vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 
 vector_2d_c airfoil_c::get_intersection_last(const line_2d_c & line) const
 {
-	for(line_2d_c l : this->get_lines_reversed())
+	for(const line_2d_c & l : this->get_lines_reversed())
 	{
 		vector_2d_c intersect(0, 0);
 		E_INTERSECTION intersect_type = line.get_intersection(l, intersect);
@@ -210,7 +210,7 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 bool airfoil_c::is_closed(double epsilon) const
 {
 
-	return (this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon);
+	return !is_valid() or ((this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon));
 }
 
 
