@@ -31,7 +31,7 @@ public:
 	/**
 	 * Read the file's data
 	 */
-	airfoil_c(const std::string & filename);
+	airfoil_c(const std::string & filename, double epsilon = 0.00001);
 
 	/**
 	 * Create airfoil with given name and vector
@@ -52,6 +52,12 @@ public:
 	 * @epsilon maximum distance as with points are considered the same
 	 */
 	bool is_closed(double epsilon = 0.0001) const;
+
+	/**
+	* Check if the last points is the same as the first, within a certain error
+	* @epsilon maximum distance as with points are considered the same
+	*/
+	void make_closed(double epsilon = 0.0001);
 
 	/**
 	 * Check if the airfoil contains at least 1 point.

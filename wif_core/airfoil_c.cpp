@@ -21,7 +21,7 @@ airfoil_c::airfoil_c() :
 }
 
 
-airfoil_c::airfoil_c(const std::string & filename)
+airfoil_c::airfoil_c(const std::string & filename, double epsilon)
 {
 
 	std::ifstream detect(filename);
@@ -80,9 +80,10 @@ airfoil_c::airfoil_c(const std::string & filename)
 		}
 	}
 
-	this->points.pop_back(); //reads last line double
-}
+	this->points.pop_back(); //reads last line double. Not any more
+	make_closed();
 
+}
 
 airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name) :
 	name(name),
@@ -202,6 +203,16 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 bool airfoil_c::is_closed(double epsilon) const
 {
 	return (this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon);
+}
+
+
+void airfoil_c::make_closed(double epsilon)
+{
+
+	if(!this->is_closed(epsilon))
+	{
+		this->points.push_back(this->points.front());
+	}
 }
 
 
