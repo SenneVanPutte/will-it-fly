@@ -35,6 +35,11 @@ public:
 	double get_phi(const vector_2d_c & position) const;
 
 	/**
+	 * returns the strenght
+	 */
+	double get_strenght() const;
+
+	/**
 	 * gives the velocity at a given point
 	 */
 	vector_2d_c get_velocity(const vector_2d_c & position) const;
