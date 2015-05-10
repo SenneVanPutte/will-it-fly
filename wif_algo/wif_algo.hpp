@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <memory>
 #include <iostream>
+#include <numeric>
 #include <stdio.h>
 #include <memory>
 #include <cmath>
