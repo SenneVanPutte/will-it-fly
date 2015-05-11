@@ -88,5 +88,11 @@ vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
 	return vector_2d_c(vx, vy);
 }
 
+double source_sheet_c::get_strenght() const
+{
+	return this->sigma;
+}
+
+
 
 } // namespace wif_core
