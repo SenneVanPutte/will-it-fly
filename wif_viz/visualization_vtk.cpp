@@ -195,9 +195,11 @@ void visualization_vtk_c::draw(const std::string & filename)
 		// Stop the interactor
 		iren->TerminateApp();
 	}
-
+	contour_plot(construct_phi_plane(),20);
+	contour_plot(construct_psi_plane(),20);
+	
 	return;
-
+/*
 
 	if(velocity_bins.x != 0 && velocity_bins.y != 0)
 	{
@@ -587,7 +589,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 		renWin->Render();
 		iren->Start();
 		std::cout << "6" << std::endl;
-	}
+	}*/
 
 }
 
@@ -739,16 +741,25 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
     plane->SetPoint2(min_range.x, max_range.y, 0);
     plane->Update();
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(phi_bins, true);
-
+	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
 
-		plane->GetOutput()->GetPoints()->GetPoint(i, x);
+		points->GetPoint(i, x);
 
 		const vector_2d_c pos(x[0], x[1]);
 
 		double t = flow->get_phi(pos);
+		if(t > 500)
+		{
+			t = 1;
+		}
+
+		if(t < -500)
+		{
+			t = -1;
+		}
 
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
@@ -768,17 +779,25 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
     plane->SetPoint2(min_range.x, max_range.y, 0);
     plane->Update();
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(psi_bins, true);
-
+	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
 
-		plane->GetOutput()->GetPoints()->GetPoint(i, x);
+		points->GetPoint(i, x);
 
 		const vector_2d_c pos(x[0], x[1]);
 
 		double t = flow->get_psi(pos);
+		if(t > 500)
+		{
+			t = 1;
+		}
 
+		if(t < -500)
+		{
+			t = -1;
+		}
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
 	}

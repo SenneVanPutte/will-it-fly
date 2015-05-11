@@ -35,6 +35,8 @@
 #include "vtkWindowToImageFilter.h"
 #include "vtkPNGWriter.h"
 
+#include "vtkPlaneSource.h"
+
 namespace wif_viz
 {
 
