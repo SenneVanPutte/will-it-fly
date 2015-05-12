@@ -210,10 +210,10 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	std::vector<double> contvec_phi, contvec_psi;
 
-	double delta_phi = std::abs((phiRange[1] - phiRange[0])/(20));
-	double delta_psi = std::abs((psiRange[1] - psiRange[0])/(20));
+	double delta_phi = std::abs((phiRange[1] - phiRange[0]) / (20));
+	double delta_psi = std::abs((psiRange[1] - psiRange[0]) / (20));
 
-	for (int i = 0; i < 20; ++i)
+	for(int i = 0; i < 20; ++i)
 	{
 		contvec_phi.push_back(phiRange[0] + delta_phi * i);
 		std::cout << contvec_phi[i] << std::endl;
@@ -222,9 +222,9 @@ void visualization_vtk_c::draw(const std::string & filename)
 	}
 
 	std::cout << "hier" << std::endl;
-	contour_plot(phi_plane,contvec_phi);
+	contour_plot(phi_plane, contvec_phi);
 	std::cout << "hier" << std::endl;
-	contour_plot(psi_plane,contvec_psi);
+	contour_plot(psi_plane, contvec_psi);
 	std::cout << "hier" << std::endl;
 
 	return;
