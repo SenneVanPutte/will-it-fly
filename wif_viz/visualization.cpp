@@ -56,11 +56,9 @@ void visualization_c::set_contours(const std::vector<double> & contours)
 void visualization_c::set_contours(uint32_t contours)
 {
 	contour_locations.clear();
-
-	for(uint32_t i = 1 ; i <= contours ; i++)
+	for (uint32_t i=1 ; i <= contours ; i++)
 	{
-		this->contour_locations.push_back(clip_min + i * (clip_max - clip_min) / (contours + 2));
-		std::cout << contour_locations[i] << std::endl;
+		this->contour_locations.push_back(clip_min+i*(clip_max-clip_min)/(contours+2));
 	}
 }
 
