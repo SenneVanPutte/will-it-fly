@@ -10,7 +10,7 @@ PATH:=/home/uauser/Software/root-v5.34.25/builddir/bin:$(PATH)
 LD_LIBRARY_PATH:=/home/uauser/Software/root-v5.34.25/builddir/lib:$(LD_LIBRARY_PATH)
 
 export CXX=g++ -std=c++11
-export CXX_FLAGS=-Wall -g
+export CXX_FLAGS=-Wall
 
 INCLUDE=-I./build/include
 LIBDIR=-L./build/lib
@@ -21,6 +21,12 @@ INSTALL_PATH=/usr/
 
 all : demos wif
 	echo "Building all"
+
+debug : export CXX_FLAGS=-Wall -g 
+debug : all
+
+optimize : export CXX_FLAGS=-Wall -O3
+optimize : all
 
 doxygen : builddir
 	doxygen
