@@ -71,7 +71,7 @@ void flow_accumulate_c::add_vortex_sheets(double strength, const airfoil_c & foi
 }
 
 
-void flow_accumulate_c::add_flow(shared_ptr<flow_c> flow)
+void flow_accumulate_c::add_flow(const shared_ptr<flow_c> & flow)
 {
 	flows.push_back(flow);
 }
