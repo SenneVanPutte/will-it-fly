@@ -215,9 +215,9 @@ void visualization_vtk_c::draw(const std::string & filename)
 #endif
 
 			glyph3D->SetColorMode(2);
-			glyph3D->SetScaleModeToScaleByVector();
+			//glyph3D->SetScaleModeToScaleByVector();
 			//glyph3D->OrientOff();
-			glyph3D->SetScaleFactor(.1);
+			glyph3D->SetScaleFactor(.05);
 			glyph3D->Update();
 
 
