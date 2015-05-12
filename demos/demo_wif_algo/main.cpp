@@ -24,6 +24,5 @@ int main()
 	std::cout << std::endl;
 	std::cout << calculate_flow2.c_l << std::endl;
 
-
 	return 0;
 }
