@@ -95,7 +95,7 @@ airfoil_c::airfoil_c(const std::vector<vector_2d_c> & points, const std::string 
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle"),
-	points(corners, vector_2d_c(0, 0))
+	points(corners+1,vector_2d_c(0,0))
 {
 	for(unsigned int i = 0; i <= corners; i++)
 	{
@@ -202,7 +202,7 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		}
 	}
 
-
+	newpoints.push_back(newpoints.front());
 	newname << this->name << " circle projected with " << n << " subdivisions centered on " << projection_center;
 
 

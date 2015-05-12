@@ -22,6 +22,7 @@ int main(int argc, char * argv[])
 		std::cout << airfoil1;
 		std::cout << airfoil1.closed_merge();
 		std::cout << airfoil1.closed_intersect();
+		std::cout << airfoil1.get_circle_projection(8, wif_core::vector_2d_c(0.5, 0), 0.5, 0.0001);
 	}
 
 	//break;
@@ -47,9 +48,10 @@ int main(int argc, char * argv[])
 	wif_core::airfoil_c airfoil(test, "flat");
 	std::cout << airfoil;
 	std::cout << airfoil.get_circle_projection(10, wif_core::vector_2d_c(0.5, 0.0), 0.5);
+	*/
 	wif_core::airfoil_c airfoil3(wif_core::vector_2d_c(0.5, 0.0), 0.5, 8);
 	std::cout << airfoil3;
-	*/
+
 
 	return 0; // Komaan mensen? return code vergeten????
 }
