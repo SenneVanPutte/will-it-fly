@@ -15,9 +15,9 @@ int main()
 	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
 
 #if 1
-	    wif_core::airfoil_c airfoil({0, 0}, 1, 30);
+	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
 #else
-	    wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
+	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
 #endif
 
 	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
@@ -46,6 +46,6 @@ int main()
 	vizy->draw("circle");
 	std::cout << "5" << std::endl;
 
-	    return 0;
+	return 0;
 
 }
