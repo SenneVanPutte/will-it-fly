@@ -7,6 +7,7 @@
 
 int main()
 {
+	double pi = 3.1415;
 	double radius = 2;
 	unsigned int num_lines = 100;
 	wif_core::vector_2d_c midpoint(0, 0);
@@ -18,12 +19,23 @@ int main()
 	std::vector<wif_core::line_2d_c> mylines = myAirfoil.get_lines();
 	std::vector<wif_core::vector_2d_c> centers(num_lines);
 	std::cout << "y" << "   " << "cp calc" << "   " << "cp theor pol" << "   " << "cp theor cart" << std::endl;
+	std::vector<double> angles(num_lines);
 
 	for(unsigned int i = 0; i < num_lines; i++)
 	{
 		wif_core::line_2d_c temp_line = mylines[i];
 		centers[i] = temp_line.get_center_point();
-		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(temp_line.get_angle()), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)  << std::endl;
+
+		if(centers[i].y > 0)
+		{
+			angles[i] = atan2(centers[i].y, centers[i].x);
+		}
+		else
+		{
+			angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
+		}
+
+		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)  << std::endl;
 	}
 
 
