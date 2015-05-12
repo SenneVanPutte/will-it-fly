@@ -204,7 +204,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = 1 - pow((-U_inf * sin(angles[i]) + v_t_i) / U_inf, 2);
+			c_p[i] = 1 - pow((-U_inf * cos(angles[i] - angle_attack) + v_t_i) / U_inf, 2);
 		}
 
 
@@ -223,6 +223,18 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		c.c_p = c_p;
 		c.c_l = c_l;
 
+		////
+		double E = 0;
+
+		auto i = lengths.size();
+
+		for(i = 0; i < lengths.size(); i++)
+		{
+			E = E + lengths[i] * Sigma[i];
+		}
+
+		std::cout << "Voor een gesloten lichaam moet de som van alle source sterktes gelijk zijn aan nul, vergelijking (31):";
+		std::cout << E << std::endl;
 
 	} // if (Kutta)
 	else
