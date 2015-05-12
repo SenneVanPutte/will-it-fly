@@ -12,7 +12,7 @@ uint32_t get_version()
 	return 1;
 }
 
-struct my_func_params
+struct integration_function_parameters
 {
 	double beta;
 	double betaj;
@@ -22,22 +22,22 @@ struct my_func_params
 	double ya;
 };
 
-double func(double s, void * p)
+double source_sheet_function(double s, void * parameters)
 {
-	struct my_func_params * params = (struct my_func_params *)p;
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
 	double beta = (params->beta);
 	double betaj = (params->betaj);
 	double xc = (params->xc);
 	double yc = (params->yc);
 	double xa = (params->xa);
 	double ya = (params->ya);
-	double func = ((xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta)) / (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
-	return func;
+	double source_sheet_function = ((xc - (xa - s * sin(betaj))) * cos(beta) + (yc - (ya + s * cos(betaj))) * sin(beta)) / (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
+	return source_sheet_function;
 }
 
-double vortex_1(double s, void * p)
+double vortex_sheet_function_1(double s, void * parameters)
 {
-	struct my_func_params * params = (struct my_func_params *)p;
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
 	double beta = (params->beta);
 	double betaj = (params->betaj);
 	double xc = (params->xc);
@@ -51,9 +51,9 @@ double vortex_1(double s, void * p)
 	return a / b;
 }
 
-double vortex_2(double s, void * p)
+double vortex_sheet_function_2(double s, void * parameters)
 {
-	struct my_func_params * params = (struct my_func_params *)p;
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
 	double beta = (params->beta);
 	double betaj = (params->betaj);
 	double xc = (params->xc);
@@ -67,17 +67,17 @@ double vortex_2(double s, void * p)
 	return a / b;
 }
 
-double v_t_function(double s, void * p)
+double v_t_function(double s, void * parameters)
 {
-	struct my_func_params * params = (struct my_func_params *)p;
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
 	double beta = (params->beta);
 	double betaj = (params->betaj);
 	double xc = (params->xc);
 	double yc = (params->yc);
 	double xa = (params->xa);
 	double ya = (params->ya);
-	double func = ((xc - (xa - s * sin(betaj))) * -sin(beta) + (yc - (ya + s * cos(betaj))) * cos(beta)) / (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
-	return func;
+	double v_t_function = ((xc - (xa - s * sin(betaj))) * -sin(beta) + (yc - (ya + s * cos(betaj))) * cos(beta)) / (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
+	return v_t_function;
 }
 
 calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, bool Kuta)
@@ -143,7 +143,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		gsl_matrix_view a = gsl_matrix_view_array(a_data, n, m);
 
 		gsl_function FUNC;
-		FUNC.function = &func;
+		FUNC.function = &source_sheet_function;
 
 		//Setting matrix A and vector B to solve the system
 		for(unsigned int i = 0; i < n; i++)
@@ -159,7 +159,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				}
 				else
 				{
-					struct my_func_params parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
 					FUNC.params = &parameters;
 
@@ -209,7 +209,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			for(unsigned int j = 0; j < corners; j++)
 			{
-				struct my_func_params parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+				struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
 				V_FUNC.params = &parameters;
 
@@ -248,7 +248,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		    = gsl_matrix_view_array(a_data, n, m);
 
 		gsl_function FUNC;
-		FUNC.function = &func;
+		FUNC.function = &source_sheet_function;
 
 		//Fistr set matrix a and vector b
 		for(unsigned int i = 0; i < n - 1; i++)
@@ -264,7 +264,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				}
 				else
 				{
-					struct my_func_params parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
 					FUNC.params = &parameters;
 
@@ -280,14 +280,14 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		}
 
 		gsl_function VORTEX1;
-		VORTEX1.function = &vortex_1;
+		VORTEX1.function = &vortex_sheet_function_1;
 
 		//Set last row of matrix A
 		for(unsigned int i = 0; i < n; i++)
 		{
 			unsigned int j = n - 1;
 
-			struct my_func_params parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+			struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
 			VORTEX1.params = &parameters;
 
@@ -305,7 +305,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			b_data[i] = -U_inf * cos(angle_attack - angles[k]) - U_inf * cos(angle_attack - angles[l]);
 
-			struct my_func_params parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
+			struct integration_function_parameters parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
 
 			VORTEX1.params = &parameters;
 
@@ -337,9 +337,9 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 
 		gsl_function VORTEX2;
-		VORTEX2.function = &vortex_2;
+		VORTEX2.function = &vortex_sheet_function_2;
 
-		struct my_func_params parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
+		struct integration_function_parameters parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
 
 		VORTEX2.params = &parameters;
 
@@ -401,7 +401,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			for(unsigned int j = 0; j < corners; j++)
 			{
-				struct my_func_params parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+				struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
 				V_FUNC.params = &parameters;
 
