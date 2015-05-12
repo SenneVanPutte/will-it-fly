@@ -54,6 +54,8 @@ public:
 	virtual void draw(const std::string & filename = "");
 
 private:
+	double vtkMax = 500;
+
 	vtkSmartPointer<vtkPoints> construct_points(const vector_2d_c & binning) const;
 
 	vtkSmartPointer<vtkDoubleArray> construct_field(const vector_2d_c & binning, bool scalar) const;
@@ -70,7 +72,7 @@ private:
 
 	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid() const;
 	
-	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, int ncont) const;
+	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
 
 private:
 	std::vector<vtkSmartPointer<vtkActor>> actors;

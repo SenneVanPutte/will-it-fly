@@ -23,7 +23,7 @@ int main()
 	std::cout << "2" << std::endl;
 	//std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();
 	std::cout << "2.1" << std::endl;
-	ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
+	//ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 	std::cout << "3" << std::endl;
 
 	wif_core::vector_2d_c min, max, bins;
@@ -34,9 +34,9 @@ int main()
 	bins.x = 301;
 	bins.y = 301;
 	//int binsx = 20, binsy = 20;
-
+	std::cout << "3.1" << std::endl;
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
-
+	std::cout << "3.2" << std::endl;
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
 	vizy->set_phi_bins(bins);
