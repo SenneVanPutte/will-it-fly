@@ -23,9 +23,14 @@ public:
 	virtual void draw(const std::string & filename = "");
 
 	void FillBins();
+	
+	void addArrows();
+	
+	void fillbinStagnatie();
 
 protected:
-	TH2F * velocity, *psi, *phi;
+	TH2F *velocity, *psi, *phi, *stag;
+	std::shared_ptr<flow_c> Flow;
 	//
 };
 

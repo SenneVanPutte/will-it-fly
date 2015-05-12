@@ -6,9 +6,9 @@
 
 
 void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c>  flow,
-                      const wif_core::vector_2d_c                                & min,
-                      const wif_core::vector_2d_c                                & max,
-                      const wif_core::vector_2d_c                                & binning)
+                      const wif_core::vector_2d_c                 &                min,
+                      const wif_core::vector_2d_c                 &                max,
+                      const wif_core::vector_2d_c                 &                binning)
 {
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(flow, min, max);
 
@@ -21,11 +21,11 @@ void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c
 
 
 void visualize_all(bool                               screen,
-                   const std::string                & name,
+                   const std::string         &        name,
                    std::shared_ptr<wif_core::flow_c>  flow,
-                   const wif_core::vector_2d_c      & min,
-                   const wif_core::vector_2d_c      & max,
-                   const wif_core::vector_2d_c      & binning)
+                   const wif_core::vector_2d_c    &   min,
+                   const wif_core::vector_2d_c    &   max,
+                   const wif_core::vector_2d_c    &   binning)
 {
 	if(screen)
 	{
