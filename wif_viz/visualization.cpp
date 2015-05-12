@@ -77,7 +77,7 @@ void visualization_c::set_output_to_file(bool file_output)
 }
 
 
-double visualization_c::clip_value(double value)
+double visualization_c::clip_value(double value) const
 {
 	if(value < clip_min)
 	{
