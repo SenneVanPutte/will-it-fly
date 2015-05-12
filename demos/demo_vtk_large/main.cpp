@@ -102,8 +102,8 @@ void tests()
 	bool screen = true;
 
 	test_uniflow(screen);
-	//test_circle(screen);
-	//test_circle_flow(screen);
+	test_circle(screen);
+	test_circle_flow(screen);
 }
 
 

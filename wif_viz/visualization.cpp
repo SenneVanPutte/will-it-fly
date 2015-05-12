@@ -1,5 +1,5 @@
 #include "visualization.hpp"
-
+#include <iostream>
 namespace wif_viz
 {
 
@@ -44,6 +44,36 @@ void visualization_c::set_phi_bins(const vector_2d_c & bins)
 void visualization_c::set_velocity_bins(const vector_2d_c & bins)
 {
 	this->velocity_bins = bins;
+}
+
+
+void visualization_c::set_contours(const std::vector<double> & contours)
+{
+	this->contour_locations = contours;
+}
+
+
+void visualization_c::set_contours(uint32_t contours)
+{
+	contour_locations.clear();
+
+	for(uint32_t i = 1 ; i <= contours ; i++)
+	{
+		this->contour_locations.push_back(clip_min + i * (clip_max - clip_min) / (contours + 2));
+	}
+}
+
+
+void visualization_c::set_clip_range(double min, double max)
+{
+	this->clip_min = min;
+	this->clip_max = max;
+}
+
+
+void visualization_c::set_output_to_file(bool file_output)
+{
+	this->output_to_file = file_output;
 }
 
 
