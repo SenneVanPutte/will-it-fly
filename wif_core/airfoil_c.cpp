@@ -36,7 +36,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::getline(detect, line1);
 	double testval;
 	detect >> testval;
-	std::cout << "testvalue :" << testval << std::endl;
+	//std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
 
