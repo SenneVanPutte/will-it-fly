@@ -95,11 +95,11 @@ airfoil_c::airfoil_c(const std::vector<vector_2d_c> & points, const std::string 
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle"),
-	points()
+	points(corners + 1, vector_2d_c(0, 0))
 {
 	for(unsigned int i = 0; i <= corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
+		points[i] = (vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 

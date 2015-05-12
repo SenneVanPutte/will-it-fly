@@ -11,8 +11,12 @@ int main()
 	std::cout << wif_algo::get_version() << std::endl;
 	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>(0.0, 0.10);
 
+	std::cout << 2;
+
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
 	//std::shared_ptr<wif_core::airfoil_c> ss = std::make_shared<wif_core::source_sheet_c>(wif_core::line_2d_c(-1,-1,1,1), 1);
+
+	std::cout << 3;
 
 #if 1
 	wif_core::airfoil_c airfoil({0, 0}, 1, 30);

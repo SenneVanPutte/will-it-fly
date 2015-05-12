@@ -26,7 +26,7 @@ public:
 
 	flow_accumulate_c(const vector<shared_ptr<flow_c>> & flow);
 
-	flow_accumulate_c(shared_ptr<flow_c> flow);
+	flow_accumulate_c(const shared_ptr<flow_c> & flow);
 
 	//flow_accumulate_c(const vector<double> & sigmas, const airfoil_c & foil);
 
