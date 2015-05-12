@@ -15,10 +15,11 @@
 namespace wif_algo
 {
 
-struct my_func_params;
-double func(double s, void * p);
-double func(double s, void * p);
-double vortex_1(double s, void * params);
+struct integration_function_parameters;
+double source_sheet_function(double s, void * parameters);
+double vortex_sheet_function_1(double s, void * parameters);
+double vortex_sheet_function_2(double s, void * parameters);
+double v_t_function(double s, void * parameters);
 struct calculation_results_c
 {
 	/// Een kopie van de input airfoil
