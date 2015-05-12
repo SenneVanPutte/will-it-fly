@@ -35,6 +35,8 @@
 #include "vtkWindowToImageFilter.h"
 #include "vtkPNGWriter.h"
 
+#include "vtkPlaneSource.h"
+
 namespace wif_viz
 {
 
@@ -52,6 +54,8 @@ public:
 	virtual void draw(const std::string & filename = "");
 
 private:
+	double vtkMax = 500;
+
 	vtkSmartPointer<vtkPoints> construct_points(const vector_2d_c & binning) const;
 
 	vtkSmartPointer<vtkDoubleArray> construct_field(const vector_2d_c & binning, bool scalar) const;
@@ -59,10 +63,16 @@ private:
 	vtkSmartPointer<vtkStructuredGrid> combine_grid(const vector_2d_c & binning, vtkSmartPointer<vtkPoints> points, vtkSmartPointer<vtkDoubleArray> field) const;
 
 	vtkSmartPointer<vtkStructuredGrid> construct_psi_grid() const;
+	
+	vtkSmartPointer<vtkPlaneSource> construct_psi_plane() const;
 
 	vtkSmartPointer<vtkStructuredGrid> construct_phi_grid() const;
+	
+	vtkSmartPointer<vtkPlaneSource> construct_phi_plane() const;
 
 	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid() const;
+	
+	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
 
 private:
 	std::vector<vtkSmartPointer<vtkActor>> actors;
