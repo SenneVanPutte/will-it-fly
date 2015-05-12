@@ -13,6 +13,7 @@ int main()
 
 	std::cout << "1.1" << std::endl;
 	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
+
 	/*
 	#if 1
 		wif_core::airfoil_c airfoil({0, 0}, 1, 30);
@@ -36,7 +37,7 @@ int main()
 	bins.y = 301;
 	//int binsx = 20, binsy = 20;
 
-	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(unifl, min, max);
 
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
