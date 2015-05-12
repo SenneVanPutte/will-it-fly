@@ -196,30 +196,30 @@ void visualization_vtk_c::draw(const std::string & filename)
 		// Stop the interactor
 		iren->TerminateApp();
 	}
-	
-	
+
+
 	std::vector<double> conts;
-	
+
 	vtkSmartPointer<vtkPlaneSource> phi_plane = construct_phi_plane();
 	vtkSmartPointer<vtkPlaneSource> psi_plane = construct_psi_plane();
-	
+
 	double phiRange[2], psiRange[2];
 	phi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(phiRange);
 	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
-	
+
 	std::vector<double> contvec_phi, contvec_psi;
-	double delta_phi = (phiRange[1] - phiRange[0])/(20);
-	double delta_psi = (psiRange[1] - psiRange[0])/(20);
-	
-	for (int i = 0; i < 20; ++i)
+	double delta_phi = (phiRange[1] - phiRange[0]) / (20);
+	double delta_psi = (psiRange[1] - psiRange[0]) / (20);
+
+	for(int i = 0; i < 20; ++i)
 	{
 		contvec_phi.push_back(phiRange[0] + delta_phi * i);
 		contvec_psi.push_back(psiRange[0] + delta_psi * i);
 	}
-	
-	contour_plot(phi_plane,contvec_phi);
-	contour_plot(psi_plane,contvec_psi);
-	
+
+	contour_plot(phi_plane, contvec_phi);
+	contour_plot(psi_plane, contvec_psi);
+
 	return;
 
 }
@@ -364,15 +364,16 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid(
 vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 {
 	vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
-	
+
 	plane->SetXResolution(round_abs(phi_bins.x));
-    plane->SetYResolution(round_abs(phi_bins.y));
-    plane->SetOrigin(min_range.x, min_range.y, 0);
-    plane->SetPoint1(max_range.x, min_range.y, 0);
-    plane->SetPoint2(min_range.x, max_range.y, 0);
-    plane->Update();
+	plane->SetYResolution(round_abs(phi_bins.y));
+	plane->SetOrigin(min_range.x, min_range.y, 0);
+	plane->SetPoint1(max_range.x, min_range.y, 0);
+	plane->SetPoint2(min_range.x, max_range.y, 0);
+	plane->Update();
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(phi_bins, true);
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
+
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
@@ -382,6 +383,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 		const vector_2d_c pos(x[0], x[1]);
 
 		double t = flow->get_phi(pos);
+
 		if(t > vtkMax)
 		{
 			t = 1;
@@ -395,22 +397,24 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
 	}
-    plane->GetOutput()->GetPointData()->SetScalars(field);
-    return plane;
+
+	plane->GetOutput()->GetPointData()->SetScalars(field);
+	return plane;
 }
 
 vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 {
 	vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
-	
+
 	plane->SetXResolution(round_abs(psi_bins.x));
-    plane->SetYResolution(round_abs(psi_bins.y));
-    plane->SetOrigin(min_range.x, min_range.y, 0);
-    plane->SetPoint1(max_range.x, min_range.y, 0);
-    plane->SetPoint2(min_range.x, max_range.y, 0);
-    plane->Update();
+	plane->SetYResolution(round_abs(psi_bins.y));
+	plane->SetOrigin(min_range.x, min_range.y, 0);
+	plane->SetPoint1(max_range.x, min_range.y, 0);
+	plane->SetPoint2(min_range.x, max_range.y, 0);
+	plane->Update();
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(psi_bins, true);
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
+
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
@@ -420,6 +424,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 		const vector_2d_c pos(x[0], x[1]);
 
 		double t = flow->get_psi(pos);
+
 		if(t > vtkMax)
 		{
 			t = 1;
@@ -429,51 +434,55 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 		{
 			t = -1;
 		}
+
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
 	}
-    plane->GetOutput()->GetPointData()->SetScalars(field);
-    return plane;
+
+	plane->GetOutput()->GetPointData()->SetScalars(field);
+	return plane;
 }
 
 
 void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const //int ncont
 {
 	std::sort(contlvls.begin(), contlvls.end());
+
 	//int Nvec = contlvls.size();
-	while (*(contlvls.end()) >= vtkMax && contlvls.size() > 2)
+	while(*(contlvls.end()) >= vtkMax && contlvls.size() > 2)
 	{
 		contlvls.pop_back();
 	}
-	
+
 	double scalarRange[2];
 	double planeRange[2];
-  //plane->GetOutput()->GetPointData()->GetScalars()->GetRange(scalarRange);
+	//plane->GetOutput()->GetPointData()->GetScalars()->GetRange(scalarRange);
 	plane->GetOutput()->GetPointData()->GetScalars()->GetRange(planeRange);
-	scalarRange[0]= *(contlvls.begin());
-	scalarRange[1]= *(contlvls.end());
-	
+	scalarRange[0] = *(contlvls.begin());
+	scalarRange[1] = *(contlvls.end());
+
 	vtkSmartPointer<vtkAppendPolyData> appendFilledContours = vtkSmartPointer<vtkAppendPolyData>::New();
 
-  //int numberOfContours = ncont;
+	//int numberOfContours = ncont;
 	int numberOfContours = contlvls.size();
 	contlvls.push_back(planeRange[1] + 0.5);
 
-  //double delta =(scalarRange[1] - scalarRange[0]) /static_cast<double> (numberOfContours - 1);
+	//double delta =(scalarRange[1] - scalarRange[0]) /static_cast<double> (numberOfContours - 1);
 
-  // Keep the clippers alive
+	// Keep the clippers alive
 	std::vector<vtkSmartPointer<vtkClipPolyData> > clippersLo;
 	std::vector<vtkSmartPointer<vtkClipPolyData> > clippersHi;
 
-	for (int i = 0; i < numberOfContours; i++)
-    {
+	for(int i = 0; i < numberOfContours; i++)
+	{
 		//double valueLo = scalarRange[0] + static_cast<double> (i) * delta;
 		double valueLo = contlvls[i];
 		//double valueHi = scalarRange[0] + static_cast<double> (i + 1) * delta;
-		double valueHi = contlvls[i+1];
+		double valueHi = contlvls[i + 1];
 		clippersLo.push_back(vtkSmartPointer<vtkClipPolyData>::New());
 		clippersLo[i]->SetValue(valueLo);
-		if (i == 0)
+
+		if(i == 0)
 		{
 			clippersLo[i]->SetInputConnection(plane->GetOutputPort());
 		}
@@ -481,6 +490,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 		{
 			clippersLo[i]->SetInputConnection(clippersHi[i - 1]->GetOutputPort(1));
 		}
+
 		clippersLo[i]->InsideOutOff();
 		clippersLo[i]->Update();
 
@@ -490,7 +500,8 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 		clippersHi[i]->GenerateClippedOutputOn();
 		clippersHi[i]->InsideOutOn();
 		clippersHi[i]->Update();
-		if (clippersHi[i]->GetOutput()->GetNumberOfCells() == 0)
+
+		if(clippersHi[i]->GetOutput()->GetNumberOfCells() == 0)
 		{
 			continue;
 		}
@@ -502,7 +513,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 
 		clippersHi[i]->GetOutput()->GetCellData()->SetScalars(cd);
 		appendFilledContours->AddInputConnection(clippersHi[i]->GetOutputPort());
-    }
+	}
 
 	vtkSmartPointer<vtkCleanPolyData> filledContours = vtkSmartPointer<vtkCleanPolyData>::New();
 	filledContours->SetInputConnection(appendFilledContours->GetOutputPort());
@@ -516,46 +527,46 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	contourMapper->SetScalarModeToUseCellData();
 	contourMapper->SetLookupTable(lut);
 
-  vtkSmartPointer<vtkActor> contourActor =
-    vtkSmartPointer<vtkActor>::New();
-  contourActor->SetMapper(contourMapper);
-  contourActor->GetProperty()->SetInterpolationToFlat();
+	vtkSmartPointer<vtkActor> contourActor =
+	    vtkSmartPointer<vtkActor>::New();
+	contourActor->SetMapper(contourMapper);
+	contourActor->GetProperty()->SetInterpolationToFlat();
 
-  vtkSmartPointer<vtkContourFilter> contours =
-    vtkSmartPointer<vtkContourFilter>::New();
-  contours->SetInputConnection(filledContours->GetOutputPort());
-  contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+	vtkSmartPointer<vtkContourFilter> contours =
+	    vtkSmartPointer<vtkContourFilter>::New();
+	contours->SetInputConnection(filledContours->GetOutputPort());
+	contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
 
-  vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer =
-    vtkSmartPointer<vtkPolyDataMapper>::New();
-  contourLineMapperer->SetInputConnection(contours->GetOutputPort());
-  contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
-  contourLineMapperer->ScalarVisibilityOff();
+	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer =
+	    vtkSmartPointer<vtkPolyDataMapper>::New();
+	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
+	contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
+	contourLineMapperer->ScalarVisibilityOff();
 
-  vtkSmartPointer<vtkActor> contourLineActor =
-    vtkSmartPointer<vtkActor>::New();
-  contourLineActor->SetMapper(contourLineMapperer);
-  contourLineActor->GetProperty()->SetLineWidth(2);
+	vtkSmartPointer<vtkActor> contourLineActor =
+	    vtkSmartPointer<vtkActor>::New();
+	contourLineActor->SetMapper(contourLineMapperer);
+	contourLineActor->GetProperty()->SetLineWidth(2);
 
-  // The usual renderer, render window and interactor
-  vtkSmartPointer<vtkRenderer> ren1 =
-    vtkSmartPointer<vtkRenderer>::New();
-  vtkSmartPointer<vtkRenderWindow> renWin =
-    vtkSmartPointer<vtkRenderWindow>::New();
-  vtkSmartPointer<vtkRenderWindowInteractor>
-    iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	// The usual renderer, render window and interactor
+	vtkSmartPointer<vtkRenderer> ren1 =
+	    vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> renWin =
+	    vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderWindowInteractor>
+	iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 
-  ren1->SetBackground(.1, .2, .3);
-  renWin->AddRenderer(ren1);
-  iren->SetRenderWindow(renWin);
+	ren1->SetBackground(.1, .2, .3);
+	renWin->AddRenderer(ren1);
+	iren->SetRenderWindow(renWin);
 
-  // Add the actors
-  ren1->AddActor(contourActor);
-  ren1->AddActor(contourLineActor);
+	// Add the actors
+	ren1->AddActor(contourActor);
+	ren1->AddActor(contourLineActor);
 
-  // Begin interaction
-  renWin->Render();
-  iren->Start();
+	// Begin interaction
+	renWin->Render();
+	iren->Start();
 }
 
 
