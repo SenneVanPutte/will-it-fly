@@ -204,7 +204,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = 1 - pow((-U_inf * sin(angles[i]) + v_t_i) / U_inf, 2);
+			c_p[i] = 1 - pow((-U_inf * cos(angles[i] - angle_attack) + v_t_i) / U_inf, 2);
 		}
 
 
@@ -223,6 +223,18 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		c.c_p = c_p;
 		c.c_l = c_l;
 
+		////
+		double E = 0;
+
+		auto i = lengths.size();
+
+		for(i = 0; i < lengths.size(); i++)
+		{
+			E = E + lengths[i] * Sigma[i];
+		}
+
+		std::cout << "Voor een gesloten lichaam moet de som van alle source sterktes gelijk zijn aan nul, vergelijking (31):";
+		std::cout << E << std::endl;
 
 	} // if (Kutta)
 	else
@@ -231,7 +243,6 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		unsigned int num_columns = num_lines + 1;
 		double matrix_A_data [num_rows * num_columns];
 		double vector_b_data [num_columns];
-		double gamma = 1;
 		int k = 0; //first panel
 		int l = num_rows - 1; //last panel
 
@@ -241,7 +252,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		gsl_function FUNC;
 		FUNC.function = &source_sheet_function;
 
-		//Fistr set matrix a and vector b
+		//First set matrix a and vector b
 		for(unsigned int i = 0; i < num_rows - 1; i++)
 		{
 			vector_b_data[i] = -U_inf * cos(angles[i] - angle_attack);
@@ -271,7 +282,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		gsl_function VORTEX1;
 		VORTEX1.function = &vortex_sheet_function_1;
 
-		//Set last row of matrix A
+		//Set last collumn of matrix A
 		for(unsigned int i = 0; i < num_rows; i++)
 		{
 			unsigned int j = num_columns - 1;
@@ -285,7 +296,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -0.5 / pi * result);
 		}
 
-		//Set last collumn of matrix A and set vector B
+		//Set last row of matrix A and set vector B
 		for(unsigned int j = 0; j < num_columns; j++)
 		{
 			unsigned int i = num_rows - 1;
