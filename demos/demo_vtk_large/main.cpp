@@ -120,11 +120,24 @@ void test_circle(bool screen)
 
 void test_circle_flow(bool screen)
 {
-	wif_core::airfoil_c airfoil({0, 0}, 1, 3);
+	wif_core::airfoil_c airfoil({0, 0}, 1, 4);
 
 	std::shared_ptr<wif_core::flow_c> uniflow = std::make_shared<wif_core::uniform_flow_c>(0.0, -1.0);
-	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>(uniflow);
-	flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 3.0), airfoil);
+	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();
+	flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1.0), airfoil);
+
+	visualize_all(screen, "test-circle-flow", flow, { -2, -2}, {2, 2}, {101, 101});
+}
+
+void test_sheet(bool screen)
+{
+	std::shared_ptr<wif_core::flow_c> uniflow = std::make_shared<wif_core::uniform_flow_c>(0.0, 0.0);
+	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();
+
+	wif_core::line_2d_c l({ -1.0, -1.0}, {1.0, 1.0});
+
+	flow->add_flow(std::make_shared<wif_core::source_sheet_c>(l, 1.0));
+	//flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1.0), airfoil);
 
 	visualize_all(screen, "test-circle-flow", flow, { -2, -2}, {2, 2}, {101, 101});
 }
@@ -136,7 +149,8 @@ void tests()
 
 	//test_uniflow(screen);
 	//test_circle(screen);
-	test_circle_flow(screen);
+	//test_circle_flow(screen);
+	test_sheet(screen);
 }
 
 
