@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <math.h>
+#include <cmath>
 #include <ctime>
 #include <gsl/gsl_integration.h>
 
@@ -113,11 +113,8 @@ int main()
 	gsl_integration_workspace_free(ww);
 
 	gsl_integration_workspace * w3 = gsl_integration_workspace_alloc(1000);
-	double sigma = 1.;
-	double x = 1.;
-	double y = 1.;
 
-	struct my_velocity_params alpha3 = {sigma, x, y};
+	struct my_velocity_params alpha3 = {1., 1., 1.};
 	gsl_function VELOCITYX;
 	VELOCITYX.function = &velocityx;
 	VELOCITYX.params = &alpha3;
@@ -131,6 +128,9 @@ int main()
 
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 
+	double sigma = (alpha3.d);
+	double x = (alpha3.e);
+	double y = (alpha3.f);
 	double Act_X = sigma * x / 2 / 3.14 * log(((pow(x, 2) + (y - int_bound_min)) / ((pow(x, 2) + (y - int_bound_max)))));
 
 	printf("result velocity x = % .18f\n", result);

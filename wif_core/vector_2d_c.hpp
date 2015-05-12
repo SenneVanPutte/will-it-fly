@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ostream>
 
+
 namespace wif_core
 {
 
@@ -11,9 +12,9 @@ namespace wif_core
 class vector_2d_c
 {
 public:
-	vector_2d_c(double x, double y);
-
 	vector_2d_c();
+
+	vector_2d_c(double x, double y);
 
 	vector_2d_c(const vector_2d_c & other);
 
@@ -48,7 +49,7 @@ public:
 	double get_length_sq() const;
 
 	/**
-	 * get angle with x-as
+	 * get angle with x-axis
 	 */
 	double get_angle() const;
 
@@ -60,8 +61,8 @@ public:
 
 	/**
 	 * get x1y2-x2y1
-	 * cross product in 2 dimentions
-	 * same as norm of cross prodict in 3 dimenties
+	 * cross product in 2 dimensions
+	 * same as norm of cross product in 3 dimensions
 	 */
 	double cross(const vector_2d_c & other) const;
 
@@ -73,8 +74,15 @@ public:
 
 vector_2d_c operator *(double, const vector_2d_c &);
 
+
 /**
- * send vector to ostream
+ * creates a new vector_2d_c object, but with the length and the angle with the x-axis as parameters
+ */
+vector_2d_c vector_2d_radian(double radius, double angle);
+
+
+/**
+ * sends vector to ostream
  */
 std::ostream & operator << (std::ostream &, const vector_2d_c &);
 

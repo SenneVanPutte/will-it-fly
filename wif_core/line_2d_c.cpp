@@ -50,6 +50,25 @@ vector_2d_c line_2d_c::get_center_point() const
 }
 
 
+vector_2d_c line_2d_c::get_point_on_line(double place) const
+{
+	return this->begin + this->get_difference() * place;
+}
+
+
+vector_2d_c line_2d_c::get_transformed(const vector_2d_c & pos, double & ymin, double & ymax) const
+{
+	vector_2d_c diff = this->get_difference();
+	double l = this->get_length();
+	ymin = (this->begin.x * diff.x + this->begin.y * diff.y) / l;
+	ymax = (this->end.x * diff.x + this->end.y * diff.y) / l;
+
+	double x = (diff.y * pos.x - diff.x * pos.y + this->begin.y * this->end.x - this->end.y * this->begin.x) / l;
+	double y = (diff.x * pos.x + diff.y * pos.y) / l;
+	return(vector_2d_c(x, y));
+}
+
+
 E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c & intersection, double epsilon) const
 {
 	//check eindpunten
@@ -59,7 +78,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
 
 	if(std::abs(dif1.cross(dif2)) < epsilon) //evenwijdig of samenvallend
 	{
-		if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunte ook evenwijdig is, vallen ze samen
+		if(std::abs(bdif.cross(dif1)) < epsilon) //als het lijnstuk tussen 2 van de eindpunten ook evenwijdig is, vallen ze samen
 		{
 			const double begin_second = bdif.get_length() / dif1.get_length();
 			const double end_second = (bdif + dif2).get_length() / dif1.get_length();
@@ -94,7 +113,7 @@ E_INTERSECTION line_2d_c::get_intersection(const line_2d_c & other, vector_2d_c 
 	const double rel_dist2 = bdif.cross(dif1) / dif1.cross(dif2); //aftand van het beginpuntn tot de intersectie gedeelt door de vector
 	intersection = rel_dist1 * dif1 + this->begin;//positie van de intersectie
 
-	return(((rel_dist1 >= 0) & (rel_dist1 <= 1) & (rel_dist2 >= 0) & (rel_dist2 <= 1)) ? EI_SEGMENT : EI_OUTSIDE);
+	return(((rel_dist1 >= -epsilon) && (rel_dist1 <= 1 + epsilon) && (rel_dist2 >= -epsilon) && (rel_dist2 <= 1 + epsilon)) ? EI_SEGMENT : EI_OUTSIDE);
 }
 
 
@@ -102,7 +121,7 @@ std::ostream & operator << (std::ostream & output, const line_2d_c & line)
 {
 	output << "[" << line.begin << ", " << line.end << "]";
 	return output;
-};
+}
 
 
 } // namespace wif_core
