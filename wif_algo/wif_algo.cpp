@@ -229,7 +229,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		double vector_b_data [num_columns];
 		double gamma = 1;
 		int k = 0; //first panel
-		int l = n - 1; //last panel
+		int l = num_rows - 1; //last panel
 
 		gsl_matrix_view matrix_A_view
 		    = gsl_matrix_view_array(matrix_A_data, num_rows, num_columns);
