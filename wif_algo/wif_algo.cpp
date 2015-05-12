@@ -96,7 +96,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 	for(unsigned int i = 0; i < num_lines; i++)
 	{
-		wif_core::line_2d_c temp_line = mylines[i];	
+		wif_core::line_2d_c temp_line = mylines[i];
 		lengths[i] = temp_line.get_length();
 		centers[i] = temp_line.get_center_point();
 		angles[i] = temp_line.get_angle();
@@ -135,7 +135,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		//Setting matrix A and vector B to solve the system
 		for(unsigned int i = 0; i < num_rows; i++)
 		{
-			vector_b_data[i] = -U_inf * cos(angles[i]) * cos(angle_attack) - U_inf * sin(angle_attack) * sin(angles[i]);
+			vector_b_data[i] = -U_inf * cos(angles[i]-angle_attack);
 
 			for(unsigned int j = 0; j < num_columns; j++)
 			{
@@ -150,13 +150,11 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 					FUNC.params = &parameters;
 
-
 					gsl_integration_cquad_workspace * w1 = gsl_integration_cquad_workspace_alloc(1000);
 					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w1, &result, &error, &nevals);
 					gsl_integration_cquad_workspace_free(w1);
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result / (2.*pi));
-
 				}
 			}
 		}
@@ -207,7 +205,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = -U_inf * sin(angles[i]) + v_t_i;
+			c_p[i] = 1-pow((-U_inf * sin(angles[i]) + v_t_i)/U_inf,2);
 		}
 
 		//calculating c_l
@@ -240,7 +238,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		//Fistr set matrix a and vector b
 		for(unsigned int i = 0; i < num_rows - 1; i++)
 		{
-			vector_b_data[i] = -U_inf * cos(angles[i]) * cos(angle_attack) - U_inf * sin(angle_attack) * sin(angles[i]);
+			vector_b_data[i] = -U_inf * cos(angles[i]-angle_attack);
 
 			for(unsigned int j = 0; j < num_columns - 1; j++)
 			{
@@ -282,7 +280,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w4, &result, &error, &nevals);
 			gsl_integration_cquad_workspace_free(w4);
 
-			gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -0.5 * gamma / pi * result);
+			gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -0.5/ pi * result);
 		}
 
 		//Set last collumn of matrix A and set vector B
@@ -300,7 +298,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w5, &result, &error, &nevals);
 			gsl_integration_cquad_workspace_free(w5);
 
-			double result_temp = -0.5 / (pi) * result;
+			double result_temp = -0.5 /pi * result;
 
 			parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
 
@@ -400,7 +398,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = -U_inf * sin(angles[i]) + v_t_i;
+			c_p[i] = 1-pow((-U_inf * sin(angles[i]) + v_t_i)/U_inf,2);
 		}
 
 		//Calculate c_l
@@ -420,7 +418,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			}
 		}
 
-		c_l = ll * Gamma * 0.5 / U_inf / (x_max - x_min);
+		c_l = ll * Gamma *2/ U_inf / (x_max - x_min);
 
 		//Building return
 		accumulate_flow->add_flow(myFlow);
