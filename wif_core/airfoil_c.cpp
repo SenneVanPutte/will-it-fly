@@ -194,7 +194,7 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c top_point = vector_2d_c(circle_point.x, 1);
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
-		vector_2d_c intersect = this->get_intersection_first(vert_line);
+		vector_2d_c intersect = this->get_intersection_last(vert_line);
 
 		if(intersect.x != INFINITY)
 		{
