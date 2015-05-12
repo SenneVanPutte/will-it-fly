@@ -82,7 +82,11 @@ vector_2d_c vortex_sheet_c::get_velocity(const vector_2d_c & pos) const
 
 	double vy = (atan((y - ymin) / x) - atan((y - ymax) / x)) * lambda / (2 * M_PI);
 	double vx = -log((x * x + (y - ymin) * (y - ymin)) / (x * x + (y - ymax) * (y - ymax))) * lambda / (4 * M_PI);
-	return vector_2d_c(vx, vy);
+
+	double l = line.get_length();
+	vector_2d_c diff = line.end - line.begin;
+
+	return vector_2d_c((diff.y * vx + diff.x * vy) / l, (diff.x * vx + diff.y * vy) / l);
 }
 
 

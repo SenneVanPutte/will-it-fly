@@ -36,12 +36,13 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::getline(detect, line1);
 	double testval;
 	detect >> testval;
-	std::cout << "testvalue :" << testval << std::endl;
+	//std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
 
 	if(!data.is_open())
 	{
+		std::cout << "Could not open file." << filename << std::endl;
 		return; //just give up if file does not open
 	}
 
@@ -80,11 +81,11 @@ airfoil_c::airfoil_c(const std::string & filename)
 		}
 	}
 
-	this->points.pop_back(); //reads last line double
+	this->points.pop_back(); //reads last line double. Not any more
+
 }
 
-
-airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name) :
+airfoil_c::airfoil_c(const std::vector<vector_2d_c> & points, const std::string & name) :
 	name(name),
 	points(points)
 {
@@ -93,11 +94,12 @@ airfoil_c::airfoil_c(std::vector<vector_2d_c> & points, const std::string & name
 
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
-	name("circle")
+	name("circle"),
+	points(corners + 1, vector_2d_c(0, 0))
 {
 	for(unsigned int i = 0; i <= corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
+		points[i] = (vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 
@@ -105,12 +107,13 @@ airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int c
 std::vector<line_2d_c> airfoil_c::get_lines() const
 {
 	std::vector<line_2d_c> ret;
+	ret.resize(this->points.size() - 1, line_2d_c(0.0, 0.0, 0.0, 0.0));
 
 	for(unsigned int index = 0; index < this->points.size() - 1; index++)
 	{
 
 		line_2d_c r(this->points[index], this->points[index + 1]);
-		ret.push_back(r);
+		ret[index] = r;
 
 	}
 
@@ -134,7 +137,7 @@ std::vector<line_2d_c> airfoil_c::get_lines_reversed() const
 
 vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 {
-	for(line_2d_c l : this->get_lines())
+	for(const line_2d_c & l : this->get_lines())
 	{
 		vector_2d_c intersect(0, 0);
 		E_INTERSECTION intersect_type = line.get_intersection(l, intersect);
@@ -145,13 +148,13 @@ vector_2d_c airfoil_c::get_intersection_first(const line_2d_c & line) const
 		}
 	}
 
-	return line.get_center_point() ;
+	return vector_2d_c(INFINITY, INFINITY);
 }
 
 
 vector_2d_c airfoil_c::get_intersection_last(const line_2d_c & line) const
 {
-	for(line_2d_c l : this->get_lines_reversed())
+	for(const line_2d_c & l : this->get_lines_reversed())
 	{
 		vector_2d_c intersect(0, 0);
 		E_INTERSECTION intersect_type = line.get_intersection(l, intersect);
@@ -162,7 +165,7 @@ vector_2d_c airfoil_c::get_intersection_last(const line_2d_c & line) const
 		}
 	}
 
-	return line.get_center_point() ;
+	return vector_2d_c(INFINITY, INFINITY);
 }
 
 
@@ -178,7 +181,11 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
 		vector_2d_c intersect = this->get_intersection_first(vert_line);
-		newpoints.push_back(intersect);
+
+		if(intersect.x != INFINITY)
+		{
+			newpoints.push_back(intersect);
+		}
 	}
 
 	for(unsigned int i = n; i < 2 * n; i++)
@@ -187,11 +194,15 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c top_point = vector_2d_c(circle_point.x, 1);
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
-		vector_2d_c intersect = this->get_intersection_first(vert_line);
-		newpoints.push_back(intersect);
+		vector_2d_c intersect = this->get_intersection_last(vert_line);
+
+		if(intersect.x != INFINITY)
+		{
+			newpoints.push_back(intersect);
+		}
 	}
 
-
+	newpoints.push_back(newpoints.front());
 	newname << this->name << " circle projected with " << n << " subdivisions centered on " << projection_center;
 
 
@@ -201,13 +212,51 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 
 bool airfoil_c::is_closed(double epsilon) const
 {
-	return (this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon);
+
+	return !is_valid() or ((this->points.front() - this->points.back()).get_length_sq() < (epsilon * epsilon));
+}
+
+
+airfoil_c airfoil_c::closed_merge(double epsilon) const
+{
+	if(this->is_closed(epsilon))
+	{
+		return *this;
+	}
+
+	vector_2d_c endpoint = (points.front() + points.back()) * 0.5;
+	std::vector<vector_2d_c> newpoints = this->points;
+	newpoints.front() = endpoint;
+	newpoints.back() = endpoint;
+
+	std::stringstream newname;
+	newname << this->name << " closed";
+	return airfoil_c(newpoints, newname.str());
+}
+
+airfoil_c airfoil_c::closed_intersect(double epsilon) const
+{
+	if(this->is_closed(epsilon))
+	{
+		return *this;
+	}
+
+	vector_2d_c endpoint;
+	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint);
+	std::vector<vector_2d_c> newpoints;
+	newpoints.push_back(endpoint);
+	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());
+	newpoints.push_back(endpoint);
+
+	std::stringstream newname;
+	newname << this->name << " closed";
+	return airfoil_c(newpoints, newname.str());
 }
 
 
 bool airfoil_c::is_valid() const
 {
-	return !this->points.empty();
+	return this->points.size() > 1;
 }
 
 
@@ -227,13 +276,13 @@ std::ostream & operator << (std::ostream & output, const airfoil_c & airfoil)
 {
 	output << airfoil.name << std::endl;
 
-	for(vector_2d_c v : airfoil.points)
+	for(const vector_2d_c & v : airfoil.points)
 	{
 		output << v.x << "\t" << v.y << std::endl;
 	}
 
 	return output;
-};
+}
 
 
 } //namespace wif_core

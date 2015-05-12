@@ -20,6 +20,7 @@ using wif_core::flow_accumulate_c;
 void test_source_sheets(source_sheet_c &);
 void test_flow_acc();
 void draw_source_sheet();
+void search_point_fold();
 
 
 int main()
@@ -28,9 +29,11 @@ int main()
 	//source_sheet_c sheet = source_sheet_c(line, 5);
 	//test_source_sheets(sheet);
 
-	draw_source_sheet();
+	//draw_source_sheet();
 
-	test_flow_acc();
+	//test_flow_acc();
+
+	search_point_fold();
 
 	return 0;
 }
@@ -65,9 +68,9 @@ void draw_source_sheet()
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
 	vector<double> sigmas(20, 2);
-	wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindopdracht/will-it-fly/wif_core/airfoils/selig.dat");
+	wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindwerk-programmeren/will-it-fly/wif_core/airfoils/selig.dat");
 	cout << "loaded";
-	wif_core::airfoil_c foil = foilfull.get_circle_projection(4, vector_2d_c(0.5, 0), 0.5, 0.001);
+	wif_core::airfoil_c foil = foilfull.get_circle_projection(4, vector_2d_c(0.5, 0), 0.5, 0.001).closed_merge();
 
 	cout << foil;
 	flow_accumulate_c flow = flow_accumulate_c();
@@ -131,4 +134,26 @@ void draw_source_sheet()
 	delete c1;
 
 
+}
+
+void search_point_fold()
+{
+	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>();
+	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>(0.0, 0.10);
+	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>(unifl);
+	wif_core::airfoil_c airfoil(vector_2d_c(0, 0), 1, 30);
+	cout << "test";
+	ff->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
+	cout << "hallo\n";
+
+	wif_core::vector_2d_c min, max, bins;
+	min.x = -2;
+	min.y = -2;
+	max.x = 2;
+	max.y = 2;
+	bins.x = 301;
+	bins.y = 301;
+	//int binsx = 20, binsy = 20;
+
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(ff, min, max);
 }

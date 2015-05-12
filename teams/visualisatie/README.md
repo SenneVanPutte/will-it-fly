@@ -128,3 +128,14 @@ private:
 };
 
 ```
+
+In visualization_c:
+```
+	void set_contours(uint32_t contours);
+
+	void set_contours(const std::vector<double> & contours);
+
+	void set_clip_range(double min, double max);
+
+	void set_output_to_file(bool file_output);
+```
