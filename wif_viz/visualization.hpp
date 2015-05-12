@@ -50,6 +50,8 @@ public:
 	void set_clip_range(double min, double max);
 	void set_output_to_file(bool file_output);
 
+	double clip_value(double value);
+
 	virtual void draw(const std::string & filename = "") = 0;
 
 	//
