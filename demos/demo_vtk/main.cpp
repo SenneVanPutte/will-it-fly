@@ -13,12 +13,13 @@ int main()
 
 	std::cout << "1.1" << std::endl;
 	std::shared_ptr<wif_core::flow_accumulate_c> ff = std::make_shared<wif_core::flow_accumulate_c>();//unifl);
-	/*
-	#if 1
-		wif_core::airfoil_c airfoil({0, 0}, 1, 30);
-	#else
-		wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
-	#endif*/
+
+
+#if 1
+	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
+#else
+	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
+#endif
 
 	wif_core::airfoil_c airfoil({0, 0}, 1, 30);
 	std::cout << "2" << std::endl;

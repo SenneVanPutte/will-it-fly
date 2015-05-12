@@ -4,8 +4,8 @@ SRC_CORE=$(wildcard *.cpp)
 OBJ_CORE=$(SRC_CORE:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_core/,  $(OBJ_CORE))
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC=g++ 
+CC_FLAGS=-g -std=c++11 -Wall
 
 core : ../build/lib/libwif_core.so
 
