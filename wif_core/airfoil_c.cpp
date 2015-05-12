@@ -202,7 +202,7 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		}
 	}
 
-
+	newpoints.push_back(newpoints.front());
 	newname << this->name << " circle projected with " << n << " subdivisions centered on " << projection_center;
 
 
