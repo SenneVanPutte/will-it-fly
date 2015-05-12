@@ -45,6 +45,11 @@ public:
 	 */
 	//virtual void set_velocityarrows(const vector_2d_c & bins) = 0;
 
+	void set_contours(const std::vector<double> & contours);
+	void set_contours(uint32_t contours);
+	void set_clip_range(double min, double max);
+	void set_output_to_file(bool file_output);
+
 	virtual void draw(const std::string & filename = "") = 0;
 
 	//
@@ -57,6 +62,11 @@ protected:
 	vector_2d_c psi_bins;
 	vector_2d_c phi_bins;
 	vector_2d_c velocity_bins;
+
+	std::vector<double> contour_locations;
+	double clip_min;
+	double clip_max;
+	bool output_to_file;
 
 private:
 
