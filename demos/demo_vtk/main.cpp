@@ -39,6 +39,7 @@ int main()
 
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(unifl, min, max);
 	vizy->set_clip_range(-500, 500);
+
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
 	vizy->set_phi_bins(bins);

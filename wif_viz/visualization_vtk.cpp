@@ -239,37 +239,13 @@ void visualization_vtk_c::draw(const std::string & filename)
 		iren->TerminateApp();
 	}
 
-	return;
-
-	std::cout << "hier" << std::endl;
-
-	//std::vector<double> conts;
-
-	vtkSmartPointer<vtkPlaneSource> phi_plane = construct_phi_plane();
-	vtkSmartPointer<vtkPlaneSource> psi_plane = construct_psi_plane();
-
-	/*double phiRange[2], psiRange[2];
-	phi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(phiRange);
-	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
-
-	std::vector<double> contvec_phi, contvec_psi;
-
-	double delta_phi = std::abs((phiRange[1] - phiRange[0]) / (20));
-	double delta_psi = std::abs((psiRange[1] - psiRange[0]) / (20));
-
-	for(int i = 0; i < 20; ++i)
-	{
-		contvec_phi.push_back(phiRange[0] + delta_phi * i);
-		std::cout << contvec_phi[i] << std::endl;
-		contvec_psi.push_back(psiRange[0] + delta_psi * i);
-		std::cout << contvec_psi[i] << std::endl;
-	}*/
+	//return;
 
 	std::cout << "hier" << std::endl;
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	std::cout << "hier" << std::endl;
-	contour_plot(psi_plane, 20);//contvec_psi);
+	contour_plot(psi_plane, contour_locations);//contvec_psi);
 	std::cout << "hier" << std::endl;
 
 	return;
@@ -498,30 +474,33 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 }
 
 
-void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, int ncont) const//std::vector<double> contlvls) const //int ncont
+void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const //int ncont
 {
-	//std::sort(contlvls.begin(), contlvls.end());
-
-	//*int Nvec = contlvls.size();
-
-	/*while (*(contlvls.end()) >= vtkMax && contlvls.size() > 2)
-	{
-		contlvls.pop_back();
-		std::cout << "removed" << std::endl;
-	}*/
+	std::sort(contlvls.begin(), contlvls.end());
 
 	double scalarRange[2];
-	//double planeRange[2];
-	plane->GetOutput()->GetPointData()->GetScalars()->GetRange(scalarRange);
-	//plane->GetOutput()->GetPointData()->GetScalars()->GetRange(planeRange);
-	//scalarRange[0] = *(contlvls.begin());
-	//scalarRange[1] = *(contlvls.end());
+	double planeRange[2];
+	//plane->GetOutput()->GetPointData()->GetScalars()->GetRange(scalarRange);
+	plane->GetOutput()->GetPointData()->GetScalars()->GetRange(planeRange);
+	scalarRange[0] = contlvls[contlvls.size() - 1];
+	scalarRange[1] = contlvls[0];
+
+	int Nvec = contlvls.size();
+
+	while(contlvls[Nvec - 1] >= planeRange[1] && Nvec > 2)
+	{
+		contlvls.pop_back();
+		Nvec = contlvls.size();
+		std::cout << "removed" << std::endl;
+	}
+
+
 
 	vtkSmartPointer<vtkAppendPolyData> appendFilledContours = vtkSmartPointer<vtkAppendPolyData>::New();
 
-	int numberOfContours = ncont;
-	//int numberOfContours = contlvls.size();
-	//contlvls.push_back(planeRange[1] + 0.5);
+	//int numberOfContours = ncont;
+	int numberOfContours = contlvls.size();
+	contlvls.push_back(planeRange[1] + 0.5);
 
 	double delta = (scalarRange[1] - scalarRange[0]) / static_cast<double>(numberOfContours - 1);
 
@@ -531,10 +510,10 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, in
 
 	for(int i = 0; i < numberOfContours; i++)
 	{
-		double valueLo = scalarRange[0] + static_cast<double>(i) * delta;
-		//double valueLo = contlvls[i];
-		double valueHi = scalarRange[0] + static_cast<double>(i + 1) * delta;
-		//double valueHi = contlvls[i + 1];
+		//double valueLo = scalarRange[0] + static_cast<double>(i) * delta;
+		double valueLo = contlvls[i];
+		//double valueHi = scalarRange[0] + static_cast<double>(i + 1) * delta;
+		double valueHi = contlvls[i + 1];
 		clippersLo.push_back(vtkSmartPointer<vtkClipPolyData>::New());
 		clippersLo[i]->SetValue(valueLo);
 
@@ -579,7 +558,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, in
 	lut->Build();
 	vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourMapper->SetInputConnection(filledContours->GetOutputPort());
-	contourMapper->SetScalarRange(scalarRange[0], scalarRange[1]);
+	contourMapper->SetScalarRange(planeRange[0], planeRange[1]);
 	contourMapper->SetScalarModeToUseCellData();
 	contourMapper->SetLookupTable(lut);
 
