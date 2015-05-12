@@ -4,8 +4,8 @@ SRC_VIZ=$(wildcard *.cpp)
 OBJ_VIZ=$(SRC_VIZ:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_viz/, $(OBJ_VIZ))
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC=g++ 
+CC_FLAGS=-g -std=c++11 -Wall
 
 INCLUDE=-I../build/include/
 LIBDIR=-L../build/lib
