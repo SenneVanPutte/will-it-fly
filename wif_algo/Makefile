@@ -1,7 +1,7 @@
 # Makefile wif_algo
 
 SRC_ALGO=$(wildcard *.cpp)
-OBJ_ALGO=$(SRC_ALGO:.cpp=.o)
+OBJ_ALGO=$(SRC_ALGO:.cpp=$(BUILD_SUFFIX).o)
 OBJ_PATH=$(addprefix ../build/obj/wif_algo/,  $(OBJ_ALGO))
 
 INCLUDE=-I../build/include/
@@ -20,6 +20,6 @@ algo: ../build/lib/libwif_algo.so
 	$(CXX) -shared -o ../build/lib/libwif_algo.so $(OBJ_PATH)
 	ln -sLf ../lib/libwif_algo.so ../build/exec/libwif_algo.so
 
-../build/obj/wif_algo/%.o : %.cpp
+../build/obj/wif_algo/%$(BUILD_SUFFIX).o : %.cpp
 	$(CXX) -c -fPIC $(CXX_FLAGS) -o $@ $< $(INCLUDE) $(GSL_INCLUDE) $(GSL_LIBDIR) $(GSL_LIBS) $(ROOT_INCLUDE) $(ROOT_LIBDIR) $(ROOT_LIBS)
 

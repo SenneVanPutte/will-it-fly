@@ -1,7 +1,7 @@
 # Makefile will-it-fly
 
 SRC_WIF=$(wildcard *.cpp)
-OBJ_WIF=$(SRC_WIF:.cpp=.o)
+OBJ_WIF=$(SRC_WIF:.cpp=$(BUILD_SUFFIX).o)
 OBJ_PATH=$(addprefix ../build/obj/wif/,  $(OBJ_WIF))
 
 CXX=g++ -std=c++11
@@ -14,5 +14,5 @@ willitfly : $(OBJ_PATH)
 	echo "Building will-it-fly"
 	$(CXX) -o ../build/bin/wif $(OBJ_PATH) $(LIBDIR) $(LIBS)
 
-../build/obj/wif/%.o : %.cpp
+../build/obj/wif/%$(BUILD_SUFFIX).o : %.cpp
 	$(CXX) -c $(CXX_FLAGS) -o $@ $< $(INCLUDE)
