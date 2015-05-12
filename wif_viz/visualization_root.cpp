@@ -27,7 +27,7 @@ visualization_root_c::~visualization_root_c()
 void visualization_root_c::draw(const std::string & filename)
 {
 	FillBins();
-	fillbinStagnatie();
+	//fillbinStagnatie();
 	/*if(velocity_bins.x != 0 && velocity_bins.y != 0)
 	{
 		//std::string filename1 = filename + "velocity";
@@ -75,11 +75,13 @@ void visualization_root_c::draw(const std::string & filename)
 		TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 		gStyle->SetOptStat(0);
 		gStyle->SetPalette(1);
-		Double_t contours[3];
-		contours[0]=1;
-		contours[1]=2;
-		contours[2]=3;
-		phi->SetContour(3, contours);
+		/*double_t contours[contour_locations.size()];
+		for(unsigned int i=0;i<contour_locations.size();i++)
+		{
+		contours[i]=contour_locations[i];
+		}
+
+		phi->SetContour(contour_locations.size(), contours);*/
 		phi->Draw("CONT1Z");
 		phi->GetXaxis()->SetTitle("x");
 		phi->GetYaxis()->SetTitle("y");

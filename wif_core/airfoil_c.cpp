@@ -36,7 +36,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 	std::getline(detect, line1);
 	double testval;
 	detect >> testval;
-	std::cout << "testvalue :" << testval << std::endl;
+	//std::cout << "testvalue :" << testval << std::endl;
 	detect.close();
 	std::ifstream data(filename);
 
@@ -95,11 +95,11 @@ airfoil_c::airfoil_c(const std::vector<vector_2d_c> & points, const std::string 
 
 airfoil_c::airfoil_c(const vector_2d_c & midpoint, double radius, unsigned int corners) :
 	name("circle"),
-	points()
+	points(corners + 1, vector_2d_c(0, 0))
 {
 	for(unsigned int i = 0; i <= corners; i++)
 	{
-		points.push_back(vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
+		points[i] = (vector_2d_radian(radius, (2 * M_PI * i) / corners) + midpoint);
 	}
 }
 
@@ -194,7 +194,7 @@ airfoil_c airfoil_c::get_circle_projection(uint32_t n, const vector_2d_c & proje
 		vector_2d_c top_point = vector_2d_c(circle_point.x, 1);
 		vector_2d_c inverse_point = vector_2d_c(circle_point.x, -1);
 		line_2d_c vert_line(top_point, inverse_point);
-		vector_2d_c intersect = this->get_intersection_first(vert_line);
+		vector_2d_c intersect = this->get_intersection_last(vert_line);
 
 		if(intersect.x != INFINITY)
 		{

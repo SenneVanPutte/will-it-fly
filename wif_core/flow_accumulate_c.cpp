@@ -9,6 +9,7 @@
 
 using std::vector;
 using std::shared_ptr;
+using std::cout;
 
 
 namespace wif_core
@@ -33,7 +34,7 @@ flow_accumulate_c::flow_accumulate_c(const vector<shared_ptr<flow_c>> & flows):
 }
 
 
-flow_accumulate_c::flow_accumulate_c(shared_ptr<flow_c> flow)
+flow_accumulate_c::flow_accumulate_c(const shared_ptr<flow_c> & flow)
 {
 	flows.push_back(flow);
 }
@@ -43,6 +44,13 @@ void flow_accumulate_c::add_source_sheets(const vector<double> & sigmas, const a
 {
 	vector<line_2d_c> lines = foil.get_lines();
 	int l = lines.size();
+	int ls = sigmas.size();
+
+	if(l != ls)
+	{
+		cout << "lengths of lines and sigmas in add_source_sheets not equal, doing nothing ";
+		l = 0;
+	}
 
 	for(int i = 0; i < l; i++)
 	{

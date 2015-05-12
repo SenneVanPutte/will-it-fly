@@ -4,8 +4,8 @@ SRC_WIF=$(wildcard *.cpp)
 OBJ_WIF=$(SRC_WIF:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif/,  $(OBJ_WIF))
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC=g++ 
+CC_FLAGS=-g -std=c++11 -Wall
 
 INCLUDE=-I../build/include -I/usr/include/gsl
 LIBDIR=-L../build/lib -L/usr/lib/ -L/usr/lib/gsl
