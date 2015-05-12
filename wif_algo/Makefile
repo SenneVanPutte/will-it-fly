@@ -4,8 +4,8 @@ SRC_ALGO=$(wildcard *.cpp)
 OBJ_ALGO=$(SRC_ALGO:.cpp=.o)
 OBJ_PATH=$(addprefix ../build/obj/wif_algo/,  $(OBJ_ALGO))
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+CC=g++ 
+CC_FLAGS=-g -std=c++11 -Wall
 
 INCLUDE=-I../build/include/
 

@@ -56,9 +56,10 @@ void visualization_c::set_contours(const std::vector<double> & contours)
 void visualization_c::set_contours(uint32_t contours)
 {
 	contour_locations.clear();
-	for (uint32_t i=1 ; i <= contours ; i++)
+
+	for(uint32_t i = 1 ; i <= contours ; i++)
 	{
-		this->contour_locations.push_back(clip_min+i*(clip_max-clip_min)/(contours+2));
+		this->contour_locations.push_back(clip_min + i * (clip_max - clip_min) / (contours + 2));
 	}
 }
 
@@ -73,6 +74,23 @@ void visualization_c::set_clip_range(double min, double max)
 void visualization_c::set_output_to_file(bool file_output)
 {
 	this->output_to_file = file_output;
+}
+
+
+double visualization_c::clip_value(double value) const
+{
+	if(value < clip_min)
+	{
+		return clip_min;
+	}
+	else if(value > clip_max)
+	{
+		return clip_max;
+	}
+	else
+	{
+		return value;
+	}
 }
 
 
