@@ -77,4 +77,21 @@ void visualization_c::set_output_to_file(bool file_output)
 }
 
 
+double visualization_c::clip_value(double value) const
+{
+	if(value < clip_min)
+	{
+		return clip_min;
+	}
+	else if(value > clip_max)
+	{
+		return clip_max;
+	}
+	else
+	{
+		return value;
+	}
+}
+
+
 } // namespace wif_viz

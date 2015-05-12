@@ -309,7 +309,7 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_psi_grid() con
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = flow->get_psi(pos);
+		double t = clip_value(flow->get_psi(pos));
 
 		//field->InsertNextTuple(&t);
 		field->InsertNextValue(t);
@@ -331,7 +331,7 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_phi_grid() con
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = flow->get_phi(pos);
+		double t = clip_value(flow->get_phi(pos));
 
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
@@ -382,7 +382,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = flow->get_phi(pos);
+		double t = clip_value(flow->get_phi(pos));
 
 		if(t > vtkMax)
 		{
@@ -423,7 +423,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = flow->get_psi(pos);
+		double t = clip_value(flow->get_psi(pos));
 
 		if(t > vtkMax)
 		{
