@@ -33,12 +33,12 @@ int main()
 	min.y = -2;
 	max.x = 2;
 	max.y = 2;
-	bins.x = 301;
-	bins.y = 301;
+	bins.x = 20;
+	bins.y = 20;
 	//int binsx = 20, binsy = 20;
 
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(unifl, min, max);
-
+	vizy->set_clip_range(-500, 500);
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
 	vizy->set_phi_bins(bins);

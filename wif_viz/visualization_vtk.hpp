@@ -72,7 +72,7 @@ private:
 
 	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid() const;
 
-	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
+	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, int ncont) const;//std::vector<double> contlvls) const; //int ncont
 
 	/*private:
 		std::vector<vtkSmartPointer<vtkActor>> actors;*/
