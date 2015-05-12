@@ -226,7 +226,9 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		////
 		double E = 0;
 
-		for(int i = 0; i < lengths.size(); i++)
+		auto i = lengths.size();
+
+		for(i = 0; i < lengths.size(); i++)
 		{
 			E = E + lengths[i] * Sigma[i];
 		}

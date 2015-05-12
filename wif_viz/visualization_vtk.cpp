@@ -288,9 +288,9 @@ vtkSmartPointer<vtkPoints> visualization_vtk_c::construct_points(const vector_2d
 	const vector_2d_c delta = max_range - min_range;
 	const vector_2d_c delta_it(delta.x / bin_x, delta.y / bin_y);
 
-	for(int i = 0; i <= bin_x; i++)
+	for(uint32_t i = 0; i <= bin_x; i++)
 	{
-		for(int j = 0; j <= bin_y; j++)
+		for(uint32_t j = 0; j <= bin_y; j++)
 		{
 			vector_2d_c pos(i * delta_it.x, j * delta_it.y);
 
@@ -305,8 +305,8 @@ vtkSmartPointer<vtkPoints> visualization_vtk_c::construct_points(const vector_2d
 
 vtkSmartPointer<vtkDoubleArray> visualization_vtk_c::construct_field(const vector_2d_c & binning, bool scalar) const
 {
-	uint32_t bin_x = round_abs(binning.x);
-	uint32_t bin_y = round_abs(binning.y);
+	//uint32_t bin_x = round_abs(binning.x);
+	//uint32_t bin_y = round_abs(binning.y);
 
 	vtkSmartPointer<vtkDoubleArray> vectors = vtkSmartPointer<vtkDoubleArray>::New();
 	//vectors->Allocate((bin_x + 1) * (bin_y + 1));
