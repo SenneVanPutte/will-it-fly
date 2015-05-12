@@ -23,9 +23,9 @@ public:
 	virtual void draw(const std::string & filename = "");
 
 	void FillBins();
-	
+
 	void addArrows();
-	
+
 	void fillbinStagnatie();
 
 protected:
