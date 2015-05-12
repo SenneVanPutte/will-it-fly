@@ -21,7 +21,7 @@ public:
 
 	~add_sheet_phi_c();
 
-	double operator()(double, std::shared_ptr<flow_c>) const;
+	double operator()(double, const std::shared_ptr<flow_c> &) const;
 
 public:
 	vector_2d_c position;
@@ -39,7 +39,7 @@ public:
 
 	~add_sheet_psi_c();
 
-	double operator()(double, std::shared_ptr<flow_c>) const;
+	double operator()(double, const std::shared_ptr<flow_c> &) const;
 
 public:
 	vector_2d_c position;
@@ -57,7 +57,7 @@ public:
 
 	~add_sheet_v_c();
 
-	vector_2d_c operator()(vector_2d_c, std::shared_ptr<flow_c>) const;
+	vector_2d_c operator()(vector_2d_c, const std::shared_ptr<flow_c> &) const;
 
 public:
 	vector_2d_c position;
