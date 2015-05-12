@@ -85,7 +85,12 @@ vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
 
 	double vx = (atan((y - ymin) / x) - atan((y - ymax) / x)) * sigma / (2 * M_PI);
 	double vy = log((x * x + (y - ymin) * (y - ymin)) / (x * x + (y - ymax) * (y - ymax))) * sigma / (4 * M_PI);
-	return vector_2d_c(vx, vy);
+
+	double l = line.get_length();
+	vector_2d_c diff = line.end - line.begin;
+	//return vector_2d_c(vx, vy);
+
+	return vector_2d_c((diff.y * vx + diff.x * vy) / l, (diff.x * vx + diff.y * vy) / l);
 }
 
 double source_sheet_c::get_strenght() const
