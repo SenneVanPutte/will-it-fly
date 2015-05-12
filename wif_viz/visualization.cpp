@@ -10,7 +10,8 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	max_range(max_range),
 	psi_bins(0.0, 0.0),
 	phi_bins(0.0, 0.0),
-	velocity_bins(0.0, 0.0)
+	velocity_bins(0.0, 0.0),
+	airfoil(nullptr)
 {
 	//
 }
@@ -50,6 +51,12 @@ void visualization_c::set_velocity_bins(const vector_2d_c & bins)
 void visualization_c::set_contours(const std::vector<double> & contours)
 {
 	this->contour_locations = contours;
+}
+
+
+void visualization_c::set_airfoil(wif_core::airfoil_c * new_airfoil)
+{
+	this->airfoil = new_airfoil;
 }
 
 

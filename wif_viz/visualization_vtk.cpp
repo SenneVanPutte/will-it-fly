@@ -35,7 +35,7 @@ namespace wif_viz
 
 
 visualization_vtk_c::visualization_vtk_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range) :
-	visualization_c(flow, min_range, max_range), actors()
+	visualization_c(flow, min_range, max_range)/*, actors()*/
 {
 	//this-> actors = vtkSmartPointer<vtkActor>::New();
 }
@@ -197,6 +197,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 		iren->TerminateApp();
 	}
 
+	std::cout << "hier" << std::endl;
 
 	std::vector<double> conts;
 
@@ -208,17 +209,23 @@ void visualization_vtk_c::draw(const std::string & filename)
 	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
 
 	std::vector<double> contvec_phi, contvec_psi;
-	double delta_phi = (phiRange[1] - phiRange[0]) / (20);
-	double delta_psi = (psiRange[1] - psiRange[0]) / (20);
 
-	for(int i = 0; i < 20; ++i)
+	double delta_phi = std::abs((phiRange[1] - phiRange[0])/(20));
+	double delta_psi = std::abs((psiRange[1] - psiRange[0])/(20));
+
+	for (int i = 0; i < 20; ++i)
 	{
 		contvec_phi.push_back(phiRange[0] + delta_phi * i);
+		std::cout << contvec_phi[i] << std::endl;
 		contvec_psi.push_back(psiRange[0] + delta_psi * i);
+		std::cout << contvec_psi[i] << std::endl;
 	}
 
-	contour_plot(phi_plane, contvec_phi);
-	contour_plot(psi_plane, contvec_psi);
+	std::cout << "hier" << std::endl;
+	contour_plot(phi_plane,contvec_phi);
+	std::cout << "hier" << std::endl;
+	contour_plot(psi_plane,contvec_psi);
+	std::cout << "hier" << std::endl;
 
 	return;
 
@@ -386,12 +393,12 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 
 		if(t > vtkMax)
 		{
-			t = 1;
+			t = vtkMax;
 		}
 
 		if(t < -vtkMax)
 		{
-			t = -1;
+			t = -vtkMax;
 		}
 
 		//field->InsertNextTuple1(t);
@@ -427,12 +434,12 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 		if(t > vtkMax)
 		{
-			t = 1;
+			t = vtkMax;
 		}
 
 		if(t < -vtkMax)
 		{
-			t = -1;
+			t = -vtkMax;
 		}
 
 		//field->InsertNextTuple1(t);
@@ -449,10 +456,12 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	std::sort(contlvls.begin(), contlvls.end());
 
 	//int Nvec = contlvls.size();
-	while(*(contlvls.end()) >= vtkMax && contlvls.size() > 2)
+
+	/*while (*(contlvls.end()) >= vtkMax && contlvls.size() > 2)
 	{
 		contlvls.pop_back();
-	}
+		std::cout << "removed" << std::endl;
+	}*/
 
 	double scalarRange[2];
 	double planeRange[2];
