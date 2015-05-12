@@ -1,8 +1,6 @@
 # Makefile
 # Compilatie objecten (*.o) gaan naar ./obj/, binaries gaan naar ./bin/, library headers (*.hpp) gaan naar ./include/ en libraries (*.so) gaan naar ./lib/
 
-
-
 SRC_PATH=$(wildcard ./will_it_fly/*.cpp)
 SRC_WIF=$(notdir $(SRC_PATH))
 OBJ_WIF=$(SRC_WIF:.cpp=.o)
@@ -11,8 +9,8 @@ OBJ_PATH=$(addprefix ./build/obj/wif/, $(OBJ_WIF))
 PATH:=/home/uauser/Software/root-v5.34.25/builddir/bin:$(PATH)
 LD_LIBRARY_PATH:=/home/uauser/Software/root-v5.34.25/builddir/lib:$(LD_LIBRARY_PATH)
 
-CC=g++ -std=c++11
-CC_FLAGS=-Wall
+export CXX=g++ -std=c++11
+export CXX_FLAGS=-Wall -g
 
 INCLUDE=-I./build/include
 LIBDIR=-L./build/lib
