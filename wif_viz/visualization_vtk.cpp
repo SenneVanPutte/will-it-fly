@@ -26,6 +26,33 @@
 #include <vtkPlaneSource.h>
 #include <vtkDoubleArray.h>
 
+#include <vtkVersion.h>
+#include <vtkSmartPointer.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkCellArray.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkVertexGlyphFilter.h>
+#include <vtkProperty.h>
+
+
+#include <vtkVersion.h>
+#include <vtkSmartPointer.h>
+#include <vtkCellArray.h>
+#include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkPoints.h>
+#include <vtkLine.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -635,7 +662,7 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_lijnen(std::vector<wif
 
 	std::vector<vtkSmartPointer<vtkLine> > line;
 
-// Create a cell array to store the lines in and add the lines to it
+// maak cell array om de lijnen in te steken
 	vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
 
 	for(int j = 0; j < N; j = j + 1)
@@ -649,17 +676,16 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_lijnen(std::vector<wif
 	}
 
 
-// Create a polydata to store everything in
+// maak dataset
 	vtkSmartPointer<vtkPolyData> linesPolyData = vtkSmartPointer<vtkPolyData>::New();
 
-// Add the points to the dataset
+// voeg punten aan dataset toe
 	linesPolyData->SetPoints(pts);
 
-// Add the lines to the dataset
+// voeg lijnen aan dataset toe
 	linesPolyData->SetLines(lines);
 
-// Color the lines - associate every component of the
-// colors array with the component of the cell array
+// kleur de lijnen door elk component aan pollydata te koppelen aan colors
 	linesPolyData->GetCellData()->SetScalars(colors);
 
 
