@@ -19,6 +19,7 @@
 #include "vtkDataSetMapper.h"
 #include <vtkProperty.h>
 #include <vtkActor.h>
+#include <vtkScalarBarActor.h>
 
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
@@ -245,7 +246,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	std::cout << "hier" << std::endl;
-	contour_plot(psi_plane, contour_locations);//contvec_psi);
+	//contour_plot(construct_psi_plane(), contour_locations);//contvec_psi);
 	std::cout << "hier" << std::endl;
 
 	return;
@@ -562,6 +563,10 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	contourMapper->SetScalarModeToUseCellData();
 	contourMapper->SetLookupTable(lut);
 
+	//schaal bar
+	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+	scalarBar->SetLookupTable(lut);
+
 	vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
 	contourActor->SetMapper(contourMapper);
 	contourActor->GetProperty()->SetInterpolationToFlat();
@@ -590,6 +595,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	iren->SetRenderWindow(renWin);
 
 	// Add the actors
+	ren1->AddActor2D(scalarBar);
 	ren1->AddActor(contourActor);
 	ren1->AddActor(contourLineActor);
 
