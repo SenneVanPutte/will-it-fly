@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <fstream>
 
 #include <wif_core/wif_core.hpp>
 #include <wif_algo/wif_algo.hpp>
@@ -20,6 +21,8 @@ int main()
 	std::vector<wif_core::vector_2d_c> centers(num_lines);
 	std::cout << "y" << "   " << "cp calc" << "   " << "cp theor pol" << "   " << "cp theor cart" << std::endl;
 	std::vector<double> angles(num_lines);
+	std::ofstream myfile;
+	myfile.open("data2.txt");
 
 	for(unsigned int i = 0; i < num_lines; i++)
 	{
@@ -35,10 +38,10 @@ int main()
 			angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
 		}
 
-		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)  << std::endl;
+		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)   << std::endl;
 	}
 
-
+	myfile.close();
 
 	return 0;
 }

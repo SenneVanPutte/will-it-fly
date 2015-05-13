@@ -90,7 +90,7 @@ vector_2d_c source_sheet_c::get_velocity(const vector_2d_c & pos) const
 	vector_2d_c diff = line.end - line.begin;
 	//return vector_2d_c(vx, vy);
 
-	return vector_2d_c((diff.y * vx + diff.x * vy) / l, (diff.x * vx + diff.y * vy) / l);
+	return vector_2d_c((diff.y * vx + diff.x * vy) / l, (-diff.x * vx + diff.y * vy) / l);
 }
 
 double source_sheet_c::get_strenght() const
