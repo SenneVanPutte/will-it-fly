@@ -286,13 +286,35 @@ void visualization_vtk_c::draw(const std::string & filename)
 	for(int i = 0; i < 20; ++i)
 	{
 		psi_pot_vec.push_back(psiRange[0] + (delta_psi * i)) ;
-		//std::cout << contvec_phi[i] << std::endl;
+		//std::cout << contvec_psi[i] << std::endl;
 	}
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
-	std::cout << "hier" << std::endl;
 	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
-	std::cout << "hier" << std::endl;
+	vtkSmartPointer<vtkActor> stroomlijnen = streamlines_plot(construct_velocity_grid(), 20);
+
+	vtkSmartPointer<vtkRenderer> renderer24 = vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer(renderer24);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	interactor->SetRenderWindow(renderWindow);
+
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	interactor->SetInteractorStyle(style);
+
+	renderer24->AddActor(stroomlijnen);
+
+	// Add the actors to the renderer, set the background and size
+	renderer24->SetBackground(1, 1, 1);
+	renderWindow->SetSize(300, 300);
+	interactor->Initialize();
+	std::cout << "test3" << std::endl;
+	renderWindow->Render();
+
+	interactor->Start();
+
 
 	return;
 
