@@ -41,6 +41,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkVertexGlyphFilter.h>
 #include <vtkProperty.h>
+#include <vtkStreamLine.h>
 
 
 #include <vtkVersion.h>
@@ -50,6 +51,7 @@
 #include <vtkDoubleArray.h>
 #include <vtkPoints.h>
 #include <vtkLine.h>
+#include <vtkLineSource.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -278,12 +280,12 @@ void visualization_vtk_c::draw(const std::string & filename)
 	double psiRange[2];
 	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
 
-	double delta_psi = std::abs((phiRange[1] - phiRange[0]) / (20));
+	double delta_psi = std::abs((psiRange[1] - psiRange[0]) / (20));
 
 	//std::cout << phiRange[0] << ", " << phiRange[1] << std::endl;
 	for(int i = 0; i < 20; ++i)
 	{
-		psi_pot_vec.push_back(phiRange[0] + (delta_phi * i)) ;
+		psi_pot_vec.push_back(psiRange[0] + (delta_psi * i)) ;
 		//std::cout << contvec_phi[i] << std::endl;
 	}
 
