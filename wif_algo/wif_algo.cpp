@@ -326,7 +326,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			{
 				if(i < num_lines && j < num_lines)
 				{
-					//SOURCE SHEET BLOK
+					//SOURCE SHEET BLOK (Np x Np)
 					FUNC.function = &source_sheet_function;
 
 					vector_b_data[i] = -U_inf * cos(angles[i] - angle_attack);
@@ -348,7 +348,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				else if(i < num_lines && j == num_lines)
 				{
 
-					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM)
+					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM) (: x Np+1 )
 
 					FUNC.function = &vortex_sheet_function_1;
 					double last_column_value = 0;
@@ -368,7 +368,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				else if(i == num_lines && j < num_lines)
 				{
 
-					//LAATSTE RIJ BLOK
+					//LAATSTE RIJ BLOK (Np+1 x Np)
 					vector_b_data[i] = -U_inf * cos(angles[k] - angle_attack) - U_inf * cos(angles[l] - angle_attack);
 					double last_row_value = 0;
 					FUNC.function = &vortex_sheet_function_lastrow;
@@ -388,7 +388,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				{
 
 					//LAATSTE ELEMENTJE IN RECHTER ONDER HOEK
-					//NEED NICK
+					//NEED NICK (Np+1,Np+1)
 
 					FUNC.function = &vortex_sheet_function_lastelement;
 					double last_element_value = 0;
@@ -450,28 +450,33 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 
 
-		//Calculate c_p
+		//Calculating c_p
 		gsl_function V_FUNC;
 		V_FUNC.function = &v_t_function;
 
-		double v_t_i;
-
 		for(int i = 0; i < num_lines; i++)
 		{
-			v_t_i = 0;
+			v_t_i = 0.;
 
 			for(int j = 0; j < num_lines; j++)
 			{
-				struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+				if(i == j)
+				{
+				}
+				else
+				{
+					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
-				V_FUNC.params = &parameters;
+					V_FUNC.params = &parameters;
 
-				size_t nevals;
-				gsl_integration_cquad(&V_FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-				v_t_i = v_t_i + Sigma[j] / (2 * pi) * result;
+					gsl_integration_cquad(&V_FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+
+					v_t_i = v_t_i + ((Sigma[j] / (2 * pi)) * result);
+				}
 
 			}
 
+			std::cout << v_t_i << "  " << i << std::endl;
 			c_p[i] = 1 - pow((-U_inf * sin(angles[i] + angle_attack) + v_t_i) / U_inf, 2);
 		}
 

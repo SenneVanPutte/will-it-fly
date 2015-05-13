@@ -10,11 +10,11 @@ int main()
 {
 	double pi = 3.1415;
 	double radius = 2;
-	unsigned int num_lines = 100;
+	unsigned int num_lines = 54; //54 panels met Kutta werkt nog, hierna worden alle c_p's nan
 	wif_core::vector_2d_c midpoint(0, 0);
 	wif_core::airfoil_c myAirfoil(midpoint, radius, num_lines);
 	std::shared_ptr<wif_core::uniform_flow_c> myFlow = std::make_shared<wif_core::uniform_flow_c>(0, 1);
-	bool Kutta = 0;
+	bool Kutta = 1;
 
 	wif_algo::calculation_results_c calculate_flow2 = wif_algo::calculate_flow(myAirfoil, myFlow, Kutta);
 	std::vector<wif_core::line_2d_c> mylines = myAirfoil.get_lines();
