@@ -253,10 +253,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			for(int j = 0; j < num_lines; j++)
 			{
-				if(i == j)
-				{
-				}
-				else
+				if(i != j)
 				{
 					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
@@ -460,10 +457,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			for(int j = 0; j < num_lines; j++)
 			{
-				if(i == j)
-				{
-				}
-				else
+				if(i != j)
 				{
 					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
 
