@@ -243,10 +243,25 @@ void visualization_vtk_c::draw(const std::string & filename)
 	//return;
 
 	std::cout << "hier" << std::endl;
+	
+	std::vector<double> psi_pot_vec;
+	
+	vtkSmartPointer<vtkPlaneSource> psi_plane = construct_psi_plane();
+	
+	double psiRange[2];
+	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
+
+	double delta_psi = std::abs((phiRange[1] - phiRange[0]) / (20));
+    //std::cout << phiRange[0] << ", " << phiRange[1] << std::endl;
+	for(int i = 0; i < 20; ++i)
+	{
+		psi_pot_vec.push_back(phiRange[0] + (delta_phi * i)) ;
+		//std::cout << contvec_phi[i] << std::endl;
+	}
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	std::cout << "hier" << std::endl;
-	//contour_plot(construct_psi_plane(), contour_locations);//contvec_psi);
+	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
 	std::cout << "hier" << std::endl;
 
 	return;

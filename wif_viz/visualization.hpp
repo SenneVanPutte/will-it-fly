@@ -24,6 +24,7 @@ public:
 	 * de maxima in max.
 	 */
 	void set_range(const vector_2d_c & new_min_range, const vector_2d_c & new_max_range);
+	void default_contour_locations();
 
 	/**
 	 * Standaard zijn de bins == (0, 0)
