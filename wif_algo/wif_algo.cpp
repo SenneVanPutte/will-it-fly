@@ -83,6 +83,38 @@ double vortex_sheet_function_3(double s, void * parameters)
 	return a / b;
 }
 
+double vortex_sheet_function_lastrow(double s, void * parameters)
+{
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
+	double beta = (params->beta);
+	double betaj = (params->betaj);
+	double xc = (params->xc);
+	double yc = (params->yc);
+	double xa = (params->xa);
+	double ya = (params->ya);
+
+	double a = -cos(beta) * (xc - (xa - s * sin(betaj))) - sin(beta) * (yc + (ya + s * cos(betaj)));
+	double b = pow(xc - (xa - s * sin(betaj)), 2) + pow(yc - (ya + s * cos(betaj)), 2);
+
+	return a / b;
+}
+
+double vortex_sheet_function_lastelement(double s, void * parameters)
+{
+	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
+	double beta = (params->beta);
+	double betaj = (params->betaj);
+	double xc = (params->xc);
+	double yc = (params->yc);
+	double xa = (params->xa);
+	double ya = (params->ya);
+
+	double a = -(xc - (xa - s * sin(betaj))) * cos(beta)  - (yc + (ya + s * cos(betaj))) * sin(beta);
+	double b = pow(xc - (xa - s * sin(betaj)), 2) + pow(yc - (ya + s * cos(betaj)), 2);
+
+	return a / b;
+}
+
 double v_t_function(double s, void * parameters)
 {
 	struct integration_function_parameters * params = (struct integration_function_parameters *)parameters;
@@ -278,18 +310,97 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		double matrix_A_data [num_rows * num_columns];
 		double vector_b_data [num_columns];
 		int k = 0; //first panel
-		int l = num_rows - 1; //last panel
+		int l = num_lines; //last panel
 
 		gsl_matrix_view matrix_A_view
 		    = gsl_matrix_view_array(matrix_A_data, num_rows, num_columns);
 
+		// CLEANED UP MATRIX CONSTRUCTION
 		gsl_function FUNC;
-		FUNC.function = &source_sheet_function;
+		struct integration_function_parameters parameters;
+		FUNC.params = &parameters;
 
+		for (int i = 0; i < num_rows; i++) {
+			for (int j = 0; j < num_columns; j++) {
+				if (i < num_lines && j < num_lines) {
+					//SOURCE SHEET BLOK
+					FUNC.function = &source_sheet_function;
+
+					vector_b_data[i] = -U_inf * cos(angles[i] - angle_attack);
+
+					if (i == j) {
+						gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, 0.5);
+					} else {
+						parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
+
+						gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+
+						gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result / (2.*pi));
+					}
+
+  				} else if (i < num_lines && j == num_lines) {
+
+					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM)
+					// NEED NICK
+					FUNC.function = &vortex_sheet_function_1;
+					int magic_j; // NICKSE PLEZ
+
+					parameters = {angles[i], angles[magic_j], centers[i].x, centers[i].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
+					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
+
+					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -result / (2.*pi));
+
+				} else if ( i == num_lines && j < num_lines) {
+
+					//LAATSTE RIJ BLOK
+					vector_b_data[i] = -U_inf * cos(angles[k] - angle_attack) - U_inf * cos(angles[l] - angle_attack);
+					double last_row_value = 0;
+					FUNC.function = &vortex_sheet_function_lastrow;
+
+					parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
+					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+					last_row_value += result;
+
+					parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
+					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+					last_row_value += result;
+
+					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_row_value / (2.*pi));
+
+				} else if (i == num_lines && j == num_lines) {
+
+					//LAATSTE ELEMENTJE IN RECHTER ONDER HOEK
+					//NEED NICK
+
+					FUNC.function = &vortex_sheet_function_lastelement;
+					int magic_j; // NICKSE PLEZ
+					double last_element_value = 0;
+
+					parameters = {angles[k], angles[magic_j], centers[k].x, centers[k].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
+					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
+					last_element_value += result;
+
+					parameters = {angles[l], angles[magic_j], centers[l].x, centers[l].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
+					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
+					last_element_value += result;
+
+					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_element_value / (2.*pi));
+
+				} else {
+
+					std::cout << i << "  " << j << "  Deze indices zitten er niet bij ?" << std::endl;
+
+				}
+			}
+		}
+
+
+
+		/*
 		//First set matrix a and vector b
 		for(unsigned int i = 0; i < num_rows - 1; i++)
 		{
-			vector_b_data[i] = -U_inf * cos(angles[i] - angle_attack);
+
 
 			for(unsigned int j = 0; j < num_columns - 1; j++)
 			{
@@ -383,9 +494,10 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 		result_temp = result_temp - 0.5 / (pi) * result;
 
-		gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result_temp);
+		gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result_temp);*/
 
 		//Solve the system
+
 		gsl_vector_view vector_b_view
 		    = gsl_vector_view_array(vector_b_data, num_columns);
 
@@ -399,15 +511,15 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 		gsl_linalg_LU_solve(&matrix_A_view.matrix, p, &vector_b_view.vector, x);
 
-		std::vector<double> Sigma(num_columns - 1);
+		std::vector<double> Sigma(num_lines);
 
-		for(unsigned int i = 0; i < num_columns - 1; i++)
+		for(unsigned int i = 0; i < num_lines; i++)
 		{
 			Sigma[i] = gsl_vector_get(x, i);
 		}
 
 		double Gamma;
-		Gamma = gsl_vector_get(x, num_columns - 1);
+		Gamma = gsl_vector_get(x, num_lines);
 
 		printf("a = \n");
 		gsl_matrix_fprintf(stdout, &matrix_A_view.matrix, "%g");
