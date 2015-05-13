@@ -352,10 +352,12 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 					for(int r = 0; r < num_lines; r++)
 					{
-
-						parameters = {angles[i], angles[r], centers[i].x, centers[i].y, points_airfoil[r].x, points_airfoil[r].y};
-						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
-						last_column_value += result;
+						if(r != i)
+						{
+							parameters = {angles[i], angles[r], centers[i].x, centers[i].y, points_airfoil[r].x, points_airfoil[r].y};
+							gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+							last_column_value += result;
+						}
 
 					}
 
@@ -370,13 +372,19 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 					double last_row_value = 0;
 					FUNC.function = &vortex_sheet_function_lastrow;
 
-					parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-					last_row_value += result;
+					if(j != k)
+					{
+						parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+						last_row_value += result;
+					}
 
-					parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-					last_row_value += result;
+					if(j != l)
+					{
+						parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
+						last_row_value += result;
+					}
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_row_value / (2.*pi));
 
@@ -392,17 +400,31 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 					for(int r = 0; r < num_lines; r++)
 					{
-						parameters = {angles[k], angles[r], centers[k].x, centers[k].y, points_airfoil[r].x, points_airfoil[r].y};
-						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
-						last_element_value += result;
+						if(r != k)
+						{
+							parameters = {angles[k], angles[r], centers[k].x, centers[k].y, points_airfoil[r].x, points_airfoil[r].y};
+							gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+							last_element_value += result / (2 * pi);
+						}
+						else
+						{
+							last_element_value += -0.5;
+						}
 
-						parameters = {angles[l], angles[r], centers[l].x, centers[l].y, points_airfoil[r].x, points_airfoil[r].y};
-						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
-						last_element_value += result;
+						if(r != l)
+						{
+							parameters = {angles[l], angles[r], centers[l].x, centers[l].y, points_airfoil[r].x, points_airfoil[r].y};
+							gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+							last_element_value += result / (2 * pi);
+						}
+						else
+						{
+							last_element_value += -0.5;
+						}
 					}
 
 
-					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_element_value / (2.*pi));
+					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_element_value);
 
 				}
 				else
