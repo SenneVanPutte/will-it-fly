@@ -341,12 +341,16 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
   				} else if (i < num_lines && j == num_lines) {
 
 					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM)
-					// NEED NICK
-					FUNC.function = &vortex_sheet_function_1;
-					int magic_j; // NICKSE PLEZ
 
-					parameters = {angles[i], angles[magic_j], centers[i].x, centers[i].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
+					FUNC.function = &vortex_sheet_function_1;
+					double last_column_value = 0;
+					for (int r = 0; r < num_lines; r++){
+
+						parameters = {angles[i], angles[r], centers[i].x, centers[i].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_column_value += result;
+
+					}
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -result / (2.*pi));
 
@@ -373,16 +377,18 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 					//NEED NICK
 
 					FUNC.function = &vortex_sheet_function_lastelement;
-					int magic_j; // NICKSE PLEZ
 					double last_element_value = 0;
 
-					parameters = {angles[k], angles[magic_j], centers[k].x, centers[k].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
-					last_element_value += result;
+					for (int r = 0; r < num_lines; r++){
+						parameters = {angles[k], angles[r], centers[k].x, centers[k].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_element_value += result;
 
-					parameters = {angles[l], angles[magic_j], centers[l].x, centers[l].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
-					last_element_value += result;
+						parameters = {angles[l], angles[r], centers[l].x, centers[l].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_element_value += result;
+					}
+
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_element_value / (2.*pi));
 
@@ -393,108 +399,6 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				}
 			}
 		}
-
-
-
-		/*
-		//First set matrix a and vector b
-		for(unsigned int i = 0; i < num_rows - 1; i++)
-		{
-
-
-			for(unsigned int j = 0; j < num_columns - 1; j++)
-			{
-				if(i == j)
-				{
-					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, 0.5);
-
-				}
-				else
-				{
-					struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
-
-					FUNC.params = &parameters;
-
-
-					gsl_integration_cquad(&FUNC, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result / (2.*pi));
-
-				}
-			}
-		}
-
-		gsl_function VORTEX1;
-		VORTEX1.function = &vortex_sheet_function_1;
-
-		//Set last collumn of matrix A
-		for(unsigned int i = 0; i < num_rows; i++)
-		{
-			unsigned int j = num_columns - 1;
-
-			struct integration_function_parameters parameters = {angles[i], angles[j], centers[i].x, centers[i].y, points_airfoil[j].x, points_airfoil[j].y};
-
-			VORTEX1.params = &parameters;
-
-			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-			gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -0.5 / pi * result);
-		}
-
-		//Set last row of matrix A and set vector B
-		for(unsigned int j = 0; j < num_columns; j++)
-		{
-			unsigned int i = num_rows - 1;
-
-			vector_b_data[i] = -U_inf * cos(angle_attack - angles[k]) - U_inf * cos(angle_attack - angles[l]);
-
-			struct integration_function_parameters parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
-
-			VORTEX1.params = &parameters;
-			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-			double result_temp = -0.5 / pi * result;
-
-			parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
-
-			VORTEX1.params = &parameters;
-
-			size_t nevals;
-			gsl_integration_cquad(&VORTEX1, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-			result_temp = result_temp - 0.5 / (pi) * result;
-
-			gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result_temp);
-
-		}
-
-		//Set last ellement of A
-
-		int i = num_rows - 1;
-		int j = num_columns - 1;
-
-
-		gsl_function VORTEX3;
-		VORTEX3.function = &vortex_sheet_function_3;
-
-		struct integration_function_parameters parameters = {angles[k], angles[j], centers[k].x, centers[k].y, points_airfoil[j].x, points_airfoil[j].y};
-
-		VORTEX3.params = &parameters;
-
-		gsl_integration_cquad(&VORTEX3, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-		double result_temp = -0.5 / (pi) * result;
-
-		parameters = {angles[l], angles[j], centers[l].x, centers[l].y, points_airfoil[j].x, points_airfoil[j].y};
-
-		VORTEX3.params = &parameters;
-
-		size_t nevals;
-		gsl_integration_cquad(&VORTEX3, s_0, lengths[j], 0., 1e-7, w, &result, &error, &nevals);
-
-		result_temp = result_temp - 0.5 / (pi) * result;
-
-		gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, result_temp);*/
 
 		//Solve the system
 
