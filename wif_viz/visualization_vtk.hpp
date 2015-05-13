@@ -74,8 +74,8 @@ private:
 
 	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
 
-private:
-	std::vector<vtkSmartPointer<vtkActor>> actors;
+	/*private:
+		std::vector<vtkSmartPointer<vtkActor>> actors;*/
 };
 
 

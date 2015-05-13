@@ -50,6 +50,10 @@ public:
 	void set_clip_range(double min, double max);
 	void set_output_to_file(bool file_output);
 
+	double clip_value(double value) const;
+
+	void set_airfoil(wif_core::airfoil_c * new_airfoil);
+
 	virtual void draw(const std::string & filename = "") = 0;
 
 	//
@@ -67,6 +71,8 @@ protected:
 	double clip_min;
 	double clip_max;
 	bool output_to_file;
+
+	wif_core::airfoil_c * airfoil;
 
 private:
 

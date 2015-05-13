@@ -10,7 +10,8 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	max_range(max_range),
 	psi_bins(0.0, 0.0),
 	phi_bins(0.0, 0.0),
-	velocity_bins(0.0, 0.0)
+	velocity_bins(0.0, 0.0),
+	airfoil(nullptr)
 {
 	//
 }
@@ -53,6 +54,12 @@ void visualization_c::set_contours(const std::vector<double> & contours)
 }
 
 
+void visualization_c::set_airfoil(wif_core::airfoil_c * new_airfoil)
+{
+	this->airfoil = new_airfoil;
+}
+
+
 void visualization_c::set_contours(uint32_t contours)
 {
 	contour_locations.clear();
@@ -74,6 +81,23 @@ void visualization_c::set_clip_range(double min, double max)
 void visualization_c::set_output_to_file(bool file_output)
 {
 	this->output_to_file = file_output;
+}
+
+
+double visualization_c::clip_value(double value) const
+{
+	if(value < clip_min)
+	{
+		return clip_min;
+	}
+	else if(value > clip_max)
+	{
+		return clip_max;
+	}
+	else
+	{
+		return value;
+	}
 }
 
 
