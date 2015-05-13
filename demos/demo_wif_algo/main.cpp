@@ -21,8 +21,8 @@ int main()
 	std::vector<wif_core::vector_2d_c> centers(num_lines);
 	std::cout << "y" << "   " << "cp calc" << "   " << "cp theor pol" << "   " << "cp theor cart" << std::endl;
 	std::vector<double> angles(num_lines);
-	std::ofstream myfile;
-	myfile.open("data2.txt");
+	//std::ofstream myfile;
+	//myfile.open("data2.txt");
 
 	for(unsigned int i = 0; i < num_lines; i++)
 	{
@@ -41,7 +41,7 @@ int main()
 		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)   << std::endl;
 	}
 
-	myfile.close();
+	//myfile.close();
 
 	return 0;
 }
