@@ -271,9 +271,25 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	std::cout << "hier" << std::endl;
 
+	std::vector<double> psi_pot_vec;
+
+	vtkSmartPointer<vtkPlaneSource> psi_plane = construct_psi_plane();
+
+	double psiRange[2];
+	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
+
+	double delta_psi = std::abs((phiRange[1] - phiRange[0]) / (20));
+
+	//std::cout << phiRange[0] << ", " << phiRange[1] << std::endl;
+	for(int i = 0; i < 20; ++i)
+	{
+		psi_pot_vec.push_back(phiRange[0] + (delta_phi * i)) ;
+		//std::cout << contvec_phi[i] << std::endl;
+	}
+
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	std::cout << "hier" << std::endl;
-	//contour_plot(construct_psi_plane(), contour_locations);//contvec_psi);
+	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
 	std::cout << "hier" << std::endl;
 
 	return;
@@ -621,10 +637,15 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	renWin->AddRenderer(ren1);
 	iren->SetRenderWindow(renWin);
 
+	// assen
+	vtkSmartPointer<vtkCubeAxesActor> assen = axis(plane, ren1);
+
 	// Add the actors
 	ren1->AddActor2D(scalarBar);
 	ren1->AddActor(contourActor);
 	ren1->AddActor(contourLineActor);
+	ren1->AddActor(assen);
+	ren1->ResetCamera();
 
 	// Begin interaction
 	renWin->Render();
@@ -747,6 +768,85 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_punten(std::vector<wif
 	actorpunt->GetProperty()->SetPointSize(5);
 
 	return actorpunt;
+}
+
+//
+vtkSmartPointer<vtkActor> visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const
+{
+	// Source of the streamlines
+
+	vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
+	seeds->SetResolution(number_of_streamlines);
+	seeds->SetPoint1(min_range.x, max_range.y, 0);
+	seeds->SetPoint2(min_range.x, min_range.y, 0);
+
+	// Setting Streamline properties
+	vtkSmartPointer<vtkStreamLine> streamLine = vtkSmartPointer<vtkStreamLine>::New();
+
+	streamLine->SetInput(sgrid);
+	streamLine->SetSource(seeds->GetOutput());
+
+	// Integration properties
+
+	streamLine->SetMaximumPropagationTime(200);
+	streamLine->SetIntegrationStepLength(.2);
+	streamLine->SetStepLength(.001);
+	streamLine->SetNumberOfThreads(1);
+	streamLine->SetIntegrationDirectionToForward();
+	//streamLine->VorticityOn();
+
+	// Creating a Mapper and Actor
+
+	vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
+
+	vtkSmartPointer<vtkActor> streamLineActor = vtkSmartPointer<vtkActor>::New();
+	streamLineActor->SetMapper(streamLineMapper);
+	streamLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
+	streamLineActor->GetProperty()->SetLineWidth(3);
+	streamLineActor->VisibilityOn();
+
+	return streamLineActor;
+}
+
+vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkPlaneSource> object, vtkSmartPointer<vtkRenderer> renderer) const
+{
+	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = vtkSmartPointer<vtkCubeAxesActor>::New();
+	cubeAxesActor->SetBounds(object->GetOutput()->GetBounds());
+	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
+
+	cubeAxesActor->DrawXGridlinesOff();
+	cubeAxesActor->DrawYGridlinesOff();
+	cubeAxesActor->DrawZGridlinesOff();
+	cubeAxesActor->ZAxisLabelVisibilityOff();
+#if VTK_MAJOR_VERSION > 5
+	cubeAxesActor->SetGridLineLocation(VTK_GRID_LINES_FURTHEST);
+#endif
+
+	cubeAxesActor->XAxisMinorTickVisibilityOff();
+	cubeAxesActor->YAxisMinorTickVisibilityOff();
+	cubeAxesActor->ZAxisMinorTickVisibilityOff();
+	return cubeAxesActor;
+}
+
+vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkGlyph3D> object, vtkSmartPointer<vtkRenderer> renderer) const
+{
+	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = vtkSmartPointer<vtkCubeAxesActor>::New();
+	cubeAxesActor->SetBounds(object->GetOutput()->GetBounds());
+	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
+
+	cubeAxesActor->DrawXGridlinesOff();
+	cubeAxesActor->DrawYGridlinesOff();
+	cubeAxesActor->DrawZGridlinesOff();
+	cubeAxesActor->ZAxisLabelVisibilityOff();
+#if VTK_MAJOR_VERSION > 5
+	cubeAxesActor->SetGridLineLocation(VTK_GRID_LINES_FURTHEST);
+#endif
+
+	cubeAxesActor->XAxisMinorTickVisibilityOff();
+	cubeAxesActor->YAxisMinorTickVisibilityOff();
+	cubeAxesActor->ZAxisMinorTickVisibilityOff();
+	return cubeAxesActor;
 }
 
 } // namespace wif_viz
