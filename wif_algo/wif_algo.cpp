@@ -341,12 +341,16 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
   				} else if (i < num_lines && j == num_lines) {
 
 					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM)
-					// NEED NICK
-					FUNC.function = &vortex_sheet_function_1;
-					int magic_j; // NICKSE PLEZ
 
-					parameters = {angles[i], angles[magic_j], centers[i].x, centers[i].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
+					FUNC.function = &vortex_sheet_function_1;
+					double last_column_value = 0;
+					for (int r = 0; r < num_lines; r++){
+
+						parameters = {angles[i], angles[r], centers[i].x, centers[i].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_column_value += result;
+
+					}
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, -result / (2.*pi));
 
@@ -373,16 +377,18 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 					//NEED NICK
 
 					FUNC.function = &vortex_sheet_function_lastelement;
-					int magic_j; // NICKSE PLEZ
 					double last_element_value = 0;
 
-					parameters = {angles[k], angles[magic_j], centers[k].x, centers[k].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
-					last_element_value += result;
+					for (int r = 0; r < num_lines; r++){
+						parameters = {angles[k], angles[r], centers[k].x, centers[k].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_element_value += result;
 
-					parameters = {angles[l], angles[magic_j], centers[l].x, centers[l].y, points_airfoil[magic_j].x, points_airfoil[magic_j].y};
-					gsl_integration_cquad(&FUNC, s_0, lengths[magic_j], 0., 1e-7, w, &result, &error, &nevals);
-					last_element_value += result;
+						parameters = {angles[l], angles[r], centers[l].x, centers[l].y, points_airfoil[r].x, points_airfoil[r].y};
+						gsl_integration_cquad(&FUNC, s_0, lengths[r], 0., 1e-7, w, &result, &error, &nevals);
+						last_element_value += result;
+					}
+
 
 					gsl_matrix_set(&matrix_A_view.matrix, (size_t) i, (size_t) j, last_element_value / (2.*pi));
 
