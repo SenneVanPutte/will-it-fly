@@ -361,12 +361,12 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 				contourMapper->SetInput(filledContours->GetOutput());
 				contourMapper->SetScalarRange(min_v, max_v);
 				contourMapper->SetScalarModeToUseCellData();
-				contourMapper->SetLookupTable(lut);
+				contourMapper->SetLookupTable(lut2);
 				contourMapper->Update();
 
 				//schaal bar
 				vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-				scalarBar->SetLookupTable(lut);
+				scalarBar->SetLookupTable(lut2);
 
 				vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
 				contourActor->SetMapper(contourMapper);
@@ -513,7 +513,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 
 		iren->Initialize();
 		renWin->Render();
-		print_image(renWin, "test.png");
+		//print_image(renWin, "test.png");
 		iren->Start();
 
 

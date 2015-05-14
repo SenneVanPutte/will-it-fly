@@ -219,10 +219,10 @@ void test_airfoil()
 
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(f.flow, { -2, -3}, {2, 3});
 	//vizy->set_clip_range(-1, 1);
-	vizy->set_psi_bins({101, 101});
+	vizy->set_velocity_bins({51, 51});
 	vizy->set_airfoil(&n_airfoil);
-	//vizy->set_contours(20);
-	//vizy->set_streamline_resolution(200);
+	vizy->set_contours(200);
+	vizy->set_streamline_resolution(200);
 
 	vizy->draw_ivo("");
 
