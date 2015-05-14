@@ -122,6 +122,8 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 	int num_lines = mylines.size();
 
 
+
+
 	std::vector<double> lengths(num_lines);
 	std::vector<wif_core::vector_2d_c> centers(num_lines);
 	std::vector<double> angles(num_lines);
@@ -133,13 +135,33 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		lengths[i] = temp_line.get_length();
 		centers[i] = temp_line.get_center_point();
 
-		if(centers[i].y > 0)
+		if(temp_line.begin.x > temp_line.end.x && temp_line.begin.y > temp_line.end.y)
 		{
-			angles[i] = atan2(centers[i].y, centers[i].x);
+			angles[i] = temp_line.get_angle() - pi / 2;
+		}
+		else if(temp_line.begin.x > temp_line.end.x && temp_line.begin.y < temp_line.end.y)
+		{
+			angles[i] = temp_line.get_angle() - pi / 2;
+		}
+		else if(temp_line.begin.x < temp_line.end.x && temp_line.begin.y > temp_line.end.y)
+		{
+			angles[i] = temp_line.get_angle() - pi / 2;
+		}
+		else if(temp_line.begin.x < temp_line.end.x && temp_line.begin.y < temp_line.end.y)
+		{
+			angles[i] = temp_line.get_angle() + (3 * pi) / 2;
+		}
+		else if(temp_line.begin.x == temp_line.end.x)
+		{
+			angles[i] = 0;
+		}
+		else if(temp_line.begin.y == temp_line.end.y)
+		{
+			angles[i] = pi / 2;
 		}
 		else
 		{
-			angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
+			std::cerr << i << "  Not in any of these categories" << std::endl;
 		}
 
 	}
