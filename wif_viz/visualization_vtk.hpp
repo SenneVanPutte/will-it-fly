@@ -107,6 +107,10 @@ private:
 
 	void arrow_plot() const;
 
+	void print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const;
+
+	vtkSmartPointer<vtkActor> separating_streamlines(vtkSmartPointer<vtkPlaneSource> plane) const;
+
 	vtkSmartPointer<vtkActor> geef_actor_lijnen(std::vector<wif_core::line_2d_c>);
 
 	vtkSmartPointer<vtkActor> geef_actor_punten(std::vector<wif_core::vector_2d_c>);

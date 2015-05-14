@@ -519,6 +519,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 		//std::cout << contvec_psi[i] << std::endl;
 	}
 
+	std::cout << "hier" << std::endl;
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
 
@@ -889,7 +890,12 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 
 	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
 	contours->SetInputConnection(filledContours->GetOutputPort());
-	contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+
+	//contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+	for(int i = 0; i < numberOfContours; i++)
+	{
+		contours->SetValue(i, contlvls[i]);
+	}
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
@@ -928,6 +934,37 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	iren->Start();
 }
 
+vtkSmartPointer<vtkActor> visualization_vtk_c::separating_streamlines(vtkSmartPointer<vtkPlaneSource> plane) const
+{
+	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
+	contours->SetInputConnection(plane->GetOutputPort());
+	vector<double> values;
+
+	for(int i = 0; i < stagnation_point.size(); ++i)
+	{
+		values[i] = flow->get_phi(stagnation_point[i]);
+	}
+
+	std::sort(values.begin(), values.end());
+
+	for(int i = 0; i < stagnation_point.size(); ++i)
+	{
+		contours->SetValue(i, values[i]);
+	}
+
+	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
+	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
+	contourLineMapperer->SetScalarRange(values[0], values[values.size() - 1]);
+	contourLineMapperer->ScalarVisibilityOff();
+
+	vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
+	contourLineActor->SetMapper(contourLineMapperer);
+	contourLineActor->GetProperty()->SetLineWidth(2);
+	//contourLineActor->GetProperty()->SetLineWidth(2);
+
+	return contourLineActor;
+
+}
 
 vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_lijnen(std::vector<wif_core::line_2d_c> mylines)
 {
@@ -1066,21 +1103,17 @@ void visualization_vtk_c::arrow_plot() const
 	glyph3D->SetScaleFactor(.05);
 	glyph3D->Update();
 
-	vtkSmartPointer<vtkRenderer> renderer =
-	    vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 	renderer->SetBackground(1, 1, 1);
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper =
-	    vtkSmartPointer<vtkPolyDataMapper>::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInputConnection(glyph3D->GetOutputPort());
 
-	vtkSmartPointer<vtkActor> actor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetRepresentationToSurface();
 
-	vtkSmartPointer<vtkActor> superquadricActor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> superquadricActor = vtkSmartPointer<vtkActor>::New();
 	superquadricActor->SetMapper(mapper);
 	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = axis(glyph3D, renderer);
 
@@ -1099,16 +1132,13 @@ void visualization_vtk_c::arrow_plot() const
 	//renderer->GetActiveCamera()->Azimuth(0);
 	//renderer->GetActiveCamera()->Elevation(0);
 
-	vtkSmartPointer<vtkRenderWindow> renderWindow =
-	    vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
 
-	vtkSmartPointer<vtkInteractorStyleImage> imageStyle =
-	    vtkSmartPointer<vtkInteractorStyleImage>::New();
+	vtkSmartPointer<vtkInteractorStyleImage> imageStyle = vtkSmartPointer<vtkInteractorStyleImage>::New();
 	renderWindow->GetInteractor()->SetInteractorStyle(imageStyle);
 
 	renderWindow->Render();
@@ -1270,6 +1300,21 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkS
 	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
 
 	return cubeAxesActor;
+}
+
+void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const
+{
+	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
+	windowToImageFilter->SetInput(renderWindow);
+	windowToImageFilter->SetMagnification(2); //set the resolution of the output image (3 times the current resolution of vtk render window)
+	windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
+	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
+	windowToImageFilter->Update();
+
+	vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
+	writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+	writer->SetFileName(filename);
+	writer->Write();
 }
 
 } // namespace wif_viz
