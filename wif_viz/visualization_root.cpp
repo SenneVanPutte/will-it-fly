@@ -313,10 +313,12 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 	}
 	/*leg = new TLegend(0.1,0.7,0.48,0.9);
 	leg->SetHeader("The Legend Title");
-	for(int p
-	leg->AddEntry(h1,"Histogram filled with random numbers","f");
-	leg->AddEntry("f1","Function abs(#frac{sin(x)}{x})","l");
-	leg->AddEntry("gr","Graph with error bars","lep");
+	for(unsigned int p=0;p<=legend.size();p++)
+	{
+		leg->AddEntry("harr","Histogram filled with random numbers","f");
+		leg->AddEntry("f1","Function abs(#frac{sin(x)}{x})","l");
+		leg->AddEntry("gr","Graph with error bars","lep");
+	}
 	leg->Draw();
 	c->SaveAs("test.pdf");
 	c->Destructor();*/
