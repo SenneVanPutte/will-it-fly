@@ -424,9 +424,6 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid(
 	vtkSmartPointer<vtkPoints> points = construct_points(velocity_bins);
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(velocity_bins, false);
 
-	stagnation_point.push_back(vector_2d_c(0.0, 0.0));
-	double v_stagnation_sq = flow->get_velocity(stagnation_point[0]).get_length_sq();
-
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
@@ -437,9 +434,9 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid(
 		const vector_2d_c velo = flow->get_velocity(pos);
 		double v[3] = {velo.x, velo.y, 0.0};
 
-		if(velo.get_length_sq() < v_stagnation_sq)
+		if(velo.get_length_sq() < stagnation_tolerance)
 		{
-			stagnation_point.push_back(vector_2d_c(pos));
+			this->stagnation_point.push_back(vector_2d_c(pos));
 		}
 
 		field->InsertNextTuple(v);
