@@ -356,6 +356,7 @@ void visualization_vtk_c::draw(const std::string & filename)
 		//std::cout << contvec_psi[i] << std::endl;
 	}
 
+	std::cout << "hier" << std::endl;
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
 
@@ -771,15 +772,29 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::separating_streamlines(vtkSmartPo
 {
 	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
 	contours->SetInputConnection(plane->GetOutputPort());
-	contours->SetValue(0, flow->get_phi(stagnation_point));
+	vector<double> values;
+
+	for(int i = 0; i < stagnation_point.size(); ++i)
+	{
+		values[i] = flow->get_phi(stagnation_point[i]);
+	}
+
+	std::sort(values.begin(), values.end());
+
+	for(int i = 0; i < stagnation_point.size(); ++i)
+	{
+		contours->SetValue(i, values[i]);
+	}
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
+	contourLineMapperer->SetScalarRange(values[0], values[values.size() - 1]);
 	contourLineMapperer->ScalarVisibilityOff();
 
 	vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
 	contourLineActor->SetMapper(contourLineMapperer);
 	contourLineActor->GetProperty()->SetLineWidth(2);
+	//contourLineActor->GetProperty()->SetLineWidth(2);
 
 	return contourLineActor;
 
