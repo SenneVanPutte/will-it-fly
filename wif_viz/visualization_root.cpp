@@ -317,7 +317,7 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 	
 	leg->Draw();
 	c->SaveAs("test.pdf");
-	c->Destructor();*/
+	c->Destructor();
 	
 }
 }// namespace wif_viz
