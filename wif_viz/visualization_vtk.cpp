@@ -56,6 +56,7 @@
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
+#include <vtkRibbonFilter.h>
 
 #include <vector>
 #include <algorithm>
@@ -528,6 +529,8 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	arrow_plot();
 
+	ribbens_plot(construct_velocity_grid(), 20);
+
 
 
 
@@ -883,6 +886,10 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
 	contours->SetInputConnection(filledContours->GetOutputPort());
 	contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+	/*for (int i=0; i < numberOfContours; ++i)
+	{
+		contours->SetValue(i, contlvls[i]);
+	}*/
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
@@ -1186,6 +1193,96 @@ void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sg
 
 	// Add the actors to the renderer, set the background and size
 	renderer24->SetBackground(1, 1, 1);
+	renderWindow->SetSize(300, 300);
+	interactor->Initialize();
+	std::cout << "test3" << std::endl;
+	renderWindow->Render();
+
+	interactor->Start();
+}
+
+void visualization_vtk_c::ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const
+{
+	// Source of the streamlines
+
+	vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
+	seeds->SetResolution(number_of_streamlines);
+	seeds->SetPoint1(min_range.x, max_range.y, 0);
+	seeds->SetPoint2(min_range.x, min_range.y, 0);
+
+	// Setting Streamline properties
+	vtkSmartPointer<vtkStreamLine> streamLine = vtkSmartPointer<vtkStreamLine>::New();
+
+	streamLine->SetInput(sgrid);
+	streamLine->SetSource(seeds->GetOutput());
+
+	// Integration properties
+
+	streamLine->SetMaximumPropagationTime(200);
+	streamLine->SetIntegrationStepLength(.2);
+	streamLine->SetStepLength(.001);
+	streamLine->SetNumberOfThreads(1);
+	streamLine->SetIntegrationDirectionToForward();
+	//streamLine->VorticityOn();
+
+	// Creating a Mapper and Actor
+
+	vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
+
+	vtkSmartPointer<vtkActor> streamLineActor = vtkSmartPointer<vtkActor>::New();
+	streamLineActor->SetMapper(streamLineMapper);
+	streamLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
+	streamLineActor->GetProperty()->SetLineWidth(3);
+	streamLineActor->VisibilityOn();
+
+	//return streamLineActor;
+
+	// Create a ribbon around the line
+	vtkSmartPointer<vtkRibbonFilter> ribbonFilter = vtkSmartPointer<vtkRibbonFilter>::New();
+
+	ribbonFilter->SetInputConnection(streamLine->GetOutputPort());
+
+	ribbonFilter->VaryWidthOn();
+
+	ribbonFilter->SetWidth(0.025);
+	//ribbonFilter->SetWidthFactor(5);
+	ribbonFilter->SetAngle(0.);
+
+
+	//ribbonFilter->SetWidthFactor(5);
+
+
+
+	// Create a mapper and actor
+	vtkSmartPointer<vtkPolyDataMapper> ribbonMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	ribbonMapper->SetInputConnection(ribbonFilter->GetOutputPort());
+
+	vtkSmartPointer<vtkActor> ribbonActor = vtkSmartPointer<vtkActor>::New();
+	ribbonActor->SetMapper(ribbonMapper);
+
+	ribbonActor->GetProperty()->SetColor(0, 0.2, 0.5);
+
+
+
+
+	// Create the RenderWindow, Renderer and Actors
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer(renderer);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	interactor->SetRenderWindow(renderWindow);
+
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	interactor->SetInteractorStyle(style);
+
+	renderer->AddActor(streamLineActor);
+	renderer->AddActor(ribbonActor);
+
+	// Add the actors to the renderer, set the background and size
+	renderer->SetBackground(1, 1, 1);
 	renderWindow->SetSize(300, 300);
 	interactor->Initialize();
 	std::cout << "test3" << std::endl;

@@ -105,6 +105,8 @@ private:
 
 	void streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const;
 
+	void ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const;
+
 	void arrow_plot() const;
 
 	void print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const;
