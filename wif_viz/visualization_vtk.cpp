@@ -479,6 +479,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 			std::cout << i << ": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
 			icout = icout + (points->GetNumberOfPoints() / 100);
 		}
+
 		/*if (i > icout)
 		{
 			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;

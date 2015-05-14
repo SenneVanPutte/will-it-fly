@@ -60,6 +60,17 @@ void visualization_c::set_airfoil(wif_core::airfoil_c * new_airfoil)
 }
 
 
+void visualization_c::set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds)
+{
+    this->streamline_seeds = streamline_seeds;
+}
+
+void visualization_c::set_streamline_resolution(uint32_t streamline_resolution)
+{
+    this->streamline_resolution = streamline_resolution;
+}
+
+
 void visualization_c::set_contours(uint32_t contours)
 {
 	contour_locations.clear();
