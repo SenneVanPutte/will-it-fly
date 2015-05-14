@@ -31,7 +31,7 @@ public:
 
 	void fillbinStagnatie();
 	
-	void plotVectors(std::vector<std::vector<double>>,std::vector<double>);
+	void plotVectors(std::vector<std::vector<double>>,std::vector<double>,std::vector<std::string>);
 
 protected:
 	TH2F * velocity, *psi, *phi;
