@@ -61,13 +61,15 @@ public:
 	virtual void draw(const std::string & filename = "") = 0;
 
 	virtual void draw_ivo(const std::string & filename = "")
-    {
-        draw(filename);
-    }
+	{
+		draw(filename);
+	}
 
 	void set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds);
 
 	void set_streamline_resolution(uint32_t streamline_resolution);
+
+	virtual void plotVectors(std::vector<std::vector<double>>, std::vector<double>, std::vector<std::string>);
 
 	//
 
