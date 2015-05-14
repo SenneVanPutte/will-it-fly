@@ -32,14 +32,14 @@ int main()
 	bins.x = 100;
 	bins.y = 100;
 	//int binsx = 20, binsy = 20;
-	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_root(ff, min, max);
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_root(flow, min, max);
 
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
 	vizy->set_phi_bins(bins);
 	vizy->set_velocity_bins(bins);
 
-	vizy->draw("test");
+	vizy->draw("flow");
 
 	return 0;
 
