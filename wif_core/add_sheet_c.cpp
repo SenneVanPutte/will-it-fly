@@ -21,7 +21,7 @@ add_sheet_phi_c::~add_sheet_phi_c()
 
 double add_sheet_phi_c::operator()(double init, const std::shared_ptr<flow_c> & flow) const
 {
-	return init + flow.get()->get_phi(position);
+	return init + flow->get_phi(position);
 }
 
 
@@ -40,7 +40,7 @@ add_sheet_psi_c::~add_sheet_psi_c()
 
 double add_sheet_psi_c::operator()(double init, const std::shared_ptr<flow_c> & flow) const
 {
-	return init + flow.get()->get_psi(position);
+	return init + flow->get_psi(position);
 }
 
 
@@ -59,7 +59,7 @@ add_sheet_v_c::~add_sheet_v_c()
 
 vector_2d_c add_sheet_v_c::operator()(vector_2d_c init, const std::shared_ptr<flow_c> & flow) const
 {
-	return init + flow.get()->get_velocity(position);
+	return init + flow->get_velocity(position);
 }
 
 

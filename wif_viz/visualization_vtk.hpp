@@ -35,6 +35,33 @@
 #include "vtkWindowToImageFilter.h"
 #include "vtkPNGWriter.h"
 
+#include <vtkVersion.h>
+#include <vtkSmartPointer.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkCellArray.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkVertexGlyphFilter.h>
+#include <vtkProperty.h>
+
+
+#include <vtkVersion.h>
+#include <vtkSmartPointer.h>
+#include <vtkCellArray.h>
+#include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkPoints.h>
+#include <vtkLine.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+
 #include "vtkPlaneSource.h"
 
 namespace wif_viz
@@ -73,6 +100,16 @@ private:
 	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid() const;
 
 	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
+
+	vtkSmartPointer<vtkActor> streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const;
+
+	vtkSmartPointer<vtkActor> geef_actor_lijnen(std::vector<wif_core::line_2d_c>);
+
+	vtkSmartPointer<vtkActor> geef_actor_punten(std::vector<wif_core::vector_2d_c>);
+
+	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkPlaneSource> object, vtkSmartPointer<vtkRenderer> renderer) const;
+
+	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkGlyph3D> object, vtkSmartPointer<vtkRenderer> renderer) const;
 
 	/*private:
 		std::vector<vtkSmartPointer<vtkActor>> actors;*/

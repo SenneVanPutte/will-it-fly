@@ -136,7 +136,7 @@ void test_sheet(bool screen)
 
 	wif_core::line_2d_c l({ -1.0, -1.0}, {1.0, 1.0});
 
-	flow->add_flow(std::make_shared<wif_core::source_sheet_c>(l, 1.0));
+	flow->add_flow(std::make_shared<wif_core::vortex_sheet_c>(l, 1.0));
 	//flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1.0), airfoil);
 
 	visualize_all(screen, "test-circle-flow", flow, { -2, -2}, {2, 2}, {101, 101});

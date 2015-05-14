@@ -29,11 +29,11 @@ int main()
 	//source_sheet_c sheet = source_sheet_c(line, 5);
 	//test_source_sheets(sheet);
 
-	//draw_source_sheet();
+	draw_source_sheet();
 
 	//test_flow_acc();
 
-	search_point_fold();
+	//search_point_fold();
 
 	return 0;
 }
@@ -69,10 +69,10 @@ void draw_source_sheet()
 
 	vector<double> sigmas(20, 2);
 	wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindwerk-programmeren/will-it-fly/wif_core/airfoils/selig.dat");
-	cout << "loaded";
-	wif_core::airfoil_c foil = foilfull.get_circle_projection(4, vector_2d_c(0.5, 0), 0.5, 0.001).closed_merge();
+	cout << "loaded" << std::endl;
+	wif_core::airfoil_c foil = foilfull.get_circle_projection(10, vector_2d_c(0.5, 0), 0.5, 0.001).closed_merge();
+	cout << foil.get_lines().size() << std::endl;
 
-	cout << foil;
 	flow_accumulate_c flow = flow_accumulate_c();
 	//flow_accumulate_c flow = flow_accumulate_c();
 	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));

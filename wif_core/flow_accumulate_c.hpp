@@ -35,7 +35,7 @@ public:
 	/**
 	 * adds a flow object to flows
 	 */
-	void add_flow(shared_ptr<flow_c> flow);
+	void add_flow(const shared_ptr<flow_c> & flow);
 
 	/**
 	 * gives the streamfunction at a given point
