@@ -4,6 +4,7 @@
 #include <memory>
 #include <wif_core/wif_core.hpp>
 
+
 namespace wif_viz
 {
 
@@ -50,12 +51,22 @@ public:
 	void set_contours(uint32_t contours);
 	void set_clip_range(double min, double max);
 	void set_output_to_file(bool file_output);
+	void set_stagnation_tolerance(double epsilon);
 
 	double clip_value(double value) const;
 
 	void set_airfoil(wif_core::airfoil_c * new_airfoil);
 
 	virtual void draw(const std::string & filename = "") = 0;
+
+	virtual void draw_ivo(const std::string & filename = "")
+	{
+		draw(filename);
+	}
+
+	void set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds);
+
+	void set_streamline_resolution(uint32_t streamline_resolution);
 
 	//
 
@@ -73,7 +84,13 @@ protected:
 	double clip_max;
 	bool output_to_file;
 
+	mutable std::vector<vector_2d_c> stagnation_point;
+	double stagnation_tolerance;
+
 	wif_core::airfoil_c * airfoil;
+
+	wif_core::line_2d_c streamline_seeds;
+	uint32_t streamline_resolution;
 
 private:
 
