@@ -17,9 +17,11 @@ int main()
 	bool Kutta = 0;
 
 	wif_algo::calculation_results_c calculate_flow2 = wif_algo::calculate_flow(myAirfoil, myFlow, Kutta);
+	double gamma = 0;
+	std::vector<double> c_p = wif_algo::calculate_c_p(myAirfoil, myFlow, gamma);
 	std::vector<wif_core::line_2d_c> mylines = myAirfoil.get_lines();
 	std::vector<wif_core::vector_2d_c> centers(num_lines);
-	std::cout << "y" << "   " << "cp calc" << "   " << "cp theor pol" << "   " << "cp theor cart" << std::endl;
+	std::cout << "y" << "   " << "cp calc" << "   " << "cp calc func" << "   " << "cp theor pol" << "   " << "cp theor cart" << std::endl;
 	std::vector<double> angles(num_lines);
 	//std::ofstream myfile;
 	//myfile.open("data2.txt");
@@ -38,7 +40,7 @@ int main()
 			angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
 		}
 
-		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)   << std::endl;
+		std::cout << centers[i].y << "   " << calculate_flow2.c_p[i] << "   " << c_p[i] << "   " << 1 - 4 * pow(sin(angles[i]), 2) << "   " << 1 - 4 * pow((centers[i].y / radius), 2)   << std::endl;
 	}
 
 	//myfile.close();
