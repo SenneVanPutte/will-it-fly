@@ -63,7 +63,7 @@ airfoil_c::airfoil_c(const std::string & filename)
 		}
 
 		unsigned int half_size = this->points.size() / 2;
-		std::reverse(this->points.begin() + half_size, this->points.end());
+		std::reverse(this->points.begin(), this->points.end() - half_size - 1);
 	}
 	else
 	{
@@ -242,7 +242,7 @@ airfoil_c airfoil_c::closed_intersect(double epsilon) const
 	}
 
 	vector_2d_c endpoint;
-	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint);
+	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint, 0);
 	std::vector<vector_2d_c> newpoints;
 	newpoints.push_back(endpoint);
 	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());
