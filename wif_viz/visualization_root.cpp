@@ -12,7 +12,7 @@
 namespace wif_viz
 {
 
-visualization_root_c::visualisation_root_c()
+visualization_root_c::visualisation_root_c():visualization_c()
 {
 	
 }
@@ -286,7 +286,7 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 {
 	
 	unsigned int aantalTH2F=yVector.size();
-	
+	//leg = new TLegend(0.1,0.7,0.48,0.9);
 	TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 	for(unsigned int i=0;i<aantalTH2F;i++)
 	{
@@ -309,15 +309,16 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 		}
 		
 		harr->Draw("scat=1 same");
-		
+		//std::string legende=legend[i]
+		//const char * harrname2 = legende.c_str();
+		//leg->AddEntry("harr",,"f");
 	}
-	/*leg = new TLegend(0.1,0.7,0.48,0.9);
-	leg->SetHeader("The Legend Title");
+	
+	/*leg->SetHeader("The Legend Title");
 	for(unsigned int p=0;p<=legend.size();p++)
 	{
-		leg->AddEntry("harr","Histogram filled with random numbers","f");
-		leg->AddEntry("f1","Function abs(#frac{sin(x)}{x})","l");
-		leg->AddEntry("gr","Graph with error bars","lep");
+		
+		
 	}
 	leg->Draw();
 	c->SaveAs("test.pdf");
