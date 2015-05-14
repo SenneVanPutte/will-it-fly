@@ -69,7 +69,7 @@ protected:
 	vector_2d_c phi_bins;
 	vector_2d_c velocity_bins;
 
-	std::vector<double> contour_locations;
+	std::vector<double_t> contour_locations;
 	double clip_min;
 	double clip_max;
 	bool output_to_file;

@@ -28,6 +28,13 @@ visualization_root_c::~visualization_root_c()
 void visualization_root_c::draw(const std::string & filename)
 {
 
+	double_t contours[contour_locations.size()];
+
+	for(unsigned int i = 0; i < contour_locations.size(); i++)
+	{
+		contours[i] = contour_locations[i];
+	}
+
 	FillBins();
 	fillbinStagnatie();
 
@@ -43,7 +50,7 @@ void visualization_root_c::draw(const std::string & filename)
 		//velocity->SetContour(number_of_contours, contour_locations);
 
 		//velocity->Draw();
-		stag->Draw("CONT1Z");
+		stag->Draw("CONT1");
 		addArrows();
 		velocity->GetXaxis()->SetTitle("x");
 		velocity->GetYaxis()->SetTitle("y");
@@ -61,10 +68,12 @@ void visualization_root_c::draw(const std::string & filename)
 		TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 		gStyle->SetOptStat(0);
 		gStyle->SetPalette(1);
-		/*if(contour_locations.size()!=0)
+
+		if(contour_locations.size() >= 1)
 		{
 			psi->SetContour(contour_locations.size(), contours);
-		}*/
+		}
+
 		psi->Draw("CONT1Z");
 		psi->GetXaxis()->SetTitle("x");
 		psi->GetYaxis()->SetTitle("y");
