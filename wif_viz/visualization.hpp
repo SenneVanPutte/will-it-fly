@@ -54,6 +54,16 @@ public:
 	void set_output_to_file(bool file_output);
 	void set_stagnation_tolerance(double epsilon);
 
+	virtual void set_color_scaling(const std::vector<uint32_t> & scaling)
+	{
+		//
+	}
+
+	virtual void set_automatic_color_scaling(uint32_t levels)
+	{
+		//
+	}
+
 	double clip_value(double value) const;
 
 	void set_airfoil(wif_core::airfoil_c * new_airfoil);
@@ -61,9 +71,9 @@ public:
 	virtual void draw(const std::string & filename = "") = 0;
 
 	virtual void draw_ivo(const std::string & filename = "")
-    {
-        draw(filename);
-    }
+	{
+		draw(filename);
+	}
 
 	void set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds);
 
