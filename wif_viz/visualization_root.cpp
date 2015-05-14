@@ -9,6 +9,7 @@
 #include "TStyle.h"
 #include "TF2.h"
 #include "TAttLine.h"
+#include "TLegend.h"
 namespace wif_viz
 {
 
@@ -283,7 +284,7 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 {
 	
 	unsigned int aantalTH2F=yVector.size();
-	leg = new TLegend(0.1,0.7,0.48,0.9);
+	TLegend *leg = new TLegend(0.1,0.7,0.48,0.9);
 	leg->SetHeader("The Legend Title");
 	TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 	for(unsigned int i=0;i<aantalTH2F;i++)
@@ -307,9 +308,9 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 		}
 		
 		harr->Draw("scat=1 same");
-		std::string legende=legend[i]
-		const char * harrname2 = legende.c_str();
-		leg->AddEntry("harr",harrname2,"f");
+		std::string legende=legend[i];
+		const char * legendname = legende.c_str();
+		leg->AddEntry("harr",legendname,"f");
 	}
 	
 	leg->Draw();
