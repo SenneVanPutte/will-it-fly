@@ -470,7 +470,11 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
+<<<<<<< HEAD
+	double icout = points->GetNumberOfPoints() * 0.01;
+=======
 	//double icout = points->GetNumberOfPoints()*0.01;
+>>>>>>> b658ca59451b6c1b1b695c535ca9751aac93f91f
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
@@ -482,11 +486,20 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 
 		double t = clip_value(flow->get_phi(pos));
 
+<<<<<<< HEAD
+		if(i > icout)
+		{
+			std::cout << i << ": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
+			icout = icout + (points->GetNumberOfPoints() / 100);
+		}
+
+=======
 		/*if (i > icout)
 		{
 			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
 			icout = icout + (points->GetNumberOfPoints()/100);
 		}*/
+>>>>>>> b658ca59451b6c1b1b695c535ca9751aac93f91f
 		/*if(t > vtkMax)
 		{
 			t = vtkMax;
@@ -519,7 +532,11 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
+<<<<<<< HEAD
+	double icout = points->GetNumberOfPoints() * 0.01;
+=======
 	//double icout = points->GetNumberOfPoints()*0.01;
+>>>>>>> b658ca59451b6c1b1b695c535ca9751aac93f91f
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
@@ -527,18 +544,30 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 		points->GetPoint(i, x);
 
+<<<<<<< HEAD
+		const vector_2d_c pos(x[0], x[1]);
+=======
 		const vector_2d_c pos(x[1], x[0]);
+>>>>>>> b658ca59451b6c1b1b695c535ca9751aac93f91f
 
 		double t = clip_value(flow->get_psi(pos));
 		//std::cout <<  i <<": " << pos.x << ", " << pos.y << "// ->" << t << std::endl;
 
 
 
+<<<<<<< HEAD
+		if(i > icout)
+		{
+			std::cout << i << ": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
+			icout = icout + (points->GetNumberOfPoints() * 0.01);
+		}
+=======
 		/*if (i > icout)
 		{
 			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
 			icout = icout + (points->GetNumberOfPoints()*0.01);
 		}*/
+>>>>>>> b658ca59451b6c1b1b695c535ca9751aac93f91f
 
 		/*if(t > vtkMax)
 		{
