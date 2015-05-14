@@ -33,8 +33,6 @@ public:
 
 	void plotVectors(std::vector<std::vector<double>>, std::vector<double>, std::vector<std::string>, std::string, std::string, std::string, std::string);
 
-
-
 protected:
 	TH2F * velocity, *psi, *phi;
 	TH2F * stag;

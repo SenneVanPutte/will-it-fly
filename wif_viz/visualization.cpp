@@ -14,7 +14,9 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	streamline_seeds(0.0, 0.0, 0.0, 0.0),
 	streamline_resolution(0),
 	stagnation_tolerance(0.001),
-	airfoil(nullptr)
+	airfoil(nullptr),
+	clip_min(0.0),
+	clip_max(0.0)
 {
 	//
 }
@@ -106,6 +108,11 @@ void visualization_c::set_output_to_file(bool file_output)
 
 double visualization_c::clip_value(double value) const
 {
+	if(clip_max == clip_min)
+	{
+		return value;
+	}
+
 	if(value < clip_min)
 	{
 		return clip_min;

@@ -243,7 +243,7 @@ airfoil_c airfoil_c::closed_intersect(double epsilon) const
 	}
 
 	vector_2d_c endpoint;
-	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint);
+	this->get_lines().front().get_intersection(this->get_lines().back(), endpoint, epsilon);
 	std::vector<vector_2d_c> newpoints;
 	newpoints.push_back(endpoint);
 	newpoints.insert(newpoints.end(), this->points.begin(), this->points.end());

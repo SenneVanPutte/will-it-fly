@@ -119,6 +119,17 @@ private:
 
 	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkGlyph3D> object, vtkSmartPointer<vtkRenderer> renderer) const;
 
+	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkStructuredGrid> object, vtkSmartPointer<vtkRenderer> renderer) const;
+
+
+	void get_data_range(double & min, double & max, std::vector<double> & contours, vtkSmartPointer<vtkStructuredGrid> grid) const;
+
+	virtual void set_color_scaling(const std::vector<uint32_t> & scaling);
+
+	virtual void set_automatic_color_scaling(uint32_t levels);
+
+	vtkSmartPointer<vtkLookupTable> color_scaling;
+
 	/*private:
 		std::vector<vtkSmartPointer<vtkActor>> actors;*/
 };

@@ -185,9 +185,9 @@ void test_source(bool screen)
 void test_airfoil()
 {
 
-#if 1
+#if 0
 	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
-	wif_core::airfoil_c n_airfoil = airfoil.closed_merge(0.0001);
+	wif_core::airfoil_c n_airfoil = airfoil.closed_intersect(0);
 
 	auto lines = n_airfoil.get_points();
 
@@ -196,10 +196,12 @@ void test_airfoil()
 		std::cout << l << std::endl;
 	}
 
-	std::cout << n_airfoil << std::endl;
+	//std::cout << n_airfoil << std::endl;*/
 #else
-	wif_core::airfoil_c airfoil({0, 0}, 1, 10);
-	wif_core::airfoil_c n_airfoil = airfoil.get_circle_projection(100, {0.0, 0.0}, 2.0);
+	wif_core::airfoil_c airfoil({0, 0}, 1, 100);
+	//wif_core::airfoil_c n_airfoil = airfoil.get_circle_projection(100, {0.0, 0.0}, 2.0);
+
+	wif_core::airfoil_c n_airfoil = airfoil;
 #endif // 1
 
 	if(!airfoil.is_valid())
@@ -216,9 +218,10 @@ void test_airfoil()
 	//flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 
 	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(f.flow, { -2, -2}, {2, 2});
-	vizy->set_clip_range(-1, 1);
+	//vizy->set_clip_range(-1, 1);
 	vizy->set_psi_bins({101, 101});
 	vizy->set_airfoil(&n_airfoil);
+	vizy->set_contours(10);
 
 	vizy->draw_ivo("");
 
