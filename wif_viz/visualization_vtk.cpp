@@ -142,7 +142,25 @@ void visualization_vtk_c::draw(const std::string & filename)
 			lut->AddRGBPoint(values[1], 1, 0, 0);
 			*/
 
-			double delta = this->clip_max - this->clip_min;
+			double min_v = this->clip_min;
+			double max_v = this->clip_max;
+
+			if(clip_min == clip_max)
+			{
+				double values[2];
+
+				psi_grid->GetPointData()->GetScalars()->GetRange(values);
+
+				min_v = values[0];
+				max_v = values[1];
+			}
+			else
+			{
+				min_v = this->clip_min;
+				max_v = this->clip_max;
+			}
+
+			double delta = max_v - min_v;
 
 			double r1 = red(0x00134e5e);
 			double g1 = green(0x00134e5e);
@@ -160,13 +178,13 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 			lut->SetNanColor(0, 0, 1);
 
-			lut->AddRGBPoint(this->clip_min, r1, g1, b1);
+			lut->AddRGBPoint(min_v, r1, g1, b1);
 
-			lut->AddRGBPoint(std::nextafter(this->clip_min, -std::numeric_limits<double>::infinity()), 1, 0, 0);
+			lut->AddRGBPoint(std::nextafter(min_v, -std::numeric_limits<double>::infinity()), 1, 0, 0);
 
-			lut->AddRGBPoint(this->clip_max, r2, g2, b2);
+			lut->AddRGBPoint(max_v, r2, g2, b2);
 
-			lut->AddRGBPoint(std::nextafter(this->clip_max, std::numeric_limits<double>::infinity()), 0, 0, 1);
+			lut->AddRGBPoint(std::nextafter(max_v, std::numeric_limits<double>::infinity()), 0, 0, 1);
 
 			//
 
@@ -185,11 +203,50 @@ void visualization_vtk_c::draw(const std::string & filename)
 			vtkSmartPointer<vtkDataSetMapper> mapperveld = vtkDataSetMapper::New();
 			mapperveld->SetInput(phi_grid);
 
+			double min_v = this->clip_min;
+			double max_v = this->clip_max;
+
+			if(clip_min == clip_max)
+			{
+				double values[2];
+
+				phi_grid->GetPointData()->GetScalars()->GetRange(values);
+
+				min_v = values[0];
+				max_v = values[1];
+			}
+			else
+			{
+				min_v = this->clip_min;
+				max_v = this->clip_max;
+			}
+
+			double delta = max_v - min_v;
+
+			double r1 = red(0x00134e5e);
+			double g1 = green(0x00134e5e);
+			double b1 = blue(0x00134e5e);
+
+
+			double r2 = red(0x0071b280);
+			double g2 = green(0x0071b280);
+			double b2 = blue(0x0071b280);
+
+			//
+
 			vtkSmartPointer<vtkColorTransferFunction> lut = vtkColorTransferFunction::New();
-			double minvalue = this->clip_min;
-			double maxvalue = this->clip_max;
-			lut->AddRGBPoint(minvalue, 0, 0, 1);
-			lut->AddRGBPoint(maxvalue, 1, 0, 0);
+
+
+			lut->SetNanColor(0, 0, 1);
+
+			lut->AddRGBPoint(min_v, r1, g1, b1);
+
+			lut->AddRGBPoint(std::nextafter(min_v, -std::numeric_limits<double>::infinity()), 1, 0, 0);
+
+			lut->AddRGBPoint(max_v, r2, g2, b2);
+
+			lut->AddRGBPoint(std::nextafter(max_v, std::numeric_limits<double>::infinity()), 0, 0, 1);
+
 
 			mapperveld->SetLookupTable(lut);
 
