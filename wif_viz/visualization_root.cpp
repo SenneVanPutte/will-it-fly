@@ -317,8 +317,6 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 
 	for(unsigned int i = 0; i < aantalTH2F; i++)
 	{
-
-
 		TH2F * harr = new TH2F("harr", "test", 50, x_min, x_max, 50, y_min, y_max);
 		gStyle->SetOptStat(0);
 		harr->Draw("same");
@@ -344,7 +342,6 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 		TMarker * m2 = new TMarker(1, 1, 20);
 		m2->SetMarkerColor(i + 1);
 		leg->AddEntry(m2, legendname, "P");
-
 	}
 
 	leg->Draw();
