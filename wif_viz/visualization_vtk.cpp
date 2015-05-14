@@ -565,11 +565,7 @@ vtkSmartPointer<vtkPoints> visualization_vtk_c::construct_points(const vector_2d
 
 vtkSmartPointer<vtkDoubleArray> visualization_vtk_c::construct_field(const vector_2d_c & binning, bool scalar) const
 {
-	//uint32_t bin_x = round_abs(binning.x);
-	//uint32_t bin_y = round_abs(binning.y);
-
 	vtkSmartPointer<vtkDoubleArray> vectors = vtkSmartPointer<vtkDoubleArray>::New();
-	//vectors->Allocate((bin_x + 1) * (bin_y + 1));
 
 	if(scalar)
 	{
@@ -620,10 +616,7 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_psi_grid() con
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = clip_value(flow->get_psi(pos));
-
-		//field->InsertNextTuple(&t);
-		field->InsertNextValue(t);
+		field->InsertNextValue(clip_value(flow->get_psi(pos)));
 	}
 
 	return combine_grid(psi_bins, points, field);
@@ -1270,6 +1263,22 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkS
 	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
 
 	return cubeAxesActor;
+
+}
+
+void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const
+{
+	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
+	windowToImageFilter->SetInput(renderWindow);
+	windowToImageFilter->SetMagnification(2); //set the resolution of the output image (3 times the current resolution of vtk render window)
+	windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
+	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
+	windowToImageFilter->Update();
+
+	vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
+	writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+	writer->SetFileName(filename);
+	writer->Write();
 }
 
 } // namespace wif_viz
