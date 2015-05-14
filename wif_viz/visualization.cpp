@@ -3,7 +3,7 @@
 namespace wif_viz
 {
 
-visualisation_c::visualisation_c(){}
+visualization_c::visualization_c(){}
 visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range) :
 	flow(flow),
 	min_range(min_range),
