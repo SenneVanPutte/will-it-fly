@@ -566,11 +566,7 @@ vtkSmartPointer<vtkPoints> visualization_vtk_c::construct_points(const vector_2d
 
 vtkSmartPointer<vtkDoubleArray> visualization_vtk_c::construct_field(const vector_2d_c & binning, bool scalar) const
 {
-	//uint32_t bin_x = round_abs(binning.x);
-	//uint32_t bin_y = round_abs(binning.y);
-
 	vtkSmartPointer<vtkDoubleArray> vectors = vtkSmartPointer<vtkDoubleArray>::New();
-	//vectors->Allocate((bin_x + 1) * (bin_y + 1));
 
 	if(scalar)
 	{
@@ -621,10 +617,7 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_psi_grid() con
 
 		const vector_2d_c pos(x[0], x[1]);
 
-		double t = clip_value(flow->get_psi(pos));
-
-		//field->InsertNextTuple(&t);
-		field->InsertNextValue(t);
+		field->InsertNextValue(clip_value(flow->get_psi(pos)));
 	}
 
 	return combine_grid(psi_bins, points, field);
