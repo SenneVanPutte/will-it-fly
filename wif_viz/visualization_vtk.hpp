@@ -107,7 +107,7 @@ private:
 
 	void arrow_plot() const;
 
-	void print_image(const std::string & filename = "") const;
+	void print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const;
 
 	vtkSmartPointer<vtkActor> separating_streamlines(vtkSmartPointer<vtkPlaneSource> plane) const;
 

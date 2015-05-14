@@ -1111,7 +1111,7 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkG
 	return cubeAxesActor;
 }
 
-void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const std::string & filename = "") const
+void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const
 {
 	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
 	windowToImageFilter->SetInput(renderWindow);
