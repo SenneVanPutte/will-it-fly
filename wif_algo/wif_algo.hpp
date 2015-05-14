@@ -32,6 +32,7 @@ uint32_t get_version();
 
 /// Het toevoegen van extra parameters aan deze functie mag, zodat mensen kunnen selecteren of ze de Kutta Conditie enzo willen gebruiken.
 calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, bool Kutta = false);
+// Deze functie enkel gebruiken voor c_ps te berekenen. Hierin kan een zelfgekozen vorticiteit meegegeven worden, dit is onrealistisch om toe te staan in de calc_flow functie.
 std::vector<double> calculate_c_p(const wif_core::airfoil_c & myAirfoil, std::shared_ptr<wif_core::uniform_flow_c> myFlow, double gamma = 0);
 } // namespace wif_algo
 
