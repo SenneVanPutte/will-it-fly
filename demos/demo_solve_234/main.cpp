@@ -60,14 +60,19 @@ int main()
 		make_plot(flow);
 	}
 
-	/*{//parametriseer cirkel
+	{//parametriseer cirkel
 		wif_core::airfoil_c airfoil(wif_core::vector_2d_c(0.0,0.0),1,40);
 		std::shared_ptr<wif_core::uniform_flow_c> uniflow =
 				std::make_shared<wif_core::uniform_flow_c>(0, 1);
 		//geen idee hoe ge deze tekend, maar dat moet hier gebeuren
 		wif_algo::calculation_results_c calc_res = wif_algo::calculate_flow(airfoil,uniflow,false,1);
 		make_plot(calc_res.flow);
-	}*/
+	}
+
+    {//laad airfoil
+
+
+    }
 
 
 

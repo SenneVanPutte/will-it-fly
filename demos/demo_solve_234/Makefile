@@ -5,8 +5,9 @@ OBJ_DEMO=$(SRC_DEMO:.cpp=$(BUILD_SUFFIX).o)
 OBJ_PATH=$(addprefix ../../build/obj/demos/$(DEMO_NAME)/, $(OBJ_DEMO))
 
 INCLUDE=-I../../build/include
+INCLUDE+=-I/usr/include/gsl
 LIBDIR=-L../../build/lib
-LIBS=-lwif_core -lwif_algo -lwif_viz
+LIBS=-lwif_core -lwif_algo -lwif_viz -lgsl -lgslcblas -lm
 
 demo : ../../build/bin/wif_$(DEMO_NAME)
 
