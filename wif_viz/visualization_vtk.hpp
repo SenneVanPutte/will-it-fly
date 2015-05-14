@@ -80,6 +80,8 @@ public:
 
 	virtual void draw(const std::string & filename = "");
 
+	virtual void draw_ivo(const std::string & filename = "");
+
 private:
 	double vtkMax = 500;
 

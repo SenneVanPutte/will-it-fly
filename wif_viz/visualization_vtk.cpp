@@ -109,9 +109,8 @@ float blue(uint32_t col)
 	return ((double)(col & 0xff)) / 255.0;
 }
 
-void visualization_vtk_c::draw(const std::string & filename)
+void visualization_vtk_c::draw_ivo(const std::string & filename)
 {
-	//
 	if((filename.size() > 1) && (filename.find('.') == std::string::npos))
 	{
 		/// Enkel uitvoeren als de filename geen extensie heeft.
@@ -319,12 +318,23 @@ void visualization_vtk_c::draw(const std::string & filename)
 			renderer->AddActor(actor);
 		}
 
+		if(this->airfoil)
+		{
+			renderer->AddActor(geef_actor_lijnen(this->airfoil->get_lines()));
+		}
+
 		iren->Initialize();
 		renWin->Render();
 		iren->Start();
 
 		iren->TerminateApp();
 	}
+}
+
+void visualization_vtk_c::draw(const std::string & filename)
+{
+	//
+
 
 	//return;
 

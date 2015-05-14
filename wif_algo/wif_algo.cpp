@@ -1,6 +1,6 @@
 #include "wif_algo.hpp"
-
-#include <wif_core/wif_core.hpp>
+#include <gsl/gsl_linalg.h>
+#include <gsl/gsl_integration.h>
 
 namespace wif_algo
 {
