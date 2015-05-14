@@ -470,6 +470,8 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
+	double icout = points->GetNumberOfPoints()*0.01;
+
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
@@ -477,9 +479,14 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 		points->GetPoint(i, x);
 
 		const vector_2d_c pos(x[0], x[1]);
-		std::cout << x[0] << ", " << x[1] << std::endl;
+		
 		double t = clip_value(flow->get_phi(pos));
-
+		
+		if (i > icout)
+		{
+			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
+			icout = icout + (points->GetNumberOfPoints()/100);
+		}
 		/*if(t > vtkMax)
 		{
 			t = vtkMax;
@@ -490,7 +497,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 			t = -vtkMax;
 		}*/
 
-		std::cout << t << std::endl;
+		//std::cout << t << std::endl;
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
 	}
@@ -512,6 +519,8 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
+	double icout = points->GetNumberOfPoints()*0.01;
+
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
 		double x[3];
@@ -519,9 +528,18 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 		points->GetPoint(i, x);
 
 		const vector_2d_c pos(x[0], x[1]);
-		std::cout << x[0] << ", " << x[1] << std::endl;
+		
 		double t = clip_value(flow->get_psi(pos));
-
+		//std::cout <<  i <<": " << pos.x << ", " << pos.y << "// ->" << t << std::endl;
+		
+		
+		
+		if (i > icout)
+		{
+			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
+			icout = icout + (points->GetNumberOfPoints()*0.01);
+		}
+		
 		/*if(t > vtkMax)
 		{
 			t = vtkMax;
@@ -532,7 +550,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 			t = -vtkMax;
 		}*/
 
-		std::cout << t << std::endl;
+		//std::cout << t << std::endl;
 		//field->InsertNextTuple1(t);
 		field->InsertNextValue(t);
 	}
@@ -633,6 +651,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	//schaal bar
 	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
 	scalarBar->SetLookupTable(lut);
+	//scalarBar->GetLabelTextProperty()->SetColor(0,0,0); //werkt blijkbaar niet
 
 	vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
 	contourActor->SetMapper(contourMapper);
@@ -657,12 +676,15 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	vtkSmartPointer<vtkRenderWindowInteractor>
 	iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 
-	ren1->SetBackground(.1, .2, .3);
+	ren1->SetBackground(1, 1, 1);
 	renWin->AddRenderer(ren1);
 	iren->SetRenderWindow(renWin);
 
 	// assen
 	vtkSmartPointer<vtkCubeAxesActor> assen = axis(plane, ren1);
+	assen->GetProperty()->SetColor(0, 0, 0);
+	assen->SetXTitle("x");
+	assen->SetYTitle("y");
 
 	// Add the actors
 	ren1->AddActor2D(scalarBar);
@@ -870,6 +892,12 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkG
 	cubeAxesActor->XAxisMinorTickVisibilityOff();
 	cubeAxesActor->YAxisMinorTickVisibilityOff();
 	cubeAxesActor->ZAxisMinorTickVisibilityOff();
+
+	cubeAxesActor->GetProperty()->SetColor(0, 0, 0);
+	cubeAxesActor->SetXTitle("x");
+	cubeAxesActor->SetYTitle("y");
+	cubeAxesActor->SetCamera(renderer->GetActiveCamera());
+
 	return cubeAxesActor;
 }
 
