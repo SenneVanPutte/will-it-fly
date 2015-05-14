@@ -343,52 +343,56 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			vtkSmartPointer<vtkActor> actorveld = vtkActor::New();
 			actorveld->SetMapper(mapperveld);
 
-			//renderer->AddActor(actorveld);
+			renderer->AddActor(actorveld);
 
 			//
 
-			vtkSmartPointer<vtkCleanPolyData> filledContours = clip_into_pieces(psi_grid, corrected_contours);
+			if(corrected_contours.size() > 1)
+			{
+				vtkSmartPointer<vtkCleanPolyData> filledContours = clip_into_pieces(psi_grid, corrected_contours);
 
-			//
+				//
 
-			vtkSmartPointer<vtkLookupTable> lut2 = vtkSmartPointer<vtkLookupTable>::New();
-			lut2->SetNumberOfTableValues(corrected_contours.size() + 1);
-			lut2->Build();
+				vtkSmartPointer<vtkLookupTable> lut2 = vtkSmartPointer<vtkLookupTable>::New();
+				lut2->SetNumberOfTableValues(corrected_contours.size() + 1);
+				lut2->Build();
 
-			vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			contourMapper->SetInput(filledContours->GetOutput());
-			contourMapper->SetScalarRange(min_v, max_v);
-			contourMapper->SetScalarModeToUseCellData();
-			contourMapper->SetLookupTable(lut);
-			contourMapper->Update();
+				vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				contourMapper->SetInput(filledContours->GetOutput());
+				contourMapper->SetScalarRange(min_v, max_v);
+				contourMapper->SetScalarModeToUseCellData();
+				contourMapper->SetLookupTable(lut);
+				contourMapper->Update();
 
-			//schaal bar
-			vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-			scalarBar->SetLookupTable(lut);
+				//schaal bar
+				vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+				scalarBar->SetLookupTable(lut);
 
-			vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
-			contourActor->SetMapper(contourMapper);
-			contourActor->GetProperty()->SetInterpolationToFlat();
+				vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
+				contourActor->SetMapper(contourMapper);
+				contourActor->GetProperty()->SetInterpolationToFlat();
 
-			vtkSmartPointer<vtkContourFilter> contours3 = vtkSmartPointer<vtkContourFilter>::New();
-			contours3->SetInput(filledContours->GetOutput());
-			contours3->GenerateValues(corrected_contours.size(), min_v, max_v);
+				vtkSmartPointer<vtkContourFilter> contours3 = vtkSmartPointer<vtkContourFilter>::New();
+				contours3->SetInput(filledContours->GetOutput());
+				contours3->GenerateValues(corrected_contours.size(), min_v, max_v);
 
-			vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
-			contourLineMapperer->SetInput(contours3->GetOutput());
-			contourLineMapperer->SetScalarRange(min_v, max_v);
-			contourLineMapperer->ScalarVisibilityOff();
+				vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
+				contourLineMapperer->SetInput(contours3->GetOutput());
+				contourLineMapperer->SetScalarRange(min_v, max_v);
+				contourLineMapperer->ScalarVisibilityOff();
 
-			vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
-			contourLineActor->SetMapper(contourLineMapperer);
-			contourLineActor->GetProperty()->SetLineWidth(2);
+				vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
+				contourLineActor->SetMapper(contourLineMapperer);
+				contourLineActor->GetProperty()->SetLineWidth(2);
+
+
+				renderer->AddActor(contourActor);
+				renderer->AddActor(contourLineActor);
+			}
 
 			vtkSmartPointer<vtkActor> axes = axis(psi_grid, renderer);
-
 			renderer->AddActor(axes);
 
-			renderer->AddActor(contourActor);
-			renderer->AddActor(contourLineActor);
 		}
 
 		if(one_is_zero(phi_bins))

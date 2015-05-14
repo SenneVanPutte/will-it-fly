@@ -209,20 +209,20 @@ void test_airfoil()
 		return;
 	}
 
-	std::shared_ptr<wif_core::uniform_flow_c> uniflow = std::make_shared<wif_core::uniform_flow_c>(0.0, 1.0);
+	std::shared_ptr<wif_core::uniform_flow_c> uniflow = std::make_shared<wif_core::uniform_flow_c>(0.2, 1.0);
 	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>(uniflow);
 
-	auto f = wif_algo::calculate_flow(n_airfoil, uniflow, false, 0.1);
+	auto f = wif_algo::calculate_flow(n_airfoil, uniflow, false, 0.0);
 
 	//flow->add_flow(f);
 	//flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
 
-	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(f.flow, { -2, -2}, {2, 2});
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(f.flow, { -2, -3}, {2, 3});
 	//vizy->set_clip_range(-1, 1);
-	vizy->set_velocity_bins({101, 101});
+	vizy->set_psi_bins({101, 101});
 	vizy->set_airfoil(&n_airfoil);
-	vizy->set_contours(10);
-	vizy->set_streamline_resolution(100);
+	//vizy->set_contours(20);
+	//vizy->set_streamline_resolution(200);
 
 	vizy->draw_ivo("");
 
