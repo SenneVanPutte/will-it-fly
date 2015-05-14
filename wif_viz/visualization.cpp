@@ -11,6 +11,8 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	psi_bins(0.0, 0.0),
 	phi_bins(0.0, 0.0),
 	velocity_bins(0.0, 0.0),
+	streamline_seeds(0.0, 0.0, 0.0, 0.0),
+	streamline_resolution(0),
 	airfoil(nullptr)
 {
 	//
@@ -62,12 +64,12 @@ void visualization_c::set_airfoil(wif_core::airfoil_c * new_airfoil)
 
 void visualization_c::set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds)
 {
-    this->streamline_seeds = streamline_seeds;
+	this->streamline_seeds = streamline_seeds;
 }
 
 void visualization_c::set_streamline_resolution(uint32_t streamline_resolution)
 {
-    this->streamline_resolution = streamline_resolution;
+	this->streamline_resolution = streamline_resolution;
 }
 
 

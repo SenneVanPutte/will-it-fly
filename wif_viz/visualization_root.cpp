@@ -28,7 +28,7 @@ visualization_root_c::~visualization_root_c()
 void visualization_root_c::draw(const std::string & filename)
 {
 
-	double_t contours[contour_locations.size()];
+	double contours[contour_locations.size()];
 
 	for(unsigned int i = 0; i < contour_locations.size(); i++)
 	{
@@ -272,7 +272,7 @@ void visualization_root_c::fillbinStagnatie()
 		}
 	}
 
-	double_t contours[1];
+	Double_t contours[1];
 	contours[0] = 10;
 	stag->SetContour(1, contours);
 
