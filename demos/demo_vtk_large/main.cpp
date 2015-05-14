@@ -222,6 +222,7 @@ void test_airfoil()
 	vizy->set_velocity_bins({101, 101});
 	vizy->set_airfoil(&n_airfoil);
 	vizy->set_contours(10);
+	vizy->set_streamline_resolution(100);
 
 	vizy->draw_ivo("");
 

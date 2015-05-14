@@ -431,66 +431,72 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 		{
 			vtkSmartPointer<vtkStructuredGrid> velocity_grid = construct_velocity_grid();
 
-			vtkSmartPointer<vtkArrowSource> arrowSource = vtkSmartPointer<vtkArrowSource>::New();
+			bool draw_arrows = false;
 
-			vtkSmartPointer<vtkGlyph3D> glyph3D = vtkSmartPointer<vtkGlyph3D>::New();
-			glyph3D->SetSourceConnection(arrowSource->GetOutputPort());
-			//glyph3D->SetVectorModeToUseVector();
+			if(draw_arrows)
+			{
+				vtkSmartPointer<vtkArrowSource> arrowSource = vtkSmartPointer<vtkArrowSource>::New();
+
+				vtkSmartPointer<vtkGlyph3D> glyph3D = vtkSmartPointer<vtkGlyph3D>::New();
+				glyph3D->SetSourceConnection(arrowSource->GetOutputPort());
+				//glyph3D->SetVectorModeToUseVector();
 #if VTK_MAJOR_VERSION <= 5
-			glyph3D->SetInput(velocity_grid);
+				glyph3D->SetInput(velocity_grid);
 #else
-			glyph3D->SetInputData(input);
+				glyph3D->SetInputData(input);
 #endif
 
-			glyph3D->SetColorMode(2);
-			//glyph3D->SetScaleModeToScaleByVector();
-			//glyph3D->OrientOff();
-			glyph3D->SetScaleFactor(.05);
-			glyph3D->Update();
+				glyph3D->SetColorMode(2);
+				//glyph3D->SetScaleModeToScaleByVector();
+				//glyph3D->OrientOff();
+				glyph3D->SetScaleFactor(.05);
+				glyph3D->Update();
 
+				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				mapper->SetInputConnection(glyph3D->GetOutputPort());
 
+				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+				actor->SetMapper(mapper);
+				actor->GetProperty()->SetRepresentationToSurface();
 
-			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(glyph3D->GetOutputPort());
+				renderer->AddActor(actor);
+			}
 
-			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			actor->GetProperty()->SetRepresentationToSurface();
+			if(this->streamline_resolution > 0)
+			{
+				vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
+				seeds->SetResolution(this->streamline_resolution);
+				seeds->SetPoint1(min_range.x, max_range.y, 0);
+				seeds->SetPoint2(min_range.x, min_range.y, 0);
 
-			vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
-			seeds->SetResolution(200);
-			seeds->SetPoint1(min_range.x, max_range.y, 0);
-			seeds->SetPoint2(min_range.x, min_range.y, 0);
+				// Setting Streamline properties
+				vtkSmartPointer<vtkStreamLine> streamLine = vtkSmartPointer<vtkStreamLine>::New();
 
-			// Setting Streamline properties
-			vtkSmartPointer<vtkStreamLine> streamLine = vtkSmartPointer<vtkStreamLine>::New();
+				streamLine->SetInput(velocity_grid);
+				streamLine->SetSource(seeds->GetOutput());
 
-			streamLine->SetInput(velocity_grid);
-			streamLine->SetSource(seeds->GetOutput());
+				// Integration properties
 
-			// Integration properties
+				streamLine->SetMaximumPropagationTime(200);
+				streamLine->SetIntegrationStepLength(.2);
+				streamLine->SetStepLength(.001);
+				streamLine->SetNumberOfThreads(1);
+				streamLine->SetIntegrationDirectionToForward();
+				//streamLine->VorticityOn();
 
-			streamLine->SetMaximumPropagationTime(200);
-			streamLine->SetIntegrationStepLength(.2);
-			streamLine->SetStepLength(.001);
-			streamLine->SetNumberOfThreads(1);
-			streamLine->SetIntegrationDirectionToForward();
-			//streamLine->VorticityOn();
+				// Creating a Mapper and Actor
 
-			// Creating a Mapper and Actor
+				vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
 
-			vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
+				vtkSmartPointer<vtkActor> streamLineActor = vtkSmartPointer<vtkActor>::New();
+				streamLineActor->SetMapper(streamLineMapper);
+				streamLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
+				streamLineActor->GetProperty()->SetLineWidth(3);
+				streamLineActor->VisibilityOn();
 
-			vtkSmartPointer<vtkActor> streamLineActor = vtkSmartPointer<vtkActor>::New();
-			streamLineActor->SetMapper(streamLineMapper);
-			streamLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
-			streamLineActor->GetProperty()->SetLineWidth(3);
-			streamLineActor->VisibilityOn();
-
-			renderer->AddActor(streamLineActor);
-
-			//renderer->AddActor(actor);
+				renderer->AddActor(streamLineActor);
+			}
 		}
 
 		if(this->airfoil)
