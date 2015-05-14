@@ -13,6 +13,7 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	velocity_bins(0.0, 0.0),
 	streamline_seeds(0.0, 0.0, 0.0, 0.0),
 	streamline_resolution(0),
+	stagnation_tolerance(0.001),
 	airfoil(nullptr)
 {
 	//
@@ -81,6 +82,12 @@ void visualization_c::set_contours(uint32_t contours)
 	{
 		this->contour_locations.push_back(clip_min + i * (clip_max - clip_min) / (contours + 2));
 	}
+}
+
+
+void visualization_c::set_stagnation_tolerance(double epsilon)
+{
+	this->stagnation_tolerance = epsilon;
 }
 
 
