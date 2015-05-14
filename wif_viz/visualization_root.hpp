@@ -29,10 +29,12 @@ public:
 
 	void fillbinStagnatie();
 
+	void plotVectors(std::vector<std::vector<double>>, std::vector<double>);
+
 protected:
 	TH2F * velocity, *psi, *phi;
 	TH2F * stag;
-	TGraph * gr;
+	TH2F * harr;
 	std::shared_ptr<flow_c> Flow;
 	//
 };
