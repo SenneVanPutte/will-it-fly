@@ -24,6 +24,7 @@ int main()
 	int stepsize = 5;
 	int j = 0;
 	std::vector<vector<double>> data_to_plot_gamma(imax / stepsize, std::vector<double>(num_lines));
+	std::cout << imax / stepsize << std::endl;
 	std::vector<std::string> Legend(imax / stepsize);
 	std::vector<double> X_as(num_lines);
 
@@ -47,7 +48,7 @@ int main()
 
 
 
-	for(int i = 0 ; i <= imax ; i = i + stepsize)
+	for(int i = 0 ; i < imax ; i = i + stepsize)
 	{
 		double gamma = i * 1.;
 
@@ -59,13 +60,15 @@ int main()
 
 
 		data_to_plot_gamma[j] = calculate_flow2.c_p;
+
 		Legend[j] = std::to_string(gamma);
+
 		j++;
 
 	}
 
 	std::shared_ptr<wif_viz::visualization_c> myRoot = wif_viz::create_visualization_root(myFlow, midpoint, midpoint);
-	myRoot->plotVectors(data_to_plot_gamma, X_as, Legend);
+	myRoot->plotVectors(data_to_plot_gamma, X_as, Legend, "test.pdf", "paneel", "cp", "cp(gamma)");
 
 
 	//Opdracht 14
