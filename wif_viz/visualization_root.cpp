@@ -28,12 +28,12 @@ visualization_root_c::~visualization_root_c()
 void visualization_root_c::draw(const std::string & filename)
 {
 
-	double contours[contour_locations.size()];
+	/*double contours[contour_locations.size()];
 
 	for(unsigned int i = 0; i < contour_locations.size(); i++)
 	{
 		contours[i] = contour_locations[i];
-	}
+	}*/
 
 	FillBins();
 	fillbinStagnatie();
@@ -69,10 +69,10 @@ void visualization_root_c::draw(const std::string & filename)
 		gStyle->SetOptStat(0);
 		gStyle->SetPalette(1);
 
-		if(contour_locations.size() >= 1)
+		/*if(contour_locations.size() >= 1)
 		{
 			psi->SetContour(contour_locations.size(), contours);
-		}
+		}*/
 
 		psi->Draw("CONT1Z");
 		psi->GetXaxis()->SetTitle("x");
@@ -141,6 +141,8 @@ void visualization_root_c::FillBins()
 
 		for(int i = 1; i <= flows[k].x; i++)
 		{
+			//std::string harrname= "harr"+(i+4);
+			//std::cout<<harrname<<std::endl;
 			for(int j = 1; j <= flows[k].y; j++)
 			{
 				double evaluateX = min_range.x + i * stepsx - stepsx / 2;
@@ -277,5 +279,39 @@ void visualization_root_c::fillbinStagnatie()
 	stag->SetContour(1, contours);
 
 }
+void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector, std::vector<double> xVector)
+{
 
+	unsigned int aantalTH2F = yVector.size();
+
+	TCanvas * c = new TCanvas("c", "c", 1000, 1000);
+
+	for(unsigned int i = 0; i < aantalTH2F; i++)
+	{
+		std::string number = std::to_string(i + 4);
+		std::string harrname = "harr" + number;
+		const char * harrname2 = harrname.c_str();
+		double xBegin = xVector[0];
+		double xEnd = xVector[xVector.size()];
+		double yBegin = yVector[i][0];
+		double yEnd = yVector[i][yVector[i].size()];
+		TH2F * harr = new TH2F(harrname2, "test", xVector.size(), xBegin, xEnd, yVector[i].size(), yBegin, yEnd);
+
+
+		for(unsigned int j = 0; j < yVector[i].size(); j++)
+		{
+			for(unsigned int k = 0; k < xVector.size(); k++)
+			{
+				harr->SetBinContent(xVector[k], yVector[i][j]);
+			}
+		}
+
+		harr->Draw("scat=1 same");
+
+	}
+
+	c->SaveAs("test.pdf");
+	c->Destructor();
+
+}
 }// namespace wif_viz
