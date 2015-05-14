@@ -9,6 +9,7 @@
 #include <TStyle.h>
 #include <TMarker.h>
 #include <TArrow.h>
+#include <TGraph.h>
 namespace wif_viz
 {
 
@@ -24,8 +25,15 @@ public:
 
 	void FillBins();
 
+	void addArrows();
+
+	void fillbinStagnatie();
+
 protected:
 	TH2F * velocity, *psi, *phi;
+	TH2F * stag;
+	TGraph * gr;
+	std::shared_ptr<flow_c> Flow;
 	//
 };
 
