@@ -201,7 +201,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		//Setting matrix A and vector B to solve the system
 		for(int i = 0; i < num_rows; i++)
 		{
-			vector_b_data[i] = -U_inf * (cos(angles[i]) * sin(angle_attack) + sin(angles[i]) * cos(angle_attack));
+			vector_b_data[i] = -U_inf * (cos(angles[i])*cos(angle_attack)+sin(angles[i])*sin(angle_attack));
 
 			for(int j = 0; j < num_columns; j++)
 			{
@@ -270,7 +270,11 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
+<<<<<<< HEAD
 			c_p[i] = 1 - pow((-U_inf * (cos(angles[i]) * cos(angle_attack) - (sin(angles[i]) * sin(angle_attack))) + v_t_i) / U_inf, 2);
+=======
+			c_p[i] = 1 - pow((U_inf * (-sin(angles[i])*cos(angle_attack)+(cos(angles[i])*sin(angle_attack))) + v_t_i) / U_inf, 2);
+>>>>>>> 15d1a417adce5ed0ebeb76deb13e748365238b58
 		}
 
 		//Calculate c_l
