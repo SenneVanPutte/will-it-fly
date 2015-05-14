@@ -16,7 +16,7 @@ using wif_core::flow_c;
 class visualization_c
 {
 public:
-	visualization_c();
+
 	visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range);
 
 	virtual ~visualization_c();
