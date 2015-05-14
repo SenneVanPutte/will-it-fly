@@ -182,6 +182,33 @@ void test_source(bool screen)
 	visualize_all(screen, "test-source", both, { -2, -2}, {2, 2}, {101, 101});
 }
 
+void test_airfoil()
+{
+	wif_core::airfoil_c airfoil("../../wif_core/airfoils/selig.dat");
+
+	if(!airfoil.is_valid())
+	{
+		return;
+	}
+
+	std::shared_ptr<wif_core::uniform_flow_c> uniflow = std::make_shared<wif_core::uniform_flow_c>(0.0, 1.0);
+	std::shared_ptr<wif_core::flow_accumulate_c> flow = std::make_shared<wif_core::flow_accumulate_c>(uniflow);
+
+	auto f = wif_algo::calculate_flow(airfoil.get_circle_projection(10, {0.5, 0}, 0.5), uniflow, false, 0.0);
+
+	//flow->add_flow(f);
+	//flow->add_source_sheets(std::vector<double>(airfoil.get_lines().size(), 1), airfoil);
+
+	std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(f.flow, { -1, -1}, {2, 1});
+	vizy->set_clip_range(-1, 1);
+	vizy->set_velocity_bins({101, 101});
+	vizy->set_airfoil(&airfoil);
+
+	vizy->draw_ivo("");
+
+	//visualize_all(screen, "test-circle", flow, { -2, -2}, {2, 2}, {101, 101});
+}
+
 void tests()
 {
 	bool screen = true;
@@ -190,7 +217,9 @@ void tests()
 	//test_circle(screen);
 	//test_circle_flow(screen);
 	//test_sheet(screen);
-	test_source(screen);
+	//test_source(screen);
+
+	test_airfoil();
 }
 
 
