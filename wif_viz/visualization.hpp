@@ -74,6 +74,8 @@ protected:
 	double clip_max;
 	bool output_to_file;
 
+	std::vector<vector_2d_c> stagnation_point;
+
 	wif_core::airfoil_c * airfoil;
 
 private:
