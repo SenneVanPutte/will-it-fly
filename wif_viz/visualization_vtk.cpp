@@ -291,29 +291,12 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
 	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
-	vtkSmartPointer<vtkActor> stroomlijnen = streamlines_plot(construct_velocity_grid(), 20);
 
-	vtkSmartPointer<vtkRenderer> renderer24 = vtkSmartPointer<vtkRenderer>::New();
-	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
-	renderWindow->AddRenderer(renderer24);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	interactor->SetRenderWindow(renderWindow);
 
-	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-	interactor->SetInteractorStyle(style);
+	streamlines_plot(construct_velocity_grid(), 20);
 
-	renderer24->AddActor(stroomlijnen);
 
-	// Add the actors to the renderer, set the background and size
-	renderer24->SetBackground(1, 1, 1);
-	renderWindow->SetSize(300, 300);
-	interactor->Initialize();
-	std::cout << "test3" << std::endl;
-	renderWindow->Render();
-
-	interactor->Start();
 
 
 	return;
@@ -821,7 +804,7 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_punten(std::vector<wif
 }
 
 //
-vtkSmartPointer<vtkActor> visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const
+void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const
 {
 	// Source of the streamlines
 
@@ -856,7 +839,29 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::streamlines_plot(vtkSmartPointer<
 	streamLineActor->GetProperty()->SetLineWidth(3);
 	streamLineActor->VisibilityOn();
 
-	return streamLineActor;
+	//return streamLineActor;
+
+	vtkSmartPointer<vtkRenderer> renderer24 = vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer(renderer24);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	interactor->SetRenderWindow(renderWindow);
+
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
+	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	interactor->SetInteractorStyle(style);
+
+	renderer24->AddActor(streamLineActor);
+
+	// Add the actors to the renderer, set the background and size
+	renderer24->SetBackground(1, 1, 1);
+	renderWindow->SetSize(300, 300);
+	interactor->Initialize();
+	std::cout << "test3" << std::endl;
+	renderWindow->Render();
+
+	interactor->Start();
 }
 
 vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkPlaneSource> object, vtkSmartPointer<vtkRenderer> renderer) const
