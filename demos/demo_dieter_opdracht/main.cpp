@@ -16,10 +16,37 @@ int main()
 	wif_core::vector_2d_c midpoint(0, 0);
 	wif_core::airfoil_c myAirfoil(midpoint, radius, num_lines);
 	std::shared_ptr<wif_core::uniform_flow_c> myFlow = std::make_shared<wif_core::uniform_flow_c>(0, 1);
+	std::vector<wif_core::line_2d_c> mylines = myAirfoil.get_lines();
+	std::vector<wif_core::vector_2d_c> centers(num_lines);
+	std::vector<double> angles(num_lines);
 	bool Kutta = 0;
-	int imax=20;
-	int stepsize=5;
-	int j=0;
+	int imax = 20;
+	int stepsize = 5;
+	int j = 0;
+	std::vector<vector<double>> data_to_plot_gamma(imax / stepsize, std::vector<double>(num_lines));
+	std::vector<std::string> Legend(imax / stepsize);
+	std::vector<double> X_as(num_lines);
+
+	for(unsigned int i = 0; i < num_lines; i++)
+	{
+		wif_core::line_2d_c temp_line = mylines[i];
+		centers[i] = temp_line.get_center_point();
+		X_as[i] = i;
+
+		if(centers[i].y > 0)
+		{
+			angles[i] = atan2(centers[i].y, centers[i].x);
+		}
+		else
+		{
+			angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
+		}
+
+	}
+
+
+
+
 	for(int i = 0 ; i <= imax ; i = i + stepsize)
 	{
 		double gamma = i * 1.;
@@ -28,36 +55,17 @@ int main()
 		wif_algo::calculation_results_c calculate_flow2 = wif_algo::calculate_flow(myAirfoil, myFlow, Kutta, gamma);
 
 
-		std::vector<wif_core::line_2d_c> mylines = myAirfoil.get_lines();
-		std::vector<wif_core::vector_2d_c> centers(num_lines);
-		std::vector<double> angles(num_lines);
-		std::vector<vector<double>> data_to_plot_gamma(imax/stepsize, std::vector<double>(num_lines));
-		std::vector<std::string> Legend(imax/stepsize);
-		std::vector<double> X_as(num_lines);
 
-		for(unsigned int i = 0; i < num_lines; i++)
-		{
-			wif_core::line_2d_c temp_line = mylines[i];
-			centers[i] = temp_line.get_center_point();
-			X-as[i]=i;
 
-			if(centers[i].y > 0)
-			{
-				angles[i] = atan2(centers[i].y, centers[i].x);
-			}
-			else
-			{
-				angles[i] = atan2(centers[i].y, centers[i].x) + 2 * pi;
-			}
 
-		}
 		data_to_plot_gamma[j] = calculate_flow2.c_p;
-		Legend[j]=std::to_string(gamma);
+		Legend[j] = std::to_string(gamma);
 		j++;
 
 	}
-	wif_viz::visualization_root_c myRoot();
-	myRoot.plotVectors(data_to_plot_gamma,X_as,Legend);
+
+	std::shared_ptr<wif_viz::visualization_c> myRoot = wif_viz::create_visualization_root(myFlow, midpoint, midpoint);
+	myRoot->plotVectors(data_to_plot_gamma, X_as, Legend);
 
 
 	//Opdracht 14
