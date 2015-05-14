@@ -1242,8 +1242,8 @@ void visualization_vtk_c::ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid,
 {
 	// Source of the streamlines
 
-	vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
-	seeds->SetResolution(number_of_streamlines);
+	vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New()
+	                                       seeds->SetResolution(number_of_streamlines);
 	seeds->SetPoint1(min_range.x, max_range.y, 0);
 	seeds->SetPoint2(min_range.x, min_range.y, 0);
 
@@ -1280,11 +1280,11 @@ void visualization_vtk_c::ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid,
 
 	ribbonFilter->SetInputConnection(streamLine->GetOutputPort());
 
-	ribbonFilter->VaryWidthOn();
+	ribbonFilter->VaryWidthOn(); //zou normaal de breedte moeten laten varieren maar gebeurt niet
 
-	ribbonFilter->SetWidth(0.025);
-	//ribbonFilter->SetWidthFactor(5);
-	ribbonFilter->SetAngle(0.);
+	ribbonFilter->SetWidth(0.025); //zet de schaal van de dunste ribben
+	ribbonFilter->SetWidthFactor(5); //zet de maximale factor voor de breedtste ribben dus: facto*minribbe
+	ribbonFilter->SetAngle(0.); //zet hoek van de ribbe
 
 
 	//ribbonFilter->SetWidthFactor(5);
