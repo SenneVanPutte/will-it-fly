@@ -120,5 +120,9 @@ double visualization_c::clip_value(double value) const
 	}
 }
 
+void visualization_c::plotVectors(std::vector<std::vector<double>>, std::vector<double>, std::vector<std::string>)
+{
+}
+
 
 } // namespace wif_viz

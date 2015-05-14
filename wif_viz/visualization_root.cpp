@@ -280,6 +280,7 @@ void visualization_root_c::fillbinStagnatie()
 	stag->SetContour(1, contours);
 
 }
+
 void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector, std::vector<double> xVector, std::vector<std::string> legend)
 {
 
@@ -319,4 +320,5 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 	c->Destructor();
 
 }
+
 }// namespace wif_viz
