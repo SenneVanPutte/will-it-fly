@@ -97,7 +97,7 @@ private:
 
 	vtkSmartPointer<vtkPlaneSource> construct_phi_plane() const;
 
-	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid() const;
+	vtkSmartPointer<vtkStructuredGrid> construct_velocity_grid();
 
 	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
 
