@@ -51,6 +51,7 @@ public:
 	void set_contours(uint32_t contours);
 	void set_clip_range(double min, double max);
 	void set_output_to_file(bool file_output);
+	void set_stagnation_tolerance(double epsilon);
 
 	double clip_value(double value) const;
 
@@ -75,6 +76,7 @@ protected:
 	bool output_to_file;
 
 	std::vector<vector_2d_c> stagnation_point;
+	double stagnation_tolerance;
 
 	wif_core::airfoil_c * airfoil;
 
