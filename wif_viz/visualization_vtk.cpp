@@ -890,21 +890,17 @@ void visualization_vtk_c::arrow_plot() const
 	glyph3D->SetScaleFactor(.05);
 	glyph3D->Update();
 
-	vtkSmartPointer<vtkRenderer> renderer =
-	    vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 	renderer->SetBackground(1, 1, 1);
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper =
-	    vtkSmartPointer<vtkPolyDataMapper>::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInputConnection(glyph3D->GetOutputPort());
 
-	vtkSmartPointer<vtkActor> actor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetRepresentationToSurface();
 
-	vtkSmartPointer<vtkActor> superquadricActor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> superquadricActor = vtkSmartPointer<vtkActor>::New();
 	superquadricActor->SetMapper(mapper);
 	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = axis(glyph3D, renderer);
 
@@ -923,16 +919,13 @@ void visualization_vtk_c::arrow_plot() const
 	//renderer->GetActiveCamera()->Azimuth(0);
 	//renderer->GetActiveCamera()->Elevation(0);
 
-	vtkSmartPointer<vtkRenderWindow> renderWindow =
-	    vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
 
-	vtkSmartPointer<vtkInteractorStyleImage> imageStyle =
-	    vtkSmartPointer<vtkInteractorStyleImage>::New();
+	vtkSmartPointer<vtkInteractorStyleImage> imageStyle = vtkSmartPointer<vtkInteractorStyleImage>::New();
 	renderWindow->GetInteractor()->SetInteractorStyle(imageStyle);
 
 	renderWindow->Render();
