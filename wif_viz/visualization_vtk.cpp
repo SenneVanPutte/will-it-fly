@@ -529,7 +529,6 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 		points->GetPoint(i, x);
 
-		const vector_2d_c pos(x[0], x[1]);
 
 		const vector_2d_c pos(x[1], x[0]);
 
