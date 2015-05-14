@@ -17,7 +17,7 @@ void print_all_fields(const std::string & name, std::shared_ptr<wif_core::flow_c
 	vizy->set_phi_bins(binning);
 	vizy->set_velocity_bins(binning);
 
-	vizy->draw(name);
+	vizy->draw_ivo(name);
 }
 
 void print_psi(const std::string        &        name,
@@ -30,7 +30,7 @@ void print_psi(const std::string        &        name,
 	vizy->set_clip_range(-0.1, 0.1);
 	vizy->set_psi_bins(binning);
 
-	vizy->draw("");
+	vizy->draw_ivo("");
 }
 
 //
@@ -51,7 +51,7 @@ void print_phi(const std::string        &        name,
 	vizy->set_clip_range(-0.1, 0.1);
 	vizy->set_phi_bins(binning);
 
-	vizy->draw("");
+	vizy->draw_ivo("");
 }
 
 
@@ -66,7 +66,7 @@ void print_velocity(const std::string        &        name,
 	vizy->set_velocity_bins(binning);
 
 
-	vizy->draw("");
+	vizy->draw_ivo("");
 }
 
 
@@ -101,9 +101,23 @@ void test_uniflow(bool screen)
 {
 	std::shared_ptr<wif_core::flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(0.0, 1.0);
 
-	visualize_all(screen, "test-uniflow", flow, { -2, -2}, {2, 2}, {31, 31});
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(flow, { -1, -1}, {1, 1});
+		vizy->set_psi_bins({101, 101});
 
-	std::cout << flow->get_psi({ -2.0, -2.0}) << std::endl;
+		vizy->draw_ivo("");
+	}
+
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(flow, { -1, -1}, {1, 1});
+		vizy->set_phi_bins({101, 101});
+
+		vizy->draw_ivo("");
+	}
+
+	//visualize_all(screen, "test-uniflow", flow, { -2, -2}, {2, 2}, {31, 31});
+
+	//std::cout << flow->get_psi({ -2.0, -2.0}) << std::endl;
 }
 
 
@@ -233,7 +247,7 @@ void tests()
 {
 	bool screen = true;
 
-	//test_uniflow(screen);
+	test_uniflow(screen);
 	//test_circle(screen);
 	//test_circle_flow(screen);
 	//test_sheet(screen);
