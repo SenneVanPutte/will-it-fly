@@ -852,7 +852,32 @@ void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sg
 	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
 	interactor->SetInteractorStyle(style);
 
+
+
+	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = vtkSmartPointer<vtkCubeAxesActor>::New();
+	cubeAxesActor->SetBounds(min_range.x, max_range.x, min_range.y, max_range.y, 0, 0);
+	cubeAxesActor->SetCamera(renderer24->GetActiveCamera());
+
+	cubeAxesActor->DrawXGridlinesOff();
+	cubeAxesActor->DrawYGridlinesOff();
+	cubeAxesActor->DrawZGridlinesOff();
+	cubeAxesActor->ZAxisLabelVisibilityOff();
+#if VTK_MAJOR_VERSION > 5
+	cubeAxesActor->SetGridLineLocation(VTK_GRID_LINES_FURTHEST);
+#endif
+
+	cubeAxesActor->XAxisMinorTickVisibilityOff();
+	cubeAxesActor->YAxisMinorTickVisibilityOff();
+	cubeAxesActor->ZAxisMinorTickVisibilityOff();
+
+	cubeAxesActor->GetProperty()->SetColor(0, 0, 0);
+	cubeAxesActor->SetXTitle("x");
+	cubeAxesActor->SetYTitle("y");
+	cubeAxesActor->SetCamera(renderer24->GetActiveCamera());
+
 	renderer24->AddActor(streamLineActor);
+	renderer24->AddActor(cubeAxesActor);
+	renderer24->ResetCamera();
 
 	// Add the actors to the renderer, set the background and size
 	renderer24->SetBackground(1, 1, 1);
