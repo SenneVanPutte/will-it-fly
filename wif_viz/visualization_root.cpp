@@ -144,7 +144,7 @@ void visualization_root_c::FillBins()
 
 		for(int i = 1; i <= flows[k].x; i++)
 		{
-			
+
 			for(int j = 1; j <= flows[k].y; j++)
 			{
 				double evaluateX = min_range.x + i * stepsx - stepsx / 2;
@@ -282,41 +282,44 @@ void visualization_root_c::fillbinStagnatie()
 
 }
 
-void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector, std::vector<double> xVector, std::vector<std::string> legend,std::string filename,std::string xlabel,std::string ylabel,std::string title)
+void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector, std::vector<double> xVector, std::vector<std::string> legend, std::string filename, std::string xlabel, std::string ylabel, std::string title)
 {
 	const char * xLabel = xlabel.c_str();
 	const char * yLabel = ylabel.c_str();
 	const char * Title = title.c_str();
 	const char * filename1 = filename.c_str();
 	unsigned int aantalTH2F = yVector.size();
-	int x_min=floor(*std::min_element(xVector.begin(),xVector.end()));
-	int x_max=ceil(*std::max_element(xVector.begin(),xVector.end()));
-	
-	int y_min=0;
-	int y_max=0;
-	for(unsigned int i=0;i<yVector.size();i++)
+	int x_min = floor(*std::min_element(xVector.begin(), xVector.end()));
+	int x_max = ceil(*std::max_element(xVector.begin(), xVector.end()));
+
+	int y_min = 0;
+	int y_max = 0;
+
+	for(unsigned int i = 0; i < yVector.size(); i++)
 	{
-		int y_mintemp=floor(*std::min_element(yVector[i].begin(),yVector[i].end()));
-		int y_maxtemp=ceil(*std::max_element(yVector[i].begin(),yVector[i].end()));
-		if(y_mintemp<y_min)
+		int y_mintemp = floor(*std::min_element(yVector[i].begin(), yVector[i].end()));
+		int y_maxtemp = ceil(*std::max_element(yVector[i].begin(), yVector[i].end()));
+
+		if(y_mintemp < y_min)
 		{
-			y_min=y_mintemp;
-		
+			y_min = y_mintemp;
+
 		}
-		if(y_maxtemp>y_max)
+
+		if(y_maxtemp > y_max)
 		{
-			y_max=y_maxtemp;
+			y_max = y_maxtemp;
 		}
 	}
-	
+
 	TLegend * leg = new TLegend(0.75, 0.8, 0.9, 0.9);
 	TCanvas * c = new TCanvas("c", "c", 1000, 1000);
-	
+
 	for(unsigned int i = 0; i < aantalTH2F; i++)
 	{
-		
-	
-		TH2F * harr = new TH2F("harr", "test", 50, x_min, x_max, 50, y_min,y_max);
+
+
+		TH2F * harr = new TH2F("harr", "test", 50, x_min, x_max, 50, y_min, y_max);
 		gStyle->SetOptStat(0);
 		harr->Draw("same");
 		harr->GetXaxis()->SetTitle(xLabel);
@@ -324,23 +327,24 @@ void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,
 		harr->GetXaxis()->CenterTitle();
 		harr->GetYaxis()->CenterTitle();
 		harr->SetTitle(Title);
+
 		for(unsigned int j = 0; j < yVector[i].size(); j++)
 		{
 
-			TMarker *m = new TMarker(xVector[j],yVector[i][j],20);
-			m->SetMarkerColor(i+1);
+			TMarker * m = new TMarker(xVector[j], yVector[i][j], 20);
+			m->SetMarkerColor(i + 1);
 			m->Draw("same");
 
 		}
-		
-	
+
+
 		c->Update();
 		std::string legende = legend[i];
 		const char * legendname = legende.c_str();
-		TMarker *m2 = new TMarker(1,1,20);
-		m2->SetMarkerColor(i+1);
+		TMarker * m2 = new TMarker(1, 1, 20);
+		m2->SetMarkerColor(i + 1);
 		leg->AddEntry(m2, legendname, "P");
-		
+
 	}
 
 	leg->Draw();
