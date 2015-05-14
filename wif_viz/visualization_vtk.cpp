@@ -1111,4 +1111,19 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkG
 	return cubeAxesActor;
 }
 
+void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const std::string & filename = "") const
+{
+	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
+	windowToImageFilter->SetInput(renderWindow);
+	windowToImageFilter->SetMagnification(2); //set the resolution of the output image (3 times the current resolution of vtk render window)
+	windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
+	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
+	windowToImageFilter->Update();
+
+	vtkSmartPointer<vtkPNGWriter> writer = vtkSmartPointer<vtkPNGWriter>::New();
+	writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+	writer->SetFileName(filename);
+	writer->Write();
+}
+
 } // namespace wif_viz
