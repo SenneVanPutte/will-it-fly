@@ -189,7 +189,7 @@ vtkSmartPointer<vtkCleanPolyData> clip_into_pieces(vtkSmartPointer<vtkStructured
 		vtkSmartPointer<vtkDoubleArray> midvalue = vtkSmartPointer<vtkDoubleArray>::New();
 		midvalue->SetNumberOfComponents(1);
 		midvalue->SetNumberOfTuples(clippers_high[i]->GetOutput()->GetNumberOfCells());
-		midvalue->FillComponent(0, low);
+		midvalue->FillComponent(0, (low + high) * 0.5);
 
 		clippers_high[i]->GetOutput()->GetCellData()->SetScalars(midvalue);
 		append_poly_data->AddInput(clippers_high[i]->GetOutput());
@@ -257,15 +257,6 @@ void visualization_vtk_c::get_data_range(double & min, double & max, std::vector
 		min = values[0];
 		max = values[1];
 
-		// Fix contours
-#if 0
-
-		for(uint32_t i = 1 ; i <= contours.size() ; i++)
-		{
-			contours[i - 1] = (min + i * (max - min) / (contours.size() + 2));
-		}
-
-#endif
 		double delta = (max - min) / ((double)contours.size() - 1);
 
 		for(uint32_t i = 0; i < contours.size(); i++)
@@ -346,7 +337,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			std::vector<uint32_t> colors2({0x8bb8ce, 0xf8fa36, 0xc7c7b1, 0xba9f9e, 0x353338});
 			std::vector<uint32_t> colors3({0x490a3d, 0xbd1550, 0xe97f02, 0xf8ca00, 0x8a9b0f});
 
-			add_color_points(lut, min_v, max_v, colors3);
+			add_color_points(lut, min_v, max_v, colors2);
 
 			mapperveld->SetLookupTable(lut);
 
@@ -427,7 +418,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			std::vector<uint32_t> colors2({0x8bb8ce, 0xf8fa36, 0xc7c7b1, 0xba9f9e, 0x353338});
 			std::vector<uint32_t> colors3({0x490a3d, 0xbd1550, 0xe97f02, 0xf8ca00, 0x8a9b0f});
 
-			add_color_points(lut, min_v, max_v, colors3);
+			add_color_points(lut, min_v, max_v, colors2);
 
 			mapperveld->SetLookupTable(lut);
 
@@ -467,7 +458,40 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			actor->SetMapper(mapper);
 			actor->GetProperty()->SetRepresentationToSurface();
 
-			renderer->AddActor(actor);
+			vtkSmartPointer<vtkLineSource> seeds = vtkSmartPointer<vtkLineSource>::New();
+			seeds->SetResolution(200);
+			seeds->SetPoint1(min_range.x, max_range.y, 0);
+			seeds->SetPoint2(min_range.x, min_range.y, 0);
+
+			// Setting Streamline properties
+			vtkSmartPointer<vtkStreamLine> streamLine = vtkSmartPointer<vtkStreamLine>::New();
+
+			streamLine->SetInput(velocity_grid);
+			streamLine->SetSource(seeds->GetOutput());
+
+			// Integration properties
+
+			streamLine->SetMaximumPropagationTime(200);
+			streamLine->SetIntegrationStepLength(.2);
+			streamLine->SetStepLength(.001);
+			streamLine->SetNumberOfThreads(1);
+			streamLine->SetIntegrationDirectionToForward();
+			//streamLine->VorticityOn();
+
+			// Creating a Mapper and Actor
+
+			vtkSmartPointer<vtkPolyDataMapper> streamLineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			streamLineMapper->SetInputConnection(streamLine->GetOutputPort());
+
+			vtkSmartPointer<vtkActor> streamLineActor = vtkSmartPointer<vtkActor>::New();
+			streamLineActor->SetMapper(streamLineMapper);
+			streamLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
+			streamLineActor->GetProperty()->SetLineWidth(3);
+			streamLineActor->VisibilityOn();
+
+			renderer->AddActor(streamLineActor);
+
+			//renderer->AddActor(actor);
 		}
 
 		if(this->airfoil)
@@ -477,9 +501,12 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 
 		renderer->ResetCamera();
 
+
 		iren->Initialize();
 		renWin->Render();
+		print_image(renWin, "test.png");
 		iren->Start();
+
 
 		iren->TerminateApp();
 	}
