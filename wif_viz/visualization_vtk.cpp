@@ -871,11 +871,11 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkG
 	cubeAxesActor->XAxisMinorTickVisibilityOff();
 	cubeAxesActor->YAxisMinorTickVisibilityOff();
 	cubeAxesActor->ZAxisMinorTickVisibilityOff();
-	
-	cubeAxesActor->GetProperty()->SetColor(0,0,0);
+
+	cubeAxesActor->GetProperty()->SetColor(0, 0, 0);
 	cubeAxesActor->SetXTitle("x");
 	cubeAxesActor->SetYTitle("y");
-	
+
 	return cubeAxesActor;
 }
 
