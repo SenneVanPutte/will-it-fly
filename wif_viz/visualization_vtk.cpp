@@ -723,7 +723,12 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 
 	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
 	contours->SetInputConnection(filledContours->GetOutputPort());
-	contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+
+	//contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+	for(int i = 0; i < numberOfContours; i++)
+	{
+		contours->SetValue(i, contlvls[i]);
+	}
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
@@ -762,6 +767,23 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	iren->Start();
 }
 
+vtkSmartPointer<vtkActor> visualization_vtk_c::separating_streamlines(vtkSmartPointer<vtkPlaneSource> plane) const
+{
+	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
+	contours->SetInputConnection(plane->GetOutputPort());
+	contours->SetValue(0, flow->get_phi(stagnation_point));
+
+	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
+	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
+	contourLineMapperer->ScalarVisibilityOff();
+
+	vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
+	contourLineActor->SetMapper(contourLineMapperer);
+	contourLineActor->GetProperty()->SetLineWidth(2);
+
+	return contourLineActor;
+
+}
 
 vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_lijnen(std::vector<wif_core::line_2d_c> mylines)
 {
