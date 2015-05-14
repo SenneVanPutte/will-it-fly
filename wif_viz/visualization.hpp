@@ -16,6 +16,7 @@ using wif_core::flow_c;
 class visualization_c
 {
 public:
+
 	visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range);
 
 	virtual ~visualization_c();
@@ -59,11 +60,6 @@ public:
 
 	virtual void draw(const std::string & filename = "") = 0;
 
-	virtual void draw_ivo(const std::string & filename = "")
-	{
-		draw(filename);
-	}
-
 	void set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds);
 
 	void set_streamline_resolution(uint32_t streamline_resolution);
@@ -84,7 +80,7 @@ protected:
 	double clip_max;
 	bool output_to_file;
 
-	mutable std::vector<vector_2d_c> stagnation_point;
+	std::vector<vector_2d_c> stagnation_point;
 	double stagnation_tolerance;
 
 	wif_core::airfoil_c * airfoil;
