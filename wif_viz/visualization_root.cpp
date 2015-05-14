@@ -8,6 +8,7 @@
 #include <iostream>
 #include "TStyle.h"
 #include "TF2.h"
+#include "TAttLine.h"
 namespace wif_viz
 {
 
@@ -26,45 +27,45 @@ visualization_root_c::~visualization_root_c()
 
 void visualization_root_c::draw(const std::string & filename)
 {
-	FillBins();
-	std::cout<<"filling stagnatie"<<std::endl;
-	fillbinStagnatie();
-	std::cout<<"done"<<std::endl;
-	/*if(velocity_bins.x != 0 && velocity_bins.y != 0)
-	{
-		//std::string filename1 = filename + "velocity";
-		//const char * savename = filename1.c_str();
 
-		const char * savename1 = filename.c_str();
-		std::cout<<"making canvas"<std::endl;
+	FillBins();
+	fillbinStagnatie();
+
+	if(velocity_bins.x != 0 && velocity_bins.y != 0)
+	{
+		std::string filename1 = filename + "velocity.pdf";
+		const char * savename = filename1.c_str();
+
+
+
 		TCanvas * c = new TCanvas("c", "c", 1000, 1000);
-		std::cout<<"canvas made"<std::endl;
+		gStyle->SetOptStat(0);
 		//velocity->SetContour(number_of_contours, contour_locations);
-		velocity->Draw("CONT1Z");
+
+		//velocity->Draw();
+		stag->Draw("CONT1Z");
 		addArrows();
-		stag->Draw("CONT1 same");
 		velocity->GetXaxis()->SetTitle("x");
 		velocity->GetYaxis()->SetTitle("y");
 		velocity->GetXaxis()->CenterTitle();
 		velocity->GetYaxis()->CenterTitle();
-		velocity->SetTitle("contour plot velocity");
-		std::cout << "saving";
-		c->SaveAs(savename1);
+		velocity->SetTitle("velocity");
+		c->SaveAs(savename);
 		c->Destructor();
-	}*/
+	}
 
 	if(psi_bins.x != 0 && psi_bins.y != 0)
 	{
-		std::string filename2 = filename+"psi.pdf";
+		std::string filename2 = filename + "psi.pdf";
 		const char * savename = filename2.c_str();
 		TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 		gStyle->SetOptStat(0);
 		gStyle->SetPalette(1);
+		/*if(contour_locations.size()!=0)
+		{
+			psi->SetContour(contour_locations.size(), contours);
+		}*/
 		psi->Draw("CONT1Z");
-		
-		std::cout<<"drawing"<<std::endl;
-		
-		std::cout<<"drawing done"<<std::endl;
 		psi->GetXaxis()->SetTitle("x");
 		psi->GetYaxis()->SetTitle("y");
 		psi->GetXaxis()->CenterTitle();
@@ -81,17 +82,10 @@ void visualization_root_c::draw(const std::string & filename)
 		TCanvas * c = new TCanvas("c", "c", 1000, 1000);
 		gStyle->SetOptStat(0);
 		gStyle->SetPalette(1);
-		//double_t contours[contour_locations.size()];
-		double_t contours[4];
-		//for(unsigned int i=0;i<contour_locations.size();i++)
-		for(unsigned int i=0;i<4;i++)
+		/*if(contour_locations.size()!=0)
 		{
-		//contours[i]=contour_locations[i];
-		contours[i]=i+1;
-		}
-
-		//phi->SetContour(contour_locations.size(), contours);
-		phi->SetContour(4, contours);
+			phi->SetContour(contour_locations.size(), contours);
+		}*/
 		phi->Draw("CONT1Z");
 		phi->GetXaxis()->SetTitle("x");
 		phi->GetYaxis()->SetTitle("y");
@@ -106,27 +100,36 @@ void visualization_root_c::draw(const std::string & filename)
 
 void visualization_root_c::FillBins()
 {
-	if(velocity_bins.x!=0 && velocity_bins.y!=0)
+	if(velocity_bins.x != 0 && velocity_bins.y != 0)
 	{
 		velocity = new TH2F("harr", "test", velocity_bins.x, min_range.x, max_range.x, velocity_bins.y, min_range.y, max_range.y);
 	}
-	psi = new TH2F("harr1", "test", psi_bins.x, min_range.x, max_range.x, psi_bins.y, min_range.y, max_range.y);
-	phi = new TH2F("harr2", "test", phi_bins.x, min_range.x, max_range.x, phi_bins.y, min_range.y, max_range.y);
+
+	if(psi_bins.x != 0 && psi_bins.y != 0)
+	{
+		psi = new TH2F("harr1", "test", psi_bins.x, min_range.x, max_range.x, psi_bins.y, min_range.y, max_range.y);
+	}
+
+	if(phi_bins.x != 0 && phi_bins.y != 0)
+	{
+		phi = new TH2F("harr2", "test", phi_bins.x, min_range.x, max_range.x, phi_bins.y, min_range.y, max_range.y);
+	}
+
+	double clip_max = 10;
+	double clip_min = -10;
 	std::vector<wif_core::vector_2d_c> flows(3);
 	flows[0] = velocity_bins;
 	flows[1] = psi_bins;
 	flows[2] = phi_bins;
 	wif_core::vector_2d_c pos;
-
+	wif_core::vector_2d_c vel;
 
 	for(int k = 0; k <= 2; k++)
 	{
-		double clip_max=3;
-		double clip_min=-3;
 		double stepsx = (max_range.x - min_range.x) / flows[k].x;
 		double stepsy = (max_range.y - min_range.y) / flows[k].y;
 		double bincontent;
-		//std::cout<<max_range.x<<"  "<<min_range.x<<std::endl;
+
 		for(int i = 1; i <= flows[k].x; i++)
 		{
 			for(int j = 1; j <= flows[k].y; j++)
@@ -135,43 +138,52 @@ void visualization_root_c::FillBins()
 				double evaluateY = min_range.y + j * stepsy - stepsy / 2;
 				pos.x = evaluateX;
 				pos.y = evaluateY;
-				/*if(k == 0)
+
+				if(k == 0 && velocity_bins.x != 0 && velocity_bins.y != 0)
 				{
-					bincontent=sqrt(pow(vel.x, 2) + pow(vel.y, 2));
-					if(bincontent>clip_max)
+					vel = Flow->get_velocity(pos);
+
+					bincontent = sqrt(pow(vel.x, 2) + pow(vel.y, 2));
+
+					if(bincontent > clip_max)
 					{
-						bincontent=clip_max;
+						bincontent = clip_max;
 					}
-					else if(bincontent<clip_min)
+					else if(bincontent < clip_min)
 					{
-						bincontent=clip_min;
+						bincontent = clip_min;
 					}
-					velocity->SetBinContent(i, j,bincontent );
+
+					velocity->SetBinContent(i, j, bincontent);
 				}
-				else*/ if(k == 1)
+				else if(k == 1 && psi_bins.x != 0 && psi_bins.y != 0)
 				{
-					bincontent=Flow->get_psi(pos);
-					if(bincontent>clip_max)
+					bincontent = Flow->get_psi(pos);
+
+					if(bincontent > clip_max)
 					{
-						bincontent=clip_max;
+						bincontent = clip_max;
 					}
-					else if(bincontent<clip_min)
+					else if(bincontent < clip_min)
 					{
-						bincontent=clip_min;
+						bincontent = clip_min;
 					}
+
 					psi->SetBinContent(i, j, bincontent);
 				}
-				else if(k == 2)
+				else if(k == 2 && psi_bins.x != 0 && psi_bins.y != 0)
 				{
-					bincontent=Flow->get_phi(pos);
-					if(bincontent>clip_max)
+					bincontent = Flow->get_phi(pos);
+
+					if(bincontent > clip_max)
 					{
-						bincontent=clip_max;
+						bincontent = clip_max;
 					}
-					else if(bincontent<clip_min)
+					else if(bincontent < clip_min)
 					{
-						bincontent=clip_min;
+						bincontent = clip_min;
 					}
+
 					phi->SetBinContent(i, j, bincontent);
 
 				}
@@ -187,59 +199,74 @@ void visualization_root_c::FillBins()
 
 void visualization_root_c::addArrows()
 {
-	double vwdex=(max_range.x-min_range.x)/6;
-    double vwdey=(max_range.y-min_range.y)/6;
-	double stepsx = (max_range.x - min_range.x) / velocity_bins.x;
-	double stepsy = (max_range.y - min_range.y) / velocity_bins.y;
+	int number_of_arrowbins = 31;
+	double stepsx = (max_range.x - min_range.x) / number_of_arrowbins;
+	double stepsy = (max_range.y - min_range.y) / number_of_arrowbins;
 	wif_core::vector_2d_c pos;
 	wif_core::vector_2d_c vel;
-	TArrow ARR(0,0,0,0,1,">");
-    for (int i=1;i<velocity_bins.x+1;i++) {
-        for (int j=1;j<velocity_bins.y+1;j++) {
-            double evaluateX = min_range.x + i * stepsx - stepsx / 2;
+
+
+	TArrow ARR(0, 0, 0, 0, 0, ">");
+
+	for(int i = 1; i < number_of_arrowbins + 1; i++)
+	{
+		for(int j = 1; j < number_of_arrowbins + 1; j++)
+		{
+			double evaluateX = min_range.x + i * stepsx - stepsx / 2;
 			double evaluateY = min_range.y + j * stepsy - stepsy / 2;
 			pos.x = evaluateX;
 			pos.y = evaluateY;
-			vel=flow->get_velocity(pos);
-            double Vx=evaluateX+0.2*(vel.x);
-            double Vy=evaluateY+0.2*(vel.y);
-            if (Vx>max_range.x || Vy>max_range.y || Vx<min_range.x || Vy<min_range.y|| abs(Vx-evaluateX)>abs(vwdex) || abs(Vy-evaluateY)>abs(vwdey)){
-            }
-            else {
-                ARR.DrawArrow(evaluateX,evaluateY,Vx,Vy,0.01,">");
-            }
-        }
-    }
+
+			vel = Flow->get_velocity(pos);
+			double Vx = evaluateX + 0.2 * (vel.x);
+			double Vy = evaluateY + 0.2 * (vel.y);
+
+			if(Vx > max_range.x || Vy > max_range.y || Vx < min_range.x || Vy < min_range.y || sqrt(pow(vel.x, 2) + pow(vel.y, 2)) <= 0.05)
+			{}
+			else
+			{
+				ARR.DrawArrow(evaluateX, evaluateY, Vx, Vy, 0.01, ">");
+			}
+		}
+	}
 }
 
 void visualization_root_c::fillbinStagnatie()
 {
-	//double stepsx = (max_range.x - min_range.x) / phi_bins.x;
-	//double stepsy = (max_range.y - min_range.y) / phi_bins.y;
-	
-	
-	if(psi_bins.x!=0 && psi_bins.y!=0)
+	double stepsx = (max_range.x - min_range.x) / 51;
+	double stepsy = (max_range.y - min_range.y) / 51;
+	wif_core::vector_2d_c pos;
+	wif_core::vector_2d_c vel;
+
+	if(psi_bins.x != 0 && psi_bins.y != 0)
 	{
-		stag = new TH2F("harr4", "test", psi_bins.x, min_range.x, max_range.x, psi_bins.y, min_range.y, max_range.y);
-		for (int i=1;i<psi_bins.x+1;i++) {
-			for (int j=1;j<psi_bins.y+1;j++) {
-				
-				double velstag=psi->GetBinContent(i,j);
-				
-				if(abs(velstag)<=0.1)
+		stag = new TH2F("harr4", "test", 51, min_range.x, max_range.x, 51, min_range.y, max_range.y);
+
+		for(int i = 1; i < 51 + 1; i++)
+		{
+			for(int j = 1; j < 51 + 1; j++)
+			{
+				double evaluateX = min_range.x + i * stepsx - stepsx / 2;
+				double evaluateY = min_range.y + j * stepsy - stepsy / 2;
+				pos.x = evaluateX;
+				pos.y = evaluateY;
+
+				vel = Flow->get_velocity(pos);
+				double velstag = sqrt(pow(vel.x, 2) + pow(vel.y, 2));
+
+
+				if(velstag <= 0.05)
 				{
-					
-					std::cout<<"found"<<std::endl;
-					stag->SetBinContent(i,j,10);
-					
-					
+					stag->SetBinContent(i, j, 10);
 				}
 			}
 		}
 	}
-	
-	
-	
+
+	double_t contours[1];
+	contours[0] = 10;
+	stag->SetContour(1, contours);
+
 }
 
 }// namespace wif_viz

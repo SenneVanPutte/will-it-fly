@@ -6,9 +6,9 @@
 
 int main()
 {
-	std::cout << "wif_core version: "<<wif_core::get_version() << std::endl;
-	std::cout << "wif_algo version: "<<wif_algo::get_version() << std::endl;
-	std::cout << "wif_viz version: "<<wif_viz::get_version()  << std::endl;
+	std::cout << "wif_core version: " << wif_core::get_version() << std::endl;
+	std::cout << "wif_algo version: " << wif_algo::get_version() << std::endl;
+	std::cout << "wif_viz version: " << wif_viz::get_version()  << std::endl;
 
 	std::shared_ptr<wif_core::flow_c> unifl = std::make_shared<wif_core::uniform_flow_c>();
 
@@ -37,6 +37,7 @@ int main()
 	//vizy->set_velocityarrows(bins);
 	vizy->set_psi_bins(bins);
 	vizy->set_phi_bins(bins);
+	vizy->set_velocity_bins(bins);
 
 	vizy->draw("test");
 

@@ -31,8 +31,8 @@ public:
 
 protected:
 	TH2F * velocity, *psi, *phi;
-	TH2F *stag;
-	TGraph *gr;
+	TH2F * stag;
+	TGraph * gr;
 	std::shared_ptr<flow_c> Flow;
 	//
 };
