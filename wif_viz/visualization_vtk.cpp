@@ -470,7 +470,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
-	double icout = points->GetNumberOfPoints()*0.01;
+	//double icout = points->GetNumberOfPoints()*0.01;
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
@@ -479,14 +479,14 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 		points->GetPoint(i, x);
 
 		const vector_2d_c pos(x[0], x[1]);
-		
+
 		double t = clip_value(flow->get_phi(pos));
-		
-		if (i > icout)
+
+		/*if (i > icout)
 		{
 			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
 			icout = icout + (points->GetNumberOfPoints()/100);
-		}
+		}*/
 		/*if(t > vtkMax)
 		{
 			t = vtkMax;
@@ -519,7 +519,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
-	double icout = points->GetNumberOfPoints()*0.01;
+	//double icout = points->GetNumberOfPoints()*0.01;
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
@@ -527,19 +527,19 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 		points->GetPoint(i, x);
 
-		const vector_2d_c pos(x[0], x[1]);
-		
+		const vector_2d_c pos(x[1], x[0]);
+
 		double t = clip_value(flow->get_psi(pos));
 		//std::cout <<  i <<": " << pos.x << ", " << pos.y << "// ->" << t << std::endl;
-		
-		
-		
-		if (i > icout)
+
+
+
+		/*if (i > icout)
 		{
 			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
 			icout = icout + (points->GetNumberOfPoints()*0.01);
-		}
-		
+		}*/
+
 		/*if(t > vtkMax)
 		{
 			t = vtkMax;
