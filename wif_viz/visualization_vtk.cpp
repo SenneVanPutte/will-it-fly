@@ -353,6 +353,8 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	streamlines_plot(construct_velocity_grid(), 20);
 
+	arrow_plot();
+
 
 
 
@@ -867,8 +869,78 @@ vtkSmartPointer<vtkActor> visualization_vtk_c::geef_actor_punten(std::vector<wif
 
 	return actorpunt;
 }
+void visualization_vtk_c::arrow_plot() const
+{
+	vtkSmartPointer<vtkStructuredGrid> velocity_grid = construct_velocity_grid();
 
-//
+	vtkSmartPointer<vtkArrowSource> arrowSource = vtkSmartPointer<vtkArrowSource>::New();
+
+	vtkSmartPointer<vtkGlyph3D> glyph3D = vtkSmartPointer<vtkGlyph3D>::New();
+	glyph3D->SetSourceConnection(arrowSource->GetOutputPort());
+	//glyph3D->SetVectorModeToUseVector();
+#if VTK_MAJOR_VERSION <= 5
+	glyph3D->SetInput(velocity_grid);
+#else
+	glyph3D->SetInputData(input);
+#endif
+
+	glyph3D->SetColorMode(2);
+	//glyph3D->SetScaleModeToScaleByVector();
+	//glyph3D->OrientOff();
+	glyph3D->SetScaleFactor(.05);
+	glyph3D->Update();
+
+	vtkSmartPointer<vtkRenderer> renderer =
+	    vtkSmartPointer<vtkRenderer>::New();
+	renderer->SetBackground(1, 1, 1);
+
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+	    vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(glyph3D->GetOutputPort());
+
+	vtkSmartPointer<vtkActor> actor =
+	    vtkSmartPointer<vtkActor>::New();
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetRepresentationToSurface();
+
+	vtkSmartPointer<vtkActor> superquadricActor =
+	    vtkSmartPointer<vtkActor>::New();
+	superquadricActor->SetMapper(mapper);
+	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = axis(glyph3D, renderer);
+
+	cubeAxesActor->GetProperty()->SetColor(0, 0, 0);
+	cubeAxesActor->SetXTitle("x");
+	cubeAxesActor->SetYTitle("y");
+
+	/*renderer->AddActor(actor);
+	renderer->AddActor(cubeAxesActor );
+	renderer->ResetCamera();*/
+
+	renderer->AddActor(cubeAxesActor);
+	renderer->AddActor(superquadricActor);
+	renderer->ResetCamera();
+
+	//renderer->GetActiveCamera()->Azimuth(0);
+	//renderer->GetActiveCamera()->Elevation(0);
+
+	vtkSmartPointer<vtkRenderWindow> renderWindow =
+	    vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->AddRenderer(renderer);
+
+	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+	    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	renderWindowInteractor->SetRenderWindow(renderWindow);
+
+	vtkSmartPointer<vtkInteractorStyleImage> imageStyle =
+	    vtkSmartPointer<vtkInteractorStyleImage>::New();
+	renderWindow->GetInteractor()->SetInteractorStyle(imageStyle);
+
+	renderWindow->Render();
+	//
+
+	renderWindowInteractor->Start();
+}
+
 void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const
 {
 	// Source of the streamlines
@@ -913,8 +985,7 @@ void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sg
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	interactor->SetRenderWindow(renderWindow);
 
-	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-	    vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+	vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
 	interactor->SetInteractorStyle(style);
 
 
