@@ -633,6 +633,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	//schaal bar
 	vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
 	scalarBar->SetLookupTable(lut);
+	//scalarBar->GetLabelTextProperty()->SetColor(0,0,0); //werkt blijkbaar niet
 
 	vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
 	contourActor->SetMapper(contourMapper);
@@ -657,7 +658,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	vtkSmartPointer<vtkRenderWindowInteractor>
 	iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 
-	ren1->SetBackground(.1, .2, .3);
+	ren1->SetBackground(0, 0, 0);
 	renWin->AddRenderer(ren1);
 	iren->SetRenderWindow(renWin);
 
@@ -870,6 +871,11 @@ vtkSmartPointer<vtkCubeAxesActor> visualization_vtk_c::axis(vtkSmartPointer<vtkG
 	cubeAxesActor->XAxisMinorTickVisibilityOff();
 	cubeAxesActor->YAxisMinorTickVisibilityOff();
 	cubeAxesActor->ZAxisMinorTickVisibilityOff();
+	
+	cubeAxesActor->GetProperty()->SetColor(0,0,0);
+	cubeAxesActor->SetXTitle("x");
+	cubeAxesActor->SetYTitle("y");
+	
 	return cubeAxesActor;
 }
 
