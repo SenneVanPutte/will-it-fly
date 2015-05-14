@@ -65,7 +65,7 @@ viz_demos : demo_vtk
 algo_demos :
 
 # De demos van de core library
-core_demos : demo_core_vector_line demo_core_flow_elements demo_core_airfoil
+core_demos : demo_core_vector_line demo_core_flow_elements demo_core_airfoil demo_solve_234
 
 # De demos van de teams, die eigenlijk niks met onze libraries te maken hebben.
 # Hieronder demo's toevoegen als dependancies van de respectievelijke targets!
