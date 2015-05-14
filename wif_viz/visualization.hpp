@@ -79,6 +79,8 @@ public:
 
 	void set_streamline_resolution(uint32_t streamline_resolution);
 
+	virtual void plotVectors(std::vector<std::vector<double>>, std::vector<double>, std::vector<std::string>, std::string, std::string, std::string, std::string);
+
 	//
 
 protected:
