@@ -12,7 +12,10 @@
 namespace wif_viz
 {
 
-
+visualization_root_c::visualisation_root_c()
+{
+	
+}
 visualization_root_c::visualization_root_c(std::shared_ptr<flow_c> flow, const vector_2d_c & min_range, const vector_2d_c & max_range) :
 	visualization_c(flow, min_range, max_range)
 {
@@ -279,39 +282,44 @@ void visualization_root_c::fillbinStagnatie()
 	stag->SetContour(1, contours);
 
 }
-void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector, std::vector<double> xVector)
+void visualization_root_c::plotVectors(std::vector<std::vector<double>> yVector,std::vector<double> xVector,std::vector<std::string> legend)
 {
-
-	unsigned int aantalTH2F = yVector.size();
-
+	
+	unsigned int aantalTH2F=yVector.size();
+	
 	TCanvas * c = new TCanvas("c", "c", 1000, 1000);
-
-	for(unsigned int i = 0; i < aantalTH2F; i++)
+	for(unsigned int i=0;i<aantalTH2F;i++)
 	{
-		std::string number = std::to_string(i + 4);
-		std::string harrname = "harr" + number;
+		std::string number = std::to_string(i+4);
+		std::string harrname= "harr"+number;
 		const char * harrname2 = harrname.c_str();
-		double xBegin = xVector[0];
-		double xEnd = xVector[xVector.size()];
-		double yBegin = yVector[i][0];
-		double yEnd = yVector[i][yVector[i].size()];
-		TH2F * harr = new TH2F(harrname2, "test", xVector.size(), xBegin, xEnd, yVector[i].size(), yBegin, yEnd);
-
-
-		for(unsigned int j = 0; j < yVector[i].size(); j++)
+		double xBegin=xVector[0];
+		double xEnd=xVector[xVector.size()];
+		double yBegin=yVector[i][0];
+		double yEnd=yVector[i][yVector[i].size()];
+		TH2F* harr=new TH2F(harrname2,"test",xVector.size(), xBegin, xEnd, yVector[i].size(), yBegin, yEnd);
+		
+		
+		for(unsigned int j=0;j<yVector[i].size();j++)
 		{
-			for(unsigned int k = 0; k < xVector.size(); k++)
+		 	for(unsigned int k=0;k<xVector.size();k++)
 			{
-				harr->SetBinContent(xVector[k], yVector[i][j]);
+				harr->SetBinContent(xVector[k],yVector[i][j]);
 			}
 		}
-
+		
 		harr->Draw("scat=1 same");
-
+		
 	}
-
+	/*leg = new TLegend(0.1,0.7,0.48,0.9);
+	leg->SetHeader("The Legend Title");
+	for(int p
+	leg->AddEntry(h1,"Histogram filled with random numbers","f");
+	leg->AddEntry("f1","Function abs(#frac{sin(x)}{x})","l");
+	leg->AddEntry("gr","Graph with error bars","lep");
+	leg->Draw();
 	c->SaveAs("test.pdf");
-	c->Destructor();
-
+	c->Destructor();*/
+	
 }
 }// namespace wif_viz
