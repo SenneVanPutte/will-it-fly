@@ -478,7 +478,7 @@ vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_phi_grid() con
 	return combine_grid(phi_bins, points, field);
 }
 
-vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid()
+vtkSmartPointer<vtkStructuredGrid> visualization_vtk_c::construct_velocity_grid() const
 {
 	vtkSmartPointer<vtkPoints> points = construct_points(velocity_bins);
 	vtkSmartPointer<vtkDoubleArray> field = construct_field(velocity_bins, false);
