@@ -954,7 +954,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	lut->Build();
 	vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourMapper->SetInputConnection(filledContours->GetOutputPort());
-	contourMapper->SetScalarRange(contlvls[0], contlvls[Nvec]);//planeRange[0], planeRange[1]);
+	contourMapper->SetScalarRange(planeRange[0], planeRange[1]);//contlvls[0], contlvls[Nvec]);//planeRange[0], planeRange[1]);
 	contourMapper->SetScalarModeToUseCellData();
 	contourMapper->SetLookupTable(lut);
 
@@ -978,7 +978,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
-	contourLineMapperer->SetScalarRange(contlvls[0], contlvls[Nvec]);//scalarRange[0], scalarRange[1]);
+	contourLineMapperer->SetScalarRange(contlvls[0], contlvls[Nvec - 1]); //scalarRange[0], scalarRange[1]);
 	contourLineMapperer->ScalarVisibilityOff();
 
 	vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
@@ -988,6 +988,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	// The usual renderer, render window and interactor
 	vtkSmartPointer<vtkRenderer> ren1 = vtkSmartPointer<vtkRenderer>::New();
 	vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+	renWin->SetSize(1200 , 1000);
 	vtkSmartPointer<vtkRenderWindowInteractor>
 	iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 
@@ -1008,9 +1009,16 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	ren1->AddActor(assen);
 	ren1->ResetCamera();
 
+
+
+
+
 	// Begin interaction
 	renWin->Render();
 	iren->Start();
+
+	print_image(renWin, "test.png");
+
 }
 
 
@@ -1155,17 +1163,14 @@ void visualization_vtk_c::arrow_plot() const
 	    vtkSmartPointer<vtkRenderer>::New();
 	renderer->SetBackground(1, 1, 1);
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper =
-	    vtkSmartPointer<vtkPolyDataMapper>::New();
+	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	mapper->SetInputConnection(glyph3D->GetOutputPort());
 
-	vtkSmartPointer<vtkActor> actor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 	actor->SetMapper(mapper);
 	actor->GetProperty()->SetRepresentationToSurface();
 
-	vtkSmartPointer<vtkActor> superquadricActor =
-	    vtkSmartPointer<vtkActor>::New();
+	vtkSmartPointer<vtkActor> superquadricActor = vtkSmartPointer<vtkActor>::New();
 	superquadricActor->SetMapper(mapper);
 	vtkSmartPointer<vtkCubeAxesActor> cubeAxesActor = axis(glyph3D, renderer);
 
@@ -1184,16 +1189,14 @@ void visualization_vtk_c::arrow_plot() const
 	//renderer->GetActiveCamera()->Azimuth(0);
 	//renderer->GetActiveCamera()->Elevation(0);
 
-	vtkSmartPointer<vtkRenderWindow> renderWindow =
-	    vtkSmartPointer<vtkRenderWindow>::New();
+	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->SetSize(1200 , 1000);
 	renderWindow->AddRenderer(renderer);
 
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-	    vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
 
-	vtkSmartPointer<vtkInteractorStyleImage> imageStyle =
-	    vtkSmartPointer<vtkInteractorStyleImage>::New();
+	vtkSmartPointer<vtkInteractorStyleImage> imageStyle = vtkSmartPointer<vtkInteractorStyleImage>::New();
 	renderWindow->GetInteractor()->SetInteractorStyle(imageStyle);
 
 	renderWindow->Render();
@@ -1241,6 +1244,7 @@ void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sg
 
 	vtkSmartPointer<vtkRenderer> renderer24 = vtkSmartPointer<vtkRenderer>::New();
 	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->SetSize(1200 , 1000);
 	renderWindow->AddRenderer(renderer24);
 
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -1278,7 +1282,7 @@ void visualization_vtk_c::streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sg
 
 	// Add the actors to the renderer, set the background and size
 	renderer24->SetBackground(1, 1, 1);
-	renderWindow->SetSize(300, 300);
+	//renderWindow->SetSize(300, 300);
 	interactor->Initialize();
 	std::cout << "test3" << std::endl;
 	renderWindow->Render();
@@ -1354,6 +1358,7 @@ void visualization_vtk_c::ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid,
 	// Create the RenderWindow, Renderer and Actors
 	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 	vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	renderWindow->SetSize(1200 , 1000);
 	renderWindow->AddRenderer(renderer);
 
 	vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -1368,7 +1373,7 @@ void visualization_vtk_c::ribbens_plot(vtkSmartPointer<vtkStructuredGrid> sgrid,
 
 	// Add the actors to the renderer, set the background and size
 	renderer->SetBackground(1, 1, 1);
-	renderWindow->SetSize(300, 300);
+	//renderWindow->SetSize(300, 300);
 	interactor->Initialize();
 	std::cout << "test3" << std::endl;
 	renderWindow->Render();
@@ -1452,7 +1457,7 @@ void visualization_vtk_c::print_image(vtkSmartPointer<vtkRenderWindow> renderWin
 {
 	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
 	windowToImageFilter->SetInput(renderWindow);
-	windowToImageFilter->SetMagnification(2); //set the resolution of the output image (3 times the current resolution of vtk render window)
+	windowToImageFilter->SetMagnification(1); //set the resolution of the output image (3 times the current resolution of vtk render window)
 	windowToImageFilter->SetInputBufferTypeToRGBA(); //also record the alpha (transparency) channel
 	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
 	windowToImageFilter->Update();
