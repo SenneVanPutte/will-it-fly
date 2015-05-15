@@ -92,7 +92,7 @@ double v_t_source_function(double s, void * parameters)
 	double yc = (params->yc);
 	double xa = (params->xa);
 	double ya = (params->ya);
-	double a = ((xc - (xa - s * sin(betaj))) * -sin(beta) + (yc - (ya + s * cos(betaj))) * cos(beta)) ;
+	double a = (-(xc - (xa - s * sin(betaj))) * sin(beta) + (yc - (ya + s * cos(betaj))) * cos(beta)) ;
 	double b = (pow((xc - (xa - s * sin(betaj))), 2.) + pow((yc - (ya + s * cos(betaj))), 2.));
 
 	return a / b;
@@ -201,7 +201,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		//Setting matrix A and vector B to solve the system
 		for(int i = 0; i < num_rows; i++)
 		{
-			vector_b_data[i] = -U_inf * (cos(angles[i])*cos(angle_attack)+sin(angles[i])*sin(angle_attack));
+			vector_b_data[i] = -U_inf * (cos(angles[i]) * cos(angle_attack) + sin(angles[i]) * sin(angle_attack));
 
 			for(int j = 0; j < num_columns; j++)
 			{
@@ -270,7 +270,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = 1 - pow((U_inf * (-sin(angles[i])*cos(angle_attack)+(cos(angles[i])*sin(angle_attack))) + v_t_i) / U_inf, 2);
+			c_p[i] = 1 - pow((U_inf * (-sin(angles[i]) * cos(angle_attack) + cos(angles[i]) * sin(angle_attack)) + v_t_i) / U_inf, 2);
 		}
 
 		//Calculate c_l
@@ -311,8 +311,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 			E += lengths[i] * Sigma[i];
 		}
 
-		std::cout << "Voor een gesloten lichaam moet de som van alle source sterktes gelijk zijn aan nul, vergelijking (31):";
-		std::cout << E << std::endl;
+		c.closed_body_check = E;
 
 	} // if (Kutta)
 	else
@@ -538,6 +537,16 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		c.flow = accumulate_flow;
 		c.c_p = c_p;
 		c.c_l = c_l;
+
+		////
+		double E = 0;
+
+		for(int i = 0; i < num_lines; i++)
+		{
+			E += lengths[i] * Sigma[i];
+		}
+
+		c.closed_body_check = E;
 	} // else kutta
 
 
