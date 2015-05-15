@@ -270,7 +270,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 
 			}
 
-			c_p[i] = 1 - pow((U_inf * (-sin(angles[i]) * cos(angle_attack) + cos(angles[i]) * sin(angle_attack)) + v_t_i) / U_inf, 2);
+			c_p[i] = 1.0 - pow((U_inf * (-sin(angles[i]) * cos(angle_attack) + cos(angles[i]) * sin(angle_attack)) + v_t_i) / U_inf, 2);
 		}
 
 		//Calculate c_l
