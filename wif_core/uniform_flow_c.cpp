@@ -35,7 +35,7 @@ double uniform_flow_c::get_phi(const vector_2d_c & pos) const
 
 double uniform_flow_c::get_psi(const vector_2d_c & pos) const
 {
-	return U.x * pos.y + U.y * pos.x;
+	return U.x * pos.y - U.y * pos.x;
 }
 
 

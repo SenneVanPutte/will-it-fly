@@ -11,7 +11,12 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	psi_bins(0.0, 0.0),
 	phi_bins(0.0, 0.0),
 	velocity_bins(0.0, 0.0),
-	airfoil(nullptr)
+	streamline_seeds(0.0, 0.0, 0.0, 0.0),
+	streamline_resolution(0),
+	stagnation_tolerance(0.001),
+	airfoil(nullptr),
+	clip_min(0.0),
+	clip_max(0.0)
 {
 	//
 }
@@ -60,6 +65,17 @@ void visualization_c::set_airfoil(wif_core::airfoil_c * new_airfoil)
 }
 
 
+void visualization_c::set_streamline_seeds(const wif_core::line_2d_c & streamline_seeds)
+{
+	this->streamline_seeds = streamline_seeds;
+}
+
+void visualization_c::set_streamline_resolution(uint32_t streamline_resolution)
+{
+	this->streamline_resolution = streamline_resolution;
+}
+
+
 void visualization_c::set_contours(uint32_t contours)
 {
 	contour_locations.clear();
@@ -68,6 +84,12 @@ void visualization_c::set_contours(uint32_t contours)
 	{
 		this->contour_locations.push_back(clip_min + i * (clip_max - clip_min) / (contours + 2));
 	}
+}
+
+
+void visualization_c::set_stagnation_tolerance(double epsilon)
+{
+	this->stagnation_tolerance = epsilon;
 }
 
 
@@ -86,6 +108,11 @@ void visualization_c::set_output_to_file(bool file_output)
 
 double visualization_c::clip_value(double value) const
 {
+	if(clip_max == clip_min)
+	{
+		return value;
+	}
+
 	if(value < clip_min)
 	{
 		return clip_min;
@@ -98,6 +125,10 @@ double visualization_c::clip_value(double value) const
 	{
 		return value;
 	}
+}
+
+void visualization_c::plotVectors(std::vector<std::vector<double>>, std::vector<double>, std::vector<std::string>, std::string, std::string, std::string, std::string)
+{
 }
 
 

@@ -80,6 +80,8 @@ public:
 
 	virtual void draw(const std::string & filename = "");
 
+	virtual void draw_ivo(const std::string & filename = "");
+
 private:
 	double vtkMax = 500;
 
@@ -101,7 +103,13 @@ private:
 
 	void contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const; //int ncont
 
-	vtkSmartPointer<vtkActor> streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const;
+	void streamlines_plot(vtkSmartPointer<vtkStructuredGrid> sgrid, uint32_t number_of_streamlines) const;
+
+	void arrow_plot() const;
+
+	void print_image(vtkSmartPointer<vtkRenderWindow> renderWindow, const char * filename) const;
+
+	vtkSmartPointer<vtkActor> separating_streamlines(vtkSmartPointer<vtkPlaneSource> plane) const;
 
 	vtkSmartPointer<vtkActor> geef_actor_lijnen(std::vector<wif_core::line_2d_c>);
 
@@ -110,6 +118,17 @@ private:
 	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkPlaneSource> object, vtkSmartPointer<vtkRenderer> renderer) const;
 
 	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkGlyph3D> object, vtkSmartPointer<vtkRenderer> renderer) const;
+
+	vtkSmartPointer<vtkCubeAxesActor> axis(vtkSmartPointer<vtkStructuredGrid> object, vtkSmartPointer<vtkRenderer> renderer) const;
+
+
+	void get_data_range(double & min, double & max, std::vector<double> & contours, vtkSmartPointer<vtkStructuredGrid> grid) const;
+
+	virtual void set_color_scaling(const std::vector<uint32_t> & scaling);
+
+	virtual void set_automatic_color_scaling(uint32_t levels);
+
+	vtkSmartPointer<vtkLookupTable> color_scaling;
 
 	/*private:
 		std::vector<vtkSmartPointer<vtkActor>> actors;*/
