@@ -545,20 +545,20 @@ void visualization_vtk_c::draw(const std::string & filename)
 
 	vtkSmartPointer<vtkPlaneSource> psi_plane = construct_psi_plane();
 
-	double psiRange[2];
+	/*double psiRange[2];
 	psi_plane->GetOutput()->GetPointData()->GetScalars()->GetRange(psiRange);
-
-	double delta_psi = std::abs((psiRange[1] - psiRange[0]) / (20));
-
-	//std::cout << phiRange[0] << ", " << phiRange[1] << std::endl;
-	for(int i = 0; i < 10; ++i)
+	int ncont = 20;
+	double delta_psi = std::abs((psiRange[1] - psiRange[0])) / (ncont);
+	//std::cout << "lalalalalalaal" << std::endl;
+	//std::cout << psiRange[0] << ", " << psiRange[1] << std::endl;
+	for(int i = 0; i < ncont; ++i)
 	{
 		psi_pot_vec.push_back(psiRange[0] + (delta_psi * i)) ;
-		//std::cout << contvec_psi[i] << std::endl;
-	}
+		//std::cout << psi_pot_vec[i] << std::endl;
+	}*/
 
 	//contour_plot(phi_plane, 20);//contvec_phi);
-	contour_plot(psi_plane, psi_pot_vec);//contvec_psi);
+	contour_plot(psi_plane, contour_locations);//contvec_psi);
 
 
 
@@ -723,7 +723,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
-	double icout = points->GetNumberOfPoints() * 0.01;
+	//double icout = points->GetNumberOfPoints() * 0.1;
 
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
@@ -736,25 +736,10 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_phi_plane() const
 
 		double t = clip_value(flow->get_phi(pos));
 
-		if(i > icout)
+		/*if(i > icout)
 		{
 			std::cout << i << ": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
-			icout = icout + (points->GetNumberOfPoints() / 100);
-		}
-
-		/*if (i > icout)
-		{
-			std::cout << i <<": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
-			icout = icout + (points->GetNumberOfPoints()/100);
-		}*/
-		/*if(t > vtkMax)
-		{
-			t = vtkMax;
-		}
-
-		if(t < -vtkMax)
-		{
-			t = -vtkMax;
+			icout = icout + (points->GetNumberOfPoints() / 10);
 		}*/
 
 		//std::cout << t << std::endl;
@@ -779,7 +764,7 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 	vtkSmartPointer<vtkDoubleArray> field = vtkSmartPointer<vtkDoubleArray>::New();
 	vtkSmartPointer<vtkPoints> points = plane->GetOutput()->GetPoints();
 
-	double icout = points->GetNumberOfPoints() * 0.01;
+	//double icout = points->GetNumberOfPoints() * 0.1;
 
 	for(int i = 0; i < points->GetNumberOfPoints(); i++)
 	{
@@ -794,20 +779,10 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 		//std::cout <<  i <<": " << pos.x << ", " << pos.y << "// ->" << t << std::endl;
 
 
-		if(i > icout)
+		/*if(i > icout)
 		{
 			std::cout << i << ": " << pos.x << ", " << pos.y << "// ->" << t <<  std::endl;
-			icout = icout + (points->GetNumberOfPoints() * 0.01);
-		}
-
-		/*if(t > vtkMax)
-		{
-			t = vtkMax;
-		}
-
-		if(t < -vtkMax)
-		{
-			t = -vtkMax;
+			icout = icout + (points->GetNumberOfPoints() * 0.1);
 		}*/
 
 		//std::cout << t << std::endl;
@@ -822,6 +797,27 @@ vtkSmartPointer<vtkPlaneSource> visualization_vtk_c::construct_psi_plane() const
 
 void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, std::vector<double> contlvls) const //int ncont
 {
+	int Nvec = contlvls.size();
+
+	if(Nvec < 2)
+	{
+		std::vector<double> pot_vec;
+		contlvls = pot_vec;
+		double Range[2];
+		plane->GetOutput()->GetPointData()->GetScalars()->GetRange(Range);
+		int ncont = 20;
+		double delta = std::abs((Range[1] - Range[0])) / (ncont);
+
+		for(int i = 0; i < ncont; ++i)
+		{
+			contlvls.push_back(Range[0] + (delta * i)) ;
+			//std::cout << psi_pot_vec[i] << std::endl;
+		}
+
+		Nvec = contlvls.size();
+		std::cout << "Default contour vector" << std::endl;
+	}
+
 	std::sort(contlvls.begin(), contlvls.end());
 
 	double scalarRange[2];
@@ -830,8 +826,6 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	plane->GetOutput()->GetPointData()->GetScalars()->GetRange(planeRange);
 	scalarRange[0] = contlvls[contlvls.size() - 1];
 	scalarRange[1] = contlvls[0];
-
-	int Nvec = contlvls.size();
 
 	while(contlvls[Nvec - 1] >= planeRange[1] && Nvec > 2)
 	{
@@ -896,7 +890,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 		clippersHi[i]->GetOutput()->GetCellData()->SetScalars(cd);
 		appendFilledContours->AddInputConnection(clippersHi[i]->GetOutputPort());
 
-		std::cout << "Clip" << std::endl;
+		//std::cout << "Clip" << std::endl;
 	}
 
 	vtkSmartPointer<vtkCleanPolyData> filledContours = vtkSmartPointer<vtkCleanPolyData>::New();
@@ -907,7 +901,7 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 	lut->Build();
 	vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourMapper->SetInputConnection(filledContours->GetOutputPort());
-	contourMapper->SetScalarRange(planeRange[0], planeRange[1]);
+	contourMapper->SetScalarRange(contlvls[0], contlvls[Nvec]);//planeRange[0], planeRange[1]);
 	contourMapper->SetScalarModeToUseCellData();
 	contourMapper->SetLookupTable(lut);
 
@@ -922,15 +916,16 @@ void visualization_vtk_c::contour_plot(vtkSmartPointer<vtkPlaneSource> plane, st
 
 	vtkSmartPointer<vtkContourFilter> contours = vtkSmartPointer<vtkContourFilter>::New();
 	contours->SetInputConnection(filledContours->GetOutputPort());
-	contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
-	/*for (int i=0; i < numberOfContours; ++i)
+
+	//contours->GenerateValues(numberOfContours, scalarRange[0], scalarRange[1]);
+	for(int i = 0; i < numberOfContours; ++i)
 	{
 		contours->SetValue(i, contlvls[i]);
-	}*/
+	}
 
 	vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
 	contourLineMapperer->SetInputConnection(contours->GetOutputPort());
-	contourLineMapperer->SetScalarRange(scalarRange[0], scalarRange[1]);
+	contourLineMapperer->SetScalarRange(contlvls[0], contlvls[Nvec]);//scalarRange[0], scalarRange[1]);
 	contourLineMapperer->ScalarVisibilityOff();
 
 	vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
