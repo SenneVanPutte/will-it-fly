@@ -16,7 +16,8 @@ visualization_c::visualization_c(std::shared_ptr<flow_c> flow, const vector_2d_c
 	stagnation_tolerance(0.001),
 	airfoil(nullptr),
 	clip_min(0.0),
-	clip_max(0.0)
+	clip_max(0.0),
+	arrow_scale(0.0)
 {
 	//
 }

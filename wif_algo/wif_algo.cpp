@@ -340,7 +340,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 					//SOURCE SHEET BLOK (Np x Np)
 					FUNC.function = &source_sheet_function;
 
-					vector_b_data[i] = -U_inf * cos(angles[i] - angle_attack);
+					vector_b_data[i] = -U_inf * cos(angle_attack - angles[i]);
 
 					if(i == j)
 					{
@@ -360,7 +360,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				{
 
 					//VORTEX_SHEET_1 BLOK (EXTRA KOLOM) (: x Np+1 )
-
+					vector_b_data[i] = -U_inf * cos(angle_attack - angles[i]);
 					FUNC.function = &vortex_sheet_function_1;
 					double last_column_value = 0;
 
@@ -382,7 +382,8 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 				{
 
 					//LAATSTE RIJ BLOK (Np+1 x Np)
-					vector_b_data[i] = -U_inf * cos(angles[k] - angle_attack) - U_inf * cos(angles[l] - angle_attack);
+					//vector_b_data[i] = -U_inf * cos(angles[k] - angle_attack) - U_inf * cos(angles[l] - angle_attack);
+					vector_b_data[i] = -U_inf * sin(angle_attack - angles[k]) - U_inf * sin(angle_attack - angles[l]);
 					double last_row_value = 0;
 					FUNC.function = &vortex_sheet_function_lastrow;
 
@@ -533,6 +534,9 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		accumulate_flow->add_flow(myFlow);
 		accumulate_flow->add_source_sheets(Sigma, myAirfoil);
 		accumulate_flow->add_vortex_sheets(Gamma, myAirfoil);
+
+		std::cout << "Gamma is " << Gamma << std::endl;
+
 		c.airfoil = myAirfoil;
 		c.flow = accumulate_flow;
 		c.c_p = c_p;

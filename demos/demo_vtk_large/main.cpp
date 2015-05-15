@@ -103,27 +103,29 @@ void test_airfoil(wif_core::airfoil_c & foil)
 		return;
 	}
 
-	std::shared_ptr<wif_core::uniform_flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(5.0 * M_PI / 180.0, 1.0);
+	std::shared_ptr<wif_core::uniform_flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(0.0 * M_PI / 180.0, 1.0);
 
-	auto result = wif_algo::calculate_flow(foil, flow, true, 0.0);
+	auto result = wif_algo::calculate_flow(foil, flow, false, 0.0);
 
 	{
 		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
 		vizy->set_psi_bins({101, 101});
+		vizy->set_phi_bins({101, 101});
 		vizy->set_contours(20);
 		vizy->set_airfoil(&foil);
 
 		vizy->draw_ivo("");
 	}
+	/*
+		{
+			std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
+			vizy->set_phi_bins({101, 101});
+			vizy->set_contours(20);
+			vizy->set_airfoil(&foil);
 
-	{
-		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
-		vizy->set_phi_bins({101, 101});
-		vizy->set_airfoil(&foil);
-
-		vizy->draw_ivo("");
-	}
-
+			vizy->draw_ivo("");
+		}
+	*/
 	{
 		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
 		vizy->set_velocity_bins({101, 101});
@@ -133,14 +135,16 @@ void test_airfoil(wif_core::airfoil_c & foil)
 		vizy->draw_ivo("");
 	}
 
+	/*
 	{
 		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, {0.9, -0.1}, {1.1, 0.1});
 		vizy->set_velocity_bins({101, 101});
-		vizy->set_streamline_resolution(100);
+		//vizy->set_streamline_resolution(100);
 		vizy->set_airfoil(&foil);
 
 		vizy->draw_ivo("");
 	}
+	*/
 }
 
 void test_uniflow(bool screen)
