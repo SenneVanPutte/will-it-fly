@@ -310,6 +310,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		{
 			E += lengths[i] * Sigma[i];
 		}
+
 		c.closed_body_check = E;
 
 	} // if (Kutta)
@@ -544,6 +545,7 @@ calculation_results_c calculate_flow(const wif_core::airfoil_c & myAirfoil, std:
 		{
 			E += lengths[i] * Sigma[i];
 		}
+
 		c.closed_body_check = E;
 	} // else kutta
 
