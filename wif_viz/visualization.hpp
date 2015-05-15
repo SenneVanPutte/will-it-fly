@@ -83,6 +83,11 @@ public:
 
 	//
 
+	void set_arrow_scale(double new_arrow_scale)
+	{
+		this->arrow_scale = new_arrow_scale;
+	}
+
 protected:
 	std::shared_ptr<flow_c> flow;
 	vector_2d_c min_range;
@@ -96,6 +101,8 @@ protected:
 	double clip_min;
 	double clip_max;
 	bool output_to_file;
+
+	double arrow_scale;
 
 	mutable std::vector<vector_2d_c> stagnation_point;
 	double stagnation_tolerance;

@@ -314,6 +314,8 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 		renWin->AddRenderer(renderer);
 		iren->SetRenderWindow(renWin);
 
+		bool axes_drawed = false;
+
 		if(one_is_zero(psi_bins))
 		{
 			vtkSmartPointer<vtkStructuredGrid> psi_grid = construct_psi_grid();
@@ -343,7 +345,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			vtkSmartPointer<vtkActor> actorveld = vtkActor::New();
 			actorveld->SetMapper(mapperveld);
 
-			renderer->AddActor(actorveld);
+			//renderer->AddActor(actorveld);
 
 			//
 
@@ -393,6 +395,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			vtkSmartPointer<vtkActor> axes = axis(psi_grid, renderer);
 			renderer->AddActor(axes);
 
+			axes_drawed = true;
 		}
 
 		if(one_is_zero(phi_bins))
@@ -402,18 +405,14 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			vtkSmartPointer<vtkDataSetMapper> mapperveld = vtkDataSetMapper::New();
 			mapperveld->SetInput(phi_grid);
 
-			double min_v = this->clip_min;
-			double max_v = this->clip_max;
+			double min_v = 0.0;
+			double max_v = 0.0;
 
-			if(clip_min == clip_max)
-			{
-				double values[2];
+			std::vector<double> corrected_contours = this->contour_locations;
 
-				phi_grid->GetPointData()->GetScalars()->GetRange(values);
+			get_data_range(min_v, max_v, corrected_contours, phi_grid);
 
-				min_v = values[0];
-				max_v = values[1];
-			}
+			//
 
 			vtkSmartPointer<vtkColorTransferFunction> lut = vtkColorTransferFunction::New();
 
@@ -428,16 +427,64 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 			vtkSmartPointer<vtkActor> actorveld = vtkActor::New();
 			actorveld->SetMapper(mapperveld);
 
-			renderer->AddActor(actorveld);
+			//renderer->AddActor(actorveld);
+
+			//
+
+			if(corrected_contours.size() > 1)
+			{
+				vtkSmartPointer<vtkCleanPolyData> filledContours = clip_into_pieces(phi_grid, corrected_contours);
+
+				//
+
+				vtkSmartPointer<vtkLookupTable> lut2 = vtkSmartPointer<vtkLookupTable>::New();
+				lut2->SetNumberOfTableValues(corrected_contours.size() + 1);
+				lut2->Build();
+
+				vtkSmartPointer<vtkPolyDataMapper> contourMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+				contourMapper->SetInput(filledContours->GetOutput());
+				contourMapper->SetScalarRange(min_v, max_v);
+				contourMapper->SetScalarModeToUseCellData();
+				contourMapper->SetLookupTable(lut2);
+				contourMapper->Update();
+
+				//schaal bar
+				vtkSmartPointer<vtkScalarBarActor> scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+				scalarBar->SetLookupTable(lut2);
+
+				vtkSmartPointer<vtkActor> contourActor = vtkSmartPointer<vtkActor>::New();
+				contourActor->SetMapper(contourMapper);
+				contourActor->GetProperty()->SetInterpolationToFlat();
+
+				vtkSmartPointer<vtkContourFilter> contours3 = vtkSmartPointer<vtkContourFilter>::New();
+				contours3->SetInput(filledContours->GetOutput());
+				contours3->GenerateValues(corrected_contours.size(), min_v, max_v);
+
+				vtkSmartPointer<vtkPolyDataMapper> contourLineMapperer = vtkSmartPointer<vtkPolyDataMapper>::New();
+				contourLineMapperer->SetInput(contours3->GetOutput());
+				contourLineMapperer->SetScalarRange(min_v, max_v);
+				contourLineMapperer->ScalarVisibilityOff();
+
+				vtkSmartPointer<vtkActor> contourLineActor = vtkSmartPointer<vtkActor>::New();
+				contourLineActor->SetMapper(contourLineMapperer);
+				contourLineActor->GetProperty()->SetLineWidth(2);
+				contourLineActor->GetProperty()->SetColor(0, 0.2, 0.5);
+
+				renderer->AddActor(contourLineActor);
+			}
+
+			if(!axes_drawed)
+			{
+				vtkSmartPointer<vtkActor> axes = axis(phi_grid, renderer);
+				renderer->AddActor(axes);
+			}
 		}
 
 		if(one_is_zero(velocity_bins))
 		{
 			vtkSmartPointer<vtkStructuredGrid> velocity_grid = construct_velocity_grid();
 
-			bool draw_arrows = false;
-
-			if(draw_arrows)
+			if(this->arrow_scale > 0.0)
 			{
 				vtkSmartPointer<vtkArrowSource> arrowSource = vtkSmartPointer<vtkArrowSource>::New();
 
@@ -453,7 +500,7 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 				glyph3D->SetColorMode(2);
 				//glyph3D->SetScaleModeToScaleByVector();
 				//glyph3D->OrientOff();
-				glyph3D->SetScaleFactor(.05);
+				glyph3D->SetScaleFactor(this->arrow_scale);
 				glyph3D->Update();
 
 				vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -500,6 +547,12 @@ void visualization_vtk_c::draw_ivo(const std::string & filename)
 				streamLineActor->VisibilityOn();
 
 				renderer->AddActor(streamLineActor);
+			}
+
+			if(!axes_drawed)
+			{
+				vtkSmartPointer<vtkActor> axes = axis(velocity_grid, renderer);
+				renderer->AddActor(axes);
 			}
 		}
 
