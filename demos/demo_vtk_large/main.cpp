@@ -96,14 +96,63 @@ std::string get_name(bool screen, const std::string & filename)
 	return screen ? "" : filename;
 }
 
+void test_airfoil(wif_core::airfoil_c & foil)
+{
+	if(!foil.is_valid())
+	{
+		return;
+	}
+
+	std::shared_ptr<wif_core::uniform_flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(5.0 * M_PI / 180.0, 1.0);
+
+	auto result = wif_algo::calculate_flow(foil, flow, true, 0.0);
+
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
+		vizy->set_psi_bins({101, 101});
+		vizy->set_contours(20);
+		vizy->set_airfoil(&foil);
+
+		vizy->draw_ivo("");
+	}
+
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
+		vizy->set_phi_bins({101, 101});
+		vizy->set_airfoil(&foil);
+
+		vizy->draw_ivo("");
+	}
+
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, { -0.5, -1.0}, {1.5, 1});
+		vizy->set_velocity_bins({101, 101});
+		vizy->set_streamline_resolution(100);
+		vizy->set_airfoil(&foil);
+
+		vizy->draw_ivo("");
+	}
+
+	{
+		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(result.flow, {0.9, -0.1}, {1.1, 0.1});
+		vizy->set_velocity_bins({101, 101});
+		vizy->set_streamline_resolution(100);
+		vizy->set_airfoil(&foil);
+
+		vizy->draw_ivo("");
+	}
+}
 
 void test_uniflow(bool screen)
 {
-	std::shared_ptr<wif_core::flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(0.0, 1.0);
+	std::shared_ptr<wif_core::uniform_flow_c> flow = std::make_shared<wif_core::uniform_flow_c>(M_PI / 4.0, 1.0);
+
+	std::cout << flow->get_angle() / M_PI << std::endl;
 
 	{
 		std::shared_ptr<wif_viz::visualization_c> vizy = wif_viz::create_visualization_vtk(flow, { -1, -1}, {1, 1});
 		vizy->set_psi_bins({101, 101});
+		vizy->set_contours(20);
 
 		vizy->draw_ivo("");
 	}
@@ -247,13 +296,15 @@ void tests()
 {
 	bool screen = true;
 
-	test_uniflow(screen);
+	//test_uniflow(screen);
 	//test_circle(screen);
 	//test_circle_flow(screen);
 	//test_sheet(screen);
 	//test_source(screen);
 
-	test_airfoil();
+	wif_core::airfoil_c a = wif_core::airfoil_c("../../wif_core/airfoils/selig.dat").closed_intersect(0)/*.get_circle_projection(10, {0.5, 0.0}, 0.5)*/;
+
+	test_airfoil(a);
 }
 
 
