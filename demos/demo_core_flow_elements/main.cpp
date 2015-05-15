@@ -67,18 +67,29 @@ void draw_source_sheet()
 
 	TCanvas * c1 = new TCanvas("c1", "c1", 600, 600);
 
-	vector<double> sigmas(20, 2);
-	wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindwerk-programmeren/will-it-fly/wif_core/airfoils/selig.dat");
-	cout << "loaded" << std::endl;
-	wif_core::airfoil_c foil = foilfull.get_circle_projection(10, vector_2d_c(0.5, 0), 0.5, 0.001).closed_merge();
-	cout << foil.get_lines().size() << std::endl;
+	/*
+		vector<double> sigmas(20, 2);
+		wif_core::airfoil_c foilfull = wif_core::airfoil_c("/home/uauser/eindwerk-programmeren/will-it-fly/wif_core/airfoils/selig.dat");
+		cout << "loaded" << std::endl;
+		wif_core::airfoil_c foil = foilfull.get_circle_projection(10, vector_2d_c(0.5, 0), 0.5, 0.001).closed_merge();
+		cout << foil.get_lines().size() << std::endl;
 
-	flow_accumulate_c flow = flow_accumulate_c();
-	//flow_accumulate_c flow = flow_accumulate_c();
-	//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
-	//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
+		flow_accumulate_c flow = flow_accumulate_c();
+		//flow_accumulate_c flow = flow_accumulate_c();
+		//flow.add_flow(std::make_shared<source_sheet_c>(line_2d_c(0, -1, 0, 1), 2));
+		//flow.add_flow(std::make_shared<uniform_flow_c>(0, 3));
 
-	flow.add_source_sheets(sigmas, foil);
+		*/
+
+	wif_core::flow_accumulate_c flow;
+	flow.add_flow(std::make_shared<wif_core::uniform_flow_c>(0, 1));
+
+	for(double y = -1.0; y <= 1; y += 0.2)
+	{
+		flow.add_flow(std::make_shared<wif_core::source_sink_c>(wif_core::vector_2d_c(0, y), 1));
+	}
+
+	//flow.add_source_sheets(sigmas, foil);
 	//flow.add_vortex_sheets(1, foil);
 
 	/*cout << flow.get_psi(pos) << "\n";
@@ -105,6 +116,7 @@ void draw_source_sheet()
 			double y = hist->GetYaxis()->GetBinCenter(j);
 
 			double a = flow.get_psi(vector_2d_c(x, y));
+			cout << a << std::endl;
 
 			hist->SetBinContent(i, j, atan(a));
 
